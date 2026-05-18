@@ -1,0 +1,20 @@
+# Ignore everything by default
+*
+
+# Allow directories
+!*/
+
+# Allow specific production files
+!3d-test.html
+!index.html
+!cartas-interactivas.html
+
+# Allow assets folder contents
+!assets/**
+
+# Exclude any temporary or backup files inside allowed patterns
+*.py
+*.txt
+*.js
+!assets/**/*.js
+_backups/
