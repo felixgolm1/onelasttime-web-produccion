@@ -7621,11 +7621,11 @@ window.onerror = function(msg, url, line, col, err) {
       transform:translateX(-50%);
       width:min(500px,88vw);
       padding:1.3rem 1.8rem 1.5rem;
-      background:rgba(15,10,30,0.72);
-      backdrop-filter:blur(28px);
-      -webkit-backdrop-filter:blur(28px);
-      border:1px solid rgba(255,255,255,0.16);
-      border-radius:6px;
+      background:rgba(255,255,255,0.04);
+      backdrop-filter:blur(24px);
+      -webkit-backdrop-filter:blur(24px);
+      border:1px solid rgba(255,255,255,0.18);
+      border-radius:4px;
       overflow:hidden;
       opacity:0; transition:opacity 0.7s ease;
       pointer-events:none;">
@@ -8352,8 +8352,8 @@ setInterval(function() {
 // Lee window._brainScrollProg (ya actualizado por el scroll engine
 // en cada frame) — sin modificar nada del loop de scroll.
 (function() {
-  var SHOW_START = 17.2;
-  var SHOW_FADE  = 17.5;
+  var SHOW_START = 17.43;
+  var SHOW_FADE  = 17.58;
   var STEP_START = 17.5;
   var STEP_END   = 20.2;
   var NUM_STEPS  = 4;
@@ -8433,5 +8433,46 @@ setInterval(function() {
 
 
 </script>
+
+<script>
+// ── ORYZO TEXT DRIFT — "NO ES MAGIA" se desplaza a esquina sup-izq durante zoom-in ──
+(function() {
+  var h2 = document.getElementById('oxitocina-title');
+  if (!h2) return;
+
+  // Rango de scroll en el que ocurre el movimiento
+  var MOVE_START = 17.0;    // mismo inicio que el zoom-in del overlay (swapT)
+  var MOVE_END   = 17.8;    // mismo final que el zoom-in del overlay (swapT)
+
+  // Inicio: centrado (top:67%, left:50%, scale:1)
+  // Final: derecha junto al cerebro (top:22%, left:72%, scale:0.28)
+  var S_TOP = 67,  E_TOP = 27;
+  var S_LEFT = 50, E_LEFT = 72;
+  var S_SCL = 1.0, E_SCL = 0.28;
+
+  // Encadenar con la función ya existente
+  var prevFn = window._updateNeuralText || function(){};
+  window._updateNeuralText = function(prog) {
+    prevFn(prog);
+
+    var t  = Math.max(0, Math.min(1, (prog - MOVE_START) / (MOVE_END - MOVE_START)));
+    // Ease-in-out cúbico para fluidez cinematic
+    var te = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+
+    var top  = S_TOP  + (E_TOP  - S_TOP)  * te;
+    var left = S_LEFT + (E_LEFT - S_LEFT) * te;
+    var scl  = S_SCL  + (E_SCL  - S_SCL)  * te;
+
+    h2.style.top             = top  + '%';
+    h2.style.left            = left + '%';
+    h2.style.transition      = 'none';
+    h2.style.transform       = 'translate(-50%,-50%) scale(' + scl + ')';
+    h2.style.transformOrigin = 'center center';
+    h2.style.textAlign       = 'center';
+  };
+})();
+</script>
+
 </html>
+
 
