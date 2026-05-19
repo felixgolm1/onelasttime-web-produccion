@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <script>
@@ -3530,7 +3530,7 @@ window.onerror = function(msg, url, line, col, err) {
 
     // ── Drivers ──────────────────────────────────────────────────
     // Ampliado maxProg para las dos fases de salida: exits (14.62→15.6) + expansión (15.6→16.8)
-    const maxProg = 17.8;
+    const maxProg = 20.2;  // ampliado para 4 pasos neuro (17.2 → 20.2)
     let prog = parseFloat(sessionStorage.getItem('dev_prog')) || 0;
 
     // --- MAGIC WINDOW CAROUSEL SETUP ---
@@ -7544,7 +7544,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 
   <!-- Debug: Mostrar scroll prog -->
-  <div id="debug-scroll-prog" style="position: fixed; bottom: 20px; left: 20px; color: #00ff00; font-family: monospace; font-size: 24px; font-weight: bold; z-index: 999999; pointer-events: none; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;">0.00</div>
+  <div id="debug-scroll-prog" style="position: fixed; bottom: 20px; left: 20px; color: #00ff00; font-family: monospace; font-size: 24px; font-weight: bold; z-index: 99999999; pointer-events: none; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;">0.00</div>
   <!-- MAGAZINE BREAKOUT OVERLAY — body-level para evitar problemas con transforms del carrusel -->
   <div id="mag-breakout-overlay" style="display:none;position:fixed;z-index:99998;background:transparent;pointer-events:none;border:none;will-change:top,left,width,height;"></div>
   <!-- THERMAL OVERLAY — efecto cámara termográfica -->
@@ -7594,11 +7594,14 @@ window.onerror = function(msg, url, line, col, err) {
     <canvas id="brain-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity 0.4s ease;"></canvas>
     <!-- CEREBRO 2D: imagen base + canvas de mapa de calor encima -->
     <div id="brain-2d-wrap" style="position:absolute;pointer-events:none;opacity:0;
-      left:50%;top:34.4%;transform:translate(-50%,-50%);
+      left:calc(50% - 4px);top:34.4%;transform:translate(-50%,-50%);
       width:25vh;height:25vh;
       mix-blend-mode:screen;">
-      <img id="brain-2d-img" src="assets/img/brain_thermal_half.png"
-        style="width:100%;height:100%;object-fit:contain;display:block;">
+      <!-- Dos capas para crossfade suave sin flash negro -->
+      <img id="brain-img-a" src="assets/brain_zona1_vta.png"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:1;transition:opacity 1.0s ease;">
+      <img id="brain-img-b" src="assets/brain_zona2_acc.png"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 1.0s ease;">
       <!-- Canvas encima: mapa de calor dinámico en código -->
       <canvas id="brain-2d-heat" style="position:absolute;top:0;left:0;width:100%;height:100%;mix-blend-mode:screen;"></canvas>
     </div>
@@ -7608,7 +7611,58 @@ window.onerror = function(msg, url, line, col, err) {
     <!-- Viñeta oscura en bordes (como Oryzo) -->
     <div id="thermal-vignette" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;
       background:radial-gradient(ellipse at 50% 45%, transparent 30%, rgba(8,0,20,0.7) 100%);"></div>
+
+    <!-- ══ SECCIÓN NEUROCIENCIA — usa brain-2d-wrap ya existente, sin div extra ══ -->
+
+    <!-- Tarjeta cristalizada: separada del cerebro, SIN mix-blend-mode -->
+    <div id="neuro-card" style="
+      position:absolute;
+      left:50%; top:48%;
+      transform:translateX(-50%);
+      width:min(500px,88vw);
+      padding:1.3rem 1.8rem 1.5rem;
+      background:rgba(15,10,30,0.72);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      border:1px solid rgba(255,255,255,0.16);
+      border-radius:6px;
+      overflow:hidden;
+      opacity:0; transition:opacity 0.7s ease;
+      pointer-events:none;">
+      <!-- Reflejo superior -->
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);"></div>
+
+      <!-- Slides de texto -->
+      <div style="position:relative; min-height:108px;">
+        <div class="nsl" id="nsl-0" style="position:absolute;inset:0;opacity:1;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Corteza Prefrontal</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Tu cerebro detecta algo único</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Una carta hecha exactamente para ti activa la zona de atención plena. El cerebro registra que esto no es ruido — es señal. Y para.</p>
+        </div>
+        <div class="nsl" id="nsl-1" style="position:absolute;inset:0;opacity:0;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Amígdala + Hipocampo</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">El momento se convierte en recuerdo</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">El sistema límbico codifica la emoción y la ancla en la memoria a largo plazo. Ese instante contigo quedará grabado.</p>
+        </div>
+        <div class="nsl" id="nsl-2" style="position:absolute;inset:0;opacity:0;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Circuito de Recompensa</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Quiere más. Sin poder evitarlo.</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">El núcleo accumbens libera dopamina. La misma que activa el placer, la motivación y el deseo de repetir la experiencia.</p>
+        </div>
+        <div class="nsl" id="nsl-3" style="position:absolute;inset:0;opacity:0;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Activación Total</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Y entonces ocurre la conexión real</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Todo el cerebro activo a la vez. La oxitocina une a dos personas en ese instante. No es magia. Es neurociencia.</p>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- ══ FIN SECCIÓN NEUROCIENCIA ══════════════════════════════ -->
+
   </div>
+
+
 
 
 <script>
@@ -8293,5 +8347,91 @@ setInterval(function() {
 </script>
 
 </body>
+<script>
+// ── CONTROLADOR SECCIÓN NEUROCIENCIA ────────────────────────────
+// Lee window._brainScrollProg (ya actualizado por el scroll engine
+// en cada frame) — sin modificar nada del loop de scroll.
+(function() {
+  var SHOW_START = 17.2;
+  var SHOW_FADE  = 17.5;
+  var STEP_START = 17.5;
+  var STEP_END   = 20.2;
+  var NUM_STEPS  = 4;
+
+  var SRCS = [
+    'assets/brain_zona1_vta.png',          // paso 1 — Área Tegmental Ventral
+    'assets/brain_zona2_acc.png',           // paso 2 — Corteza Cingulada Anterior
+    'assets/brain_zona3_hipotalamo.png',    // paso 3 — Hipotálamo
+    'assets/brain_zona4_caudado.png'        // paso 4 — Núcleo Caudado
+  ];
+
+  var brain   = document.getElementById('brain-2d-wrap');
+  var card    = document.getElementById('neuro-card');
+  var imgA    = document.getElementById('brain-img-a');  // capa front
+  var imgB    = document.getElementById('brain-img-b');  // capa back
+  var slides  = [document.getElementById('nsl-0'), document.getElementById('nsl-1'),
+                 document.getElementById('nsl-2'), document.getElementById('nsl-3')];
+  var dots    = [document.getElementById('ndot-0'), document.getElementById('ndot-1'),
+                 document.getElementById('ndot-2'), document.getElementById('ndot-3')];
+
+  if (!imgA || !imgB) return;
+
+  var curStep    = 0;
+  var frontIsA   = true;   // qué capa está al frente
+
+  function setStep(s) {
+    if (s === curStep) return;
+    curStep = s;
+
+    // Cargar la nueva imagen en la capa de atrás, luego crossfade
+    var front = frontIsA ? imgA : imgB;
+    var back  = frontIsA ? imgB : imgA;
+
+    back.src     = SRCS[s];
+    back.style.opacity  = '1';   // back sube
+    front.style.opacity = '0';   // front baja
+    frontIsA = !frontIsA;        // la que subíde es ahora el frente
+
+    // Slides y dots
+    for (var i = 0; i < NUM_STEPS; i++) {
+      var on = (i === s);
+      if (slides[i]) slides[i].style.opacity = on ? '1' : '0';
+      if (dots[i]) {
+        dots[i].style.background = on ? '#ff8c42' : 'rgba(255,255,255,.2)';
+        dots[i].style.transform  = on ? 'scale(1.4)' : 'scale(1)';
+      }
+    }
+  }
+
+  function tick() {
+    var p = window._brainScrollProg || 0;
+
+    // Fade in/out de la tarjeta (el brain-2d-wrap lo maneja el scroll engine)
+    var fadeT = p >= SHOW_START
+      ? String(Math.min(1, (p - SHOW_START) / (SHOW_FADE - SHOW_START)))
+      : '0';
+    if (brain) brain.style.opacity = fadeT;
+    if (card)  card.style.opacity  = fadeT;
+
+    // Qué paso según scroll
+    var step;
+    if (p < STEP_START) {
+      step = 0;
+    } else if (p >= STEP_END) {
+      step = NUM_STEPS - 1;
+    } else {
+      var t = (p - STEP_START) / (STEP_END - STEP_START);
+      step = Math.min(NUM_STEPS - 1, Math.floor(t * NUM_STEPS));
+    }
+    setStep(step);
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();
+
+
+</script>
 </html>
 
