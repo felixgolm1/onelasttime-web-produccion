@@ -8348,89 +8348,185 @@ setInterval(function() {
 
 </body>
 <script>
-// ── CONTROLADOR SECCIÓN NEUROCIENCIA ────────────────────────────
-// Lee window._brainScrollProg (ya actualizado por el scroll engine
-// en cada frame) — sin modificar nada del loop de scroll.
+// ── CONTROLADOR SECCIÓN NEUROCIENCIA — wipe Oryzo scroll-driven ──
+// Barrido de máscara de gradiente 100% vinculado al scroll.
+// Título: barre izquierda→derecha. Párrafo: barre derecha→izquierda.
+// Todo computado en cada frame desde window._brainScrollProg. Cero timers.
 (function() {
   var SHOW_START = 17.43;
   var SHOW_FADE  = 17.58;
   var STEP_START = 17.5;
   var STEP_END   = 20.2;
   var NUM_STEPS  = 4;
+  var STEP_SIZE  = (STEP_END - STEP_START) / NUM_STEPS; // 0.675 por paso
+  var TRANS      = 0.10; // unidades de scroll para la zona de transición en cada límite
+  var FEATHER    = 55;   // % de suavidad del gradiente — grande = más gradual (Oryzo style)
 
   var SRCS = [
-    'assets/brain_zona1_vta.png',          // paso 1 — Área Tegmental Ventral
-    'assets/brain_zona2_acc.png',           // paso 2 — Corteza Cingulada Anterior
-    'assets/brain_zona3_hipotalamo.png',    // paso 3 — Hipotálamo
-    'assets/brain_zona4_caudado.png'        // paso 4 — Núcleo Caudado
+    'assets/brain_zona1_vta.png',
+    'assets/brain_zona2_acc.png',
+    'assets/brain_zona3_hipotalamo.png',
+    'assets/brain_zona4_caudado.png'
   ];
 
-  var brain   = document.getElementById('brain-2d-wrap');
-  var card    = document.getElementById('neuro-card');
-  var imgA    = document.getElementById('brain-img-a');  // capa front
-  var imgB    = document.getElementById('brain-img-b');  // capa back
-  var slides  = [document.getElementById('nsl-0'), document.getElementById('nsl-1'),
-                 document.getElementById('nsl-2'), document.getElementById('nsl-3')];
-  var dots    = [document.getElementById('ndot-0'), document.getElementById('ndot-1'),
-                 document.getElementById('ndot-2'), document.getElementById('ndot-3')];
+  var brain  = document.getElementById('brain-2d-wrap');
+  var card   = document.getElementById('neuro-card');
+  var imgA   = document.getElementById('brain-img-a');
+  var imgB   = document.getElementById('brain-img-b');
+  var slides = [document.getElementById('nsl-0'), document.getElementById('nsl-1'),
+                document.getElementById('nsl-2'), document.getElementById('nsl-3')];
+  var dots   = [document.getElementById('ndot-0'), document.getElementById('ndot-1'),
+                document.getElementById('ndot-2'), document.getElementById('ndot-3')];
 
   if (!imgA || !imgB) return;
 
-  var curStep    = 0;
-  var frontIsA   = true;   // qué capa está al frente
+  // Quitar la transición CSS de los slides — el scroll lo maneja todo
+  slides.forEach(function(sl) {
+    if (sl) sl.style.transition = 'none';
+  });
 
-  function setStep(s) {
-    if (s === curStep) return;
-    curStep = s;
+  // Extraer label, h3 y último p de cada slide
+  var slideEls = slides.map(function(sl) {
+    if (!sl) return null;
+    var h3    = sl.querySelector('h3');
+    var ps    = sl.querySelectorAll('p');
+    var label = ps.length > 0 ? ps[0] : null;                   // "CORTEZA PREFRONTAL" etc.
+    var para  = ps.length > 1 ? ps[ps.length - 1] : null;       // párrafo descriptivo
+    return { el: sl, label: label, h3: h3, para: para };
+  });
 
-    // Cargar la nueva imagen en la capa de atrás, luego crossfade
-    var front = frontIsA ? imgA : imgB;
-    var back  = frontIsA ? imgB : imgA;
+  // ── Aplicar máscara Oryzo — gradiente puro sin zonas sólidas ─────────
+  // Fórmula: la franja de degradado siempre ocupa el 100% del elemento.
+  // Sólo se desplaza su posición. Nunca hay una zona sólida → ningún borde visible.
+  //   showFrac = 1 → gradiente completamente fuera (todo visible)
+  //   showFrac = 0.5 → gradiente centrado (fade suave de esquina a esquina)
+  //   showFrac = 0 → gradiente completamente fuera (todo oculto)
+  // dir: 'ltr' = 135deg (top-left→bottom-right) | 'rtl' = 315deg (opuesto)
+  function applyMask(el, showFrac, dir) {
+    if (!el) return;
+    var X   = showFrac * 200 - 100; // -100 (todo oculto) → +100 (todo visible)
+    var deg = (dir === 'ltr') ? '135deg' : '315deg';
+    // black = muestra, transparent = oculta. La franja siempre es de 100%.
+    var mask = 'linear-gradient(' + deg + ', black ' + X.toFixed(1) + '%, transparent ' + (X + 100).toFixed(1) + '%)';
+    el.style.webkitMaskImage = mask;
+    el.style.maskImage = mask;
+  }
 
-    back.src     = SRCS[s];
-    back.style.opacity  = '1';   // back sube
-    front.style.opacity = '0';   // front baja
-    frontIsA = !frontIsA;        // la que subíde es ahora el frente
+  // ── ENTRADA: clip-path reveal de abajo hacia arriba ──────────────────
+  // El stagger (STAGGER_IN) entre label→h3→para crea el efecto cascada.
+  // Cada bloque usa un clip recto (inset) — sin inclinar nada.
+  function applyEntryReveal(el, entryFrac) {
+    if (!el) return;
+    var clip = (1 - entryFrac) * 110;
+    var ty   = (1 - entryFrac) * 10;
+    el.style.clipPath        = 'inset(0 0 ' + clip.toFixed(1) + '% 0)';
+    el.style.transform       = 'translateY(' + ty.toFixed(1) + 'px)';
+    el.style.webkitMaskImage = '';
+    el.style.maskImage       = '';
+  }
 
-    // Slides y dots
-    for (var i = 0; i < NUM_STEPS; i++) {
-      var on = (i === s);
-      if (slides[i]) slides[i].style.opacity = on ? '1' : '0';
-      if (dots[i]) {
-        dots[i].style.background = on ? '#ff8c42' : 'rgba(255,255,255,.2)';
-        dots[i].style.transform  = on ? 'scale(1.4)' : 'scale(1)';
-      }
+
+
+  // ── STAGGER de entrada: cada elemento empieza más tarde que el anterior ──
+  // n=0 label (más rápido), n=1 h3, n=2 para (más lento)
+  // STAGGER: cuánto del rango de entryFrac se retrasa cada elemento
+  var STAGGER_IN = 0.22;
+  var LEAD_IN    = 1 - 2 * STAGGER_IN; // fracción que usa cada elemento para ir 0→1
+
+  function staggerFrac(ef, n) {
+    // Elemento n empieza cuando ef = n*STAGGER_IN y termina cuando ef = n*STAGGER_IN + LEAD_IN
+    return clamp01((ef - n * STAGGER_IN) / LEAD_IN);
+  }
+
+  // ── SALIDA: limpia clip y aplica gradient mask wipe ──
+  function applyExitMask(el, exitFrac, dir) {
+    if (!el) return;
+    el.style.clipPath  = '';
+    el.style.transform = '';
+    applyMask(el, 1 - exitFrac, dir);
+  }
+
+  // ── Aplicar estado completo del slide (entry y exit separados) ─────────
+  function applySlide(sIdx, entryFrac, exitFrac) {
+    var d = slideEls[sIdx];
+    if (!d) return;
+    var totalFrac = entryFrac * (1 - exitFrac);
+    d.el.style.opacity = totalFrac > 0.005 ? '1' : '0';
+    if (exitFrac > 0.005) {
+      // SALIDA: gradient mask wipe (Oryzo)
+      applyExitMask(d.label, exitFrac, 'ltr');
+      applyExitMask(d.h3,    exitFrac, 'ltr');
+      applyExitMask(d.para,  exitFrac, 'rtl');
+    } else {
+      // ENTRADA: clip-path reveal escalonado (label→h3→para)
+      applyEntryReveal(d.label, staggerFrac(entryFrac, 0)); // más rápido
+      applyEntryReveal(d.h3,    staggerFrac(entryFrac, 1)); // medio
+      applyEntryReveal(d.para,  staggerFrac(entryFrac, 2)); // más lento
     }
   }
+
+
+  // ── Imagen del cerebro: crossfade discreto al cambiar step dominante ───
+  var curImgStep = -1;
+  var frontIsA   = true;
+
+  function setImg(s) {
+    if (s === curImgStep) return;
+    curImgStep = s;
+    var front = frontIsA ? imgA : imgB;
+    var back  = frontIsA ? imgB : imgA;
+    back.src            = SRCS[s];
+    back.style.opacity  = '1';
+    front.style.opacity = '0';
+    frontIsA = !frontIsA;
+  }
+
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  // Ease in-out cuadrático — suaviza el barrido sin distorsionar el mapeo de scroll
+  function ease(t) { return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2; }
 
   function tick() {
     var p = window._brainScrollProg || 0;
 
-    // Fade in/out de la tarjeta (el brain-2d-wrap lo maneja el scroll engine)
+    // Fade in/out del card y el cerebro 2D
     var fadeT = p >= SHOW_START
-      ? String(Math.min(1, (p - SHOW_START) / (SHOW_FADE - SHOW_START)))
-      : '0';
-    if (brain) brain.style.opacity = fadeT;
-    if (card)  card.style.opacity  = fadeT;
+      ? clamp01((p - SHOW_START) / (SHOW_FADE - SHOW_START))
+      : 0;
+    if (brain) brain.style.opacity = String(fadeT);
+    if (card)  card.style.opacity  = String(fadeT);
 
-    // Qué paso según scroll
-    var step;
-    if (p < STEP_START) {
-      step = 0;
-    } else if (p >= STEP_END) {
-      step = NUM_STEPS - 1;
-    } else {
-      var t = (p - STEP_START) / (STEP_END - STEP_START);
-      step = Math.min(NUM_STEPS - 1, Math.floor(t * NUM_STEPS));
+    // entryFrac y exitFrac por separado — entrada clip reveal, salida mask wipe
+    var entryFracs = [1, 0, 0, 0];
+    var exitFracs  = [0, 0, 0, 0];
+
+    for (var s = 0; s < NUM_STEPS; s++) {
+      var boundary     = STEP_START + (s + 1) * STEP_SIZE;
+      var prevBoundary = STEP_START + s * STEP_SIZE;
+      exitFracs[s]  = (s === NUM_STEPS - 1) ? 0.0 : ease(clamp01((p - (boundary - TRANS)) / TRANS));
+      entryFracs[s] = (s === 0)             ? 1.0 : ease(clamp01((p - prevBoundary) / TRANS));
     }
-    setStep(step);
+
+    var domStep = 0, domVal = -1;
+    for (var i = 0; i < NUM_STEPS; i++) {
+      var sf = entryFracs[i] * (1 - exitFracs[i]);
+      if (sf > domVal) { domVal = sf; domStep = i; }
+    }
+    setImg(domStep);
+
+    for (var j = 0; j < NUM_STEPS; j++) {
+      applySlide(j, entryFracs[j], exitFracs[j]);
+      if (dots[j]) {
+        var isActive = (j === domStep);
+        dots[j].style.background = isActive ? '#ff8c42' : 'rgba(255,255,255,.2)';
+        dots[j].style.transform  = isActive ? 'scale(1.4)' : 'scale(1)';
+      }
+    }
 
     requestAnimationFrame(tick);
   }
 
   requestAnimationFrame(tick);
 })();
-
 
 </script>
 
