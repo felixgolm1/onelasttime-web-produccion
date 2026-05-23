@@ -3530,7 +3530,7 @@ window.onerror = function(msg, url, line, col, err) {
 
     // ── Drivers ──────────────────────────────────────────────────
     // Ampliado maxProg para las dos fases de salida: exits (14.62→15.6) + expansión (15.6→16.8)
-    const maxProg = 20.2;  // ampliado para 4 pasos neuro (17.2 → 20.2)
+    const maxProg = 26.6;  // TRANS_EXIT x2 (1.20) + TRANS_ENTRY (0.60) + estatico (0.475) ×4 steps
     let prog = parseFloat(sessionStorage.getItem('dev_prog')) || 0;
 
     // --- MAGIC WINDOW CAROUSEL SETUP ---
@@ -7561,14 +7561,14 @@ window.onerror = function(msg, url, line, col, err) {
     <!-- TÍTULO "NO ES MAGIA, ES OXITOCINA"
          – Canvas de ignición neuronal: píxeles que se encienden como neuronas
          – ANTES de la silueta en el DOM → la silueta pinta encima (texto queda detrás) -->
-    <div id="sciencia-title" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;">
+    <div id="sciencia-title" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;">
       <canvas id="neural-text-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
     </div>
 
     <!-- Silueta de la modelo: negra con glow térmico en los bordes (calor corporal = violeta/magenta) -->
     <!-- TITULO OXITOCINA: dentro del overlay, ANTES de la silueta -> la silueta pinta encima -->
     <h2 id="oxitocina-title" style="
-      position:absolute;
+      position:absolute; z-index:10;
       top:67%;left:50%;
       transform:translate(-50%,-50%);
       font-family:'Inter','Helvetica Neue',Arial,sans-serif;
@@ -7583,7 +7583,7 @@ window.onerror = function(msg, url, line, col, err) {
       margin:0;
       pointer-events:none;
       width:100%;
-    ">NO ES MAGIA, ES OXITOCINA</h2>
+    ">NO ES MAGIA, ES QUÍMICA</h2>
 
     <div id="thermal-model-wrap" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;">
       <img id="thermal-silhouette" src="assets/img/modelo-sin-fondo.png"
@@ -7634,25 +7634,26 @@ window.onerror = function(msg, url, line, col, err) {
 
       <!-- Slides de texto -->
       <div style="position:relative; min-height:108px;">
+        <p id="global-brain-label" style="position:absolute; top:0; left:0; right:0; margin:0; font-family:'Inter',sans-serif; font-size:.6rem; font-weight:600; letter-spacing:.17em; text-transform:uppercase; color:#fff; text-align:center; z-index:10; opacity:0; pointer-events:none;"></p>
         <div class="nsl" id="nsl-0" style="position:absolute;inset:0;opacity:1;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Corteza Prefrontal</p>
-          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Tu cerebro detecta algo único</h3>
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Una carta hecha exactamente para ti activa la zona de atención plena. El cerebro registra que esto no es ruido — es señal. Y para.</p>
+          <p style="visibility:hidden; margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Área Tegmental Ventral</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">La chispa</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Las primeras cartas activan tu sistema de atención y recompensa con estímulos nuevos e inesperados. Empiezas a generar dopamina de alta calidad.</p>
         </div>
         <div class="nsl" id="nsl-1" style="position:absolute;inset:0;opacity:0;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Amígdala + Hipocampo</p>
-          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">El momento se convierte en recuerdo</h3>
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">El sistema límbico codifica la emoción y la ancla en la memoria a largo plazo. Ese instante contigo quedará grabado.</p>
+          <p style="visibility:hidden; margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Corteza Cingulada</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Egos fuera</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Procesas empatía profunda dando lugar a un espacio de seguridad que te permite abrirte y compartir. Sin esto, no hay conexión.</p>
         </div>
         <div class="nsl" id="nsl-2" style="position:absolute;inset:0;opacity:0;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Circuito de Recompensa</p>
-          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Quiere más. Sin poder evitarlo.</h3>
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">El núcleo accumbens libera dopamina. La misma que activa el placer, la motivación y el deseo de repetir la experiencia.</p>
+          <p style="visibility:hidden; margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Hipotálamo</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Clímax</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Las cartas profundas desatan oxitocina, la hormona del apego y la confianza. «Magia» será la única palabra que usarás para describir este estado donde todo es posible.</p>
         </div>
         <div class="nsl" id="nsl-3" style="position:absolute;inset:0;opacity:0;transition:opacity 0.75s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.45rem;text-align:center;">
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">Activación Total</p>
-          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">Y entonces ocurre la conexión real</h3>
-          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Todo el cerebro activo a la vez. La oxitocina une a dos personas en ese instante. No es magia. Es neurociencia.</p>
+          <p style="visibility:hidden; margin:0;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff;">El Núcleo Caudado</p>
+          <h3 style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(1rem,2.1vw,1.28rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;">La huella</h3>
+          <p style="margin:0;font-family:'Inter',sans-serif;font-size:clamp(.76rem,1.3vw,.9rem);color:#fff;line-height:1.6;">Graba lo vivido en la memoria a largo plazo para recordarlo durante mucho tiempo y poder seguir construyendo en base a lo compartido.</p>
         </div>
       </div>
 
@@ -8205,7 +8206,7 @@ setInterval(function() {
 (function() {
   var h2 = document.getElementById('oxitocina-title');
   if (!h2) return;
-  var TEXT = 'NO ES MAGIA\nES OXITOCINA';
+  var TEXT = 'NO ES MAGIA\nES QUÍMICA';
   var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#*+^~!';
   var PROG_START = 15.35, PROG_END = 16.20;
   var spans = [];
@@ -8255,8 +8256,8 @@ setInterval(function() {
     sparks=alive;
     sparkRAF=sparks.length?requestAnimationFrame(renderSparks):null;
   }
-  // N1 = chars line 1 'NO ES MAGIA'=11, N2 = chars line 2 'ES OXITOCINA'=12
-  var N1=11, N2=12, L2END=spans.length-1; // L2END=22
+  // N1 = chars line 1 'NO ES MAGIA'=11, N2 = chars line 2 'ES QUIMICA'=10
+  var N1=11, N2=10, L2END=spans.length-1;
   var lastActive1=0, lastActive2=0;
   function rnd(g){return g[Math.floor(Math.random()*g.length)];}
   function settleChar(sp, prevSp) {
@@ -8356,11 +8357,13 @@ setInterval(function() {
   var SHOW_START = 17.43;
   var SHOW_FADE  = 17.58;
   var STEP_START = 17.5;
-  var STEP_END   = 20.2;
-  var NUM_STEPS  = 4;
-  var STEP_SIZE  = (STEP_END - STEP_START) / NUM_STEPS; // 0.675 por paso
-  var TRANS      = 0.10; // unidades de scroll para la zona de transición en cada límite
-  var FEATHER    = 55;   // % de suavidad del gradiente — grande = más gradual (Oryzo style)
+  var STEP_END    = 26.6;  // 4 × (0.475 estatico + 0.60 entry + 1.20 exit) = 4×2.275
+  var NUM_STEPS   = 4;
+  var STEP_SIZE   = (STEP_END - STEP_START) / NUM_STEPS; // 2.275 por paso
+  var TRANS_ENTRY = 0.60; // duracion animacion de ENTRADA (sin cambios)
+  var TRANS_EXIT  = 1.20; // duracion animacion de SALIDA  (x2 respecto a entrada)
+  var TRANS       = TRANS_ENTRY; // alias — usado solo para fade-in del card
+  var FEATHER     = 55;   // % de suavidad del gradiente
 
   var SRCS = [
     'assets/brain_zona1_vta.png',
@@ -8412,11 +8415,64 @@ setInterval(function() {
     el.style.maskImage = mask;
   }
 
-  // ── ENTRADA: clip-path reveal de abajo hacia arriba ──────────────────
+  // ── LABEL GLOBAL: Efecto decodificación random (scramble) ─────────────────
+  var SCRAMBLE_GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#*+^~!';
+  function applyGlobalScramble(el, frac, finalStr, isExit) {
+    if (!el) return;
+    
+    el.style.transform = ''; // Mantener fijo siempre
+    
+    if (frac >= 0.999) { 
+      el.textContent = finalStr; 
+      el.style.color = '#fff';
+      el.style.textShadow = '';
+      return; 
+    }
+    
+    var N = finalStr.length;
+    var numResolved = Math.floor(frac * N);
+    var resolvedStr = '';
+    var randomStr = '';
+    for(var i=0; i<N; i++) {
+      var isResolved = isExit ? (i >= N - numResolved) : (i < numResolved);
+      if (finalStr[i] === ' ') {
+        if (isResolved) resolvedStr += ' ';
+        else randomStr += ' ';
+      } else if (isResolved) {
+        resolvedStr += finalStr[i];
+      } else {
+        // Pseudo-random index tied exactly to scroll fraction
+        var speed = 300 + i * 23;
+        var offset = i * 73;
+        var charIdx = Math.floor(frac * speed + offset) % SCRAMBLE_GLYPHS.length;
+        randomStr += SCRAMBLE_GLYPHS[charIdx];
+      }
+    }
+    
+    if (isExit) {
+      el.innerHTML = '<span style="color:#ccff00; text-shadow:0 0 10px rgba(204,255,0,0.6);">' + randomStr + '</span>' + 
+                     '<span style="color:#fff; text-shadow:none;">' + resolvedStr + '</span>';
+    } else {
+      el.innerHTML = '<span style="color:#fff; text-shadow:none;">' + resolvedStr + '</span>' + 
+                     '<span style="color:#ccff00; text-shadow:0 0 10px rgba(204,255,0,0.6);">' + randomStr + '</span>';
+    }
+                   
+    el.style.color = '';
+    el.style.textShadow = '';
+  }
+
+  // ── ENTRADA H3/P: clip-path reveal de abajo hacia arriba ──────────────────
   // El stagger (STAGGER_IN) entre label→h3→para crea el efecto cascada.
   // Cada bloque usa un clip recto (inset) — sin inclinar nada.
   function applyEntryReveal(el, entryFrac) {
     if (!el) return;
+    if (entryFrac >= 0.999) {
+      el.style.clipPath        = '';
+      el.style.transform       = '';
+      el.style.webkitMaskImage = '';
+      el.style.maskImage       = '';
+      return;
+    }
     var clip = (1 - entryFrac) * 110;
     var ty   = (1 - entryFrac) * 10;
     el.style.clipPath        = 'inset(0 0 ' + clip.toFixed(1) + '% 0)';
@@ -8454,14 +8510,12 @@ setInterval(function() {
     d.el.style.opacity = totalFrac > 0.005 ? '1' : '0';
     if (exitFrac > 0.005) {
       // SALIDA: gradient mask wipe (Oryzo)
-      applyExitMask(d.label, exitFrac, 'ltr');
       applyExitMask(d.h3,    exitFrac, 'ltr');
       applyExitMask(d.para,  exitFrac, 'rtl');
     } else {
-      // ENTRADA: clip-path reveal escalonado (label→h3→para)
-      applyEntryReveal(d.label, staggerFrac(entryFrac, 0)); // más rápido
-      applyEntryReveal(d.h3,    staggerFrac(entryFrac, 1)); // medio
-      applyEntryReveal(d.para,  staggerFrac(entryFrac, 2)); // más lento
+      // ENTRADA: clip-path para h3 y para
+      applyEntryReveal(d.h3,       staggerFrac(entryFrac, 1)); // medio
+      applyEntryReveal(d.para,     staggerFrac(entryFrac, 2)); // más lento
     }
   }
 
@@ -8495,6 +8549,43 @@ setInterval(function() {
     if (brain) brain.style.opacity = String(fadeT);
     if (card)  card.style.opacity  = String(fadeT);
 
+    // Global Label Logic
+    var gLabel = document.getElementById('global-brain-label');
+    if (gLabel) {
+      // Fade in smoothly right before step 0, fade out after step 3
+      var activeProg = clamp01((p - 17.3)/0.2) * clamp01((26.0 - p)/0.4);
+      gLabel.style.opacity = activeProg.toString();
+      
+      if (activeProg > 0) {
+        var BRAIN_LABELS = [
+          "ÁREA TEGMENTAL VENTRAL",
+          "CORTEZA CINGULADA",
+          "HIPOTÁLAMO",
+          "EL NÚCLEO CAUDADO"
+        ];
+        var cIdx = Math.max(0, Math.min(3, Math.floor((p - STEP_START) / STEP_SIZE)));
+        var pStart = STEP_START + cIdx * STEP_SIZE;
+        var pEnd   = pStart + STEP_SIZE - TRANS_EXIT;
+        var entryF = clamp01((p - pStart) / TRANS_ENTRY);
+        var exitF  = clamp01((p - pEnd) / TRANS_EXIT);
+        
+        var lEntry = staggerFrac(entryF, 0);
+        var labelFrac = 0;
+        var isExitPhase = false;
+        if (lEntry < 1) {
+          labelFrac = lEntry;
+        } else if (exitF > 0) {
+          isExitPhase = true;
+          // Retrasar el scramble de salida hasta que el fade-out esté al 50%
+          labelFrac = exitF <= 0.5 ? 1 : 1 - ((exitF - 0.5) * 2);
+        } else {
+          labelFrac = 1;
+        }
+        
+        applyGlobalScramble(gLabel, labelFrac, BRAIN_LABELS[cIdx], isExitPhase);
+      }
+    }
+
     // entryFrac y exitFrac por separado — entrada clip reveal, salida mask wipe
     var entryFracs = [1, 0, 0, 0];
     var exitFracs  = [0, 0, 0, 0];
@@ -8502,8 +8593,8 @@ setInterval(function() {
     for (var s = 0; s < NUM_STEPS; s++) {
       var boundary     = STEP_START + (s + 1) * STEP_SIZE;
       var prevBoundary = STEP_START + s * STEP_SIZE;
-      exitFracs[s]  = (s === NUM_STEPS - 1) ? 0.0 : ease(clamp01((p - (boundary - TRANS)) / TRANS));
-      entryFracs[s] = (s === 0)             ? 1.0 : ease(clamp01((p - prevBoundary) / TRANS));
+      exitFracs[s]  = (s === NUM_STEPS - 1) ? 0.0 : ease(clamp01((p - (boundary - TRANS_EXIT))  / TRANS_EXIT));
+      entryFracs[s] = ease(clamp01((p - prevBoundary) / TRANS_ENTRY));
     }
 
     var domStep = 0, domVal = -1;
