@@ -7547,7 +7547,7 @@ window.onerror = function(msg, url, line, col, err) {
   <!-- MAGAZINE BREAKOUT OVERLAY — body-level para evitar problemas con transforms del carrusel -->
   <div id="mag-breakout-overlay" style="display:none;position:fixed;z-index:99998;background:transparent;pointer-events:none;border:none;will-change:top,left,width,height;"></div>
   <!-- THERMAL OVERLAY — efecto cámara termográfica -->
-  <div id="thermal-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999999;pointer-events:none;overflow:hidden;">
+  <div id="thermal-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:130vh;z-index:9999999;pointer-events:none;overflow:hidden;">
     <!-- Fondo térmico: indigo/violeta profundo con irregularidades tipo pared Oryzo -->
     <div id="thermal-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;
       background:
@@ -7590,10 +7590,10 @@ window.onerror = function(msg, url, line, col, err) {
                   filter:brightness(0) opacity(0.92);">
     </div>
     <!-- CEREBRO 3D TÉRMICO: canvas renderizado con Three.js, revelado con el barrido -->
-    <canvas id="brain-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity 0.4s ease;"></canvas>
+    <canvas id="brain-canvas" style="position:absolute;top:0;left:0;width:100vw;height:100vh;pointer-events:none;opacity:0;transition:opacity 0.4s ease;"></canvas>
     <!-- CEREBRO 2D: imagen base + canvas de mapa de calor encima -->
     <div id="brain-2d-wrap" style="position:absolute;pointer-events:none;opacity:0;
-      left:calc(50% - 4px);top:34.4%;transform:translate(-50%,-50%);
+      left:calc(50% - 4px);top:34.4vh;transform:translate(-50%,-50%);
       width:25vh;height:25vh;
       mix-blend-mode:screen;">
       <!-- Dos capas para crossfade suave sin flash negro -->
@@ -7617,7 +7617,7 @@ window.onerror = function(msg, url, line, col, err) {
     <!-- Tarjeta cristalizada: separada del cerebro, SIN mix-blend-mode -->
     <div id="neuro-card" style="
       position:absolute;
-      left:50%; top:48%;
+      left:50%; top:48vh;
       transform:translateX(-50%);
       width:min(500px,88vw);
       padding:1.3rem 1.8rem 1.5rem;
@@ -7669,14 +7669,31 @@ window.onerror = function(msg, url, line, col, err) {
       z-index: 10000000;
       transform: translateY(100%);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       padding: 0 6vw;
       box-sizing: border-box;
       pointer-events: none;
     ">
+      <!-- Transition Word -->
+      <h1 id="conecta-transition-text" style="
+        position: absolute; 
+        top: 0; left: 50%; 
+        transform: translate(-50%, -50%); 
+        margin-top: -4.32vw;
+        font-family: 'Inter', sans-serif;
+        line-height: 0.75;
+        font-size: 16vw; 
+        font-weight: 800; 
+        letter-spacing: -0.04em; 
+        color: #f2f0e6; 
+        margin: 0; 
+        white-space: nowrap; 
+        pointer-events: none;
+        opacity: 0;
+      ">conecta</h1>
       <!-- Texto Izquierdo -->
-      <div id="oryzo-text-left" style="flex:1; align-self: flex-start; margin-top: 15vh;">
+      <div id="oryzo-text-left" style="flex:1; align-self: flex-start; margin-top: 30vh;">
         <h2 id="oryzo-text-gradient" style="display:inline-block; font-family:'Inter',sans-serif; font-size:clamp(1.5rem, 3vw, 3.5rem); font-weight:800; line-height:1.1; margin-bottom:1rem; letter-spacing:-0.03em; color: #fff;">
         </h2>
         <script>
@@ -7701,7 +7718,7 @@ window.onerror = function(msg, url, line, col, err) {
       </div>
       
       <!-- Contenedor Baraja -->
-      <div id="oryzo-deck-container" style="flex:1; display:flex; justify-content:center;">
+      <div id="oryzo-deck-container" style="flex:1; display:flex; justify-content:center; margin-top: 49vh;">
       </div>
       <script>
         // Insertar el clon prístino guardado al inicio del body
@@ -7716,13 +7733,19 @@ window.onerror = function(msg, url, line, col, err) {
              clone.style.top = 'auto';
              clone.style.left = 'auto';
              clone.style.margin = '0';
+             // Forzar orientacion correcta antes de que el loop empiece
+             var vol = clone.querySelector('.box-3d-volume');
+             if (vol) {
+               vol.style.transition = 'none';
+               vol.style.transform = 'rotateX(-15deg) rotateY(-25deg) rotateZ(0deg)';
+             }
              cont.appendChild(clone);
           }
         });
       </script>
       
       <!-- Texto Derecho -->
-      <div id="oryzo-text-right" style="flex:1; text-align:left;">
+      <div id="oryzo-text-right" style="flex:1; text-align:left; margin-top: 60vh;">
         <p id="oryzo-text-right-gradient" style="font-family:'Inter',sans-serif; font-size:clamp(1.2rem, 2vw, 1.6rem); color:#fff; line-height:1.5; font-weight:400; max-width:400px; margin-left: 1vw;">
         </p>
         <script>
@@ -8100,8 +8123,8 @@ window.onerror = function(msg, url, line, col, err) {
     var overlay = document.getElementById('thermal-overlay');
     if (overlay) {
       overlay.style.transformOrigin = '50% 30%';
-      var ty = window._thermalTranslateY || 0;
-      overlay.style.transform = 'scale(' + zoomScale + ')' + (ty !== 0 ? ' translateY(' + ty + '%)' : '');
+      var scrollUpVh = window._scrollUpVh || 0;
+      overlay.style.transform = 'translateY(-' + scrollUpVh + 'vh) scale(' + zoomScale + ')';
     }
 
     // ── Mapa de calor 2D: fade-in con swapT ──
@@ -8272,14 +8295,17 @@ setInterval(function() {
   if (!tc) return;
   if (tP <= 0) { tc.style.display = 'none'; return; }
   var vw = window.innerWidth, vh = window.innerHeight;
-  tc.width = vw; tc.height = vh;
+  var extendedVh = vh * 1.30; // 30vh extra para bajar el corte
+  tc.width = vw; tc.height = extendedVh;
   tc.style.position = 'fixed'; tc.style.top = '0'; tc.style.left = '0';
-  tc.style.width = '100%'; tc.style.height = '100%';
+  tc.style.width = '100%'; tc.style.height = '130vh';
   tc.style.zIndex = '9999999'; tc.style.display = 'block'; tc.style.pointerEvents = 'none';
+  tc.style.transform = 'translateY(-' + (window._scrollUpVh || 0) + 'vh)';
   var ctx = tc.getContext('2d');
-  ctx.clearRect(0, 0, vw, vh);
+  ctx.clearRect(0, 0, vw, extendedVh);
   ctx.fillStyle = 'rgba(200,0,130,0.95)';
-  ctx.fillRect(0, vh - Math.round(vh * tP), vw, Math.round(vh * tP));
+  // Dibujar el fondo púrpura hasta abajo
+  ctx.fillRect(0, extendedVh - Math.round(extendedVh * tP), vw, Math.round(extendedVh * tP));
 }, 50);
 
 
@@ -8704,32 +8730,38 @@ setInterval(function() {
     var oryzoDeck = document.getElementById('oryzo-deck-container');
 
     if (oryzoSec && oryzoTxtL && oryzoTxtR && oryzoDeck) {
-      // 1. Translación simultánea (termina más rápido, en 27.6, para reducir el scroll extra)
-      var tSlide = clamp01((p - 26.6) / 1.0);
-      var slideY = (1 - ease(tSlide)) * 100; // de 100% a 0%
-      oryzoSec.style.transform = 'translateY(' + slideY + '%)';
+      // 1. Translación fluida pegada al fondo morado extendido
+      var tSlide = clamp01((p - 26.6) / 2.0); // Scroll largo
+      var slideY = (1 - ease(tSlide)) * 130; // de 130vh a 0vh (inicia 30vh mas abajo)
+      oryzoSec.style.transform = 'translateY(' + slideY + 'vh)';
       oryzoSec.style.pointerEvents = tSlide > 0.5 ? 'auto' : 'none';
 
-      // Pasamos el translate a _renderBrainLoop para evitar conflictos de requestAnimationFrame
-      window._thermalTranslateY = (slideY - 100) / 1.4225;
+      // Sincronizamos el fondo morado para que suba EXACTAMENTE igual que la sección verde
+      window._scrollUpVh = 130 - slideY; // Va de 0 a 130
 
-      // 2. Baraja girando
+      // 2. Baraja - orientacion identica a la primera seccion
       var deckClone = document.getElementById('oryzo-deck-clone');
       if (deckClone) {
-         // En 27.6 llega al centro de la pantalla. Rotamos hacia el otro lado para que enseñe el lomo derecho igual que al principio, y se queda quieta.
-         var rotP = clamp01((p - 26.6) / 1.0); 
          var volume = deckClone.querySelector('.box-3d-volume');
          if (volume) {
-           volume.style.transform = 'rotateX(-15deg) rotateY(' + (rotP * -35) + 'deg) rotateZ(0deg)';
+           volume.style.setProperty('transition', 'none', 'important');
+           volume.style.setProperty('transform', 'rotateX(0deg) rotateY(-25deg) rotateZ(0deg)', 'important');
          }
       }
       
       // 3. Reveal de texto tipo Oryzo (letra a letra con difuminado suave)
       var textGrad = document.getElementById('oryzo-text-gradient');
       var textGradR = document.getElementById('oryzo-text-right-gradient');
+      var conectaTxt = document.getElementById('conecta-transition-text');
       
-      var txtP = clamp01((p - 26.95) / 0.3); // texto izq: empieza al asomar (26.95)
-      var txtPR = clamp01((p - 27.05) / 0.3); // texto der: un poco antes (27.05)
+      if (conectaTxt) {
+         conectaTxt.style.opacity = clamp01((130 - slideY) / 30); // Fade in suave al asomar por abajo
+      }
+      
+      // left text (margin 30vh) entra en slideY=70vh
+      var txtP = clamp01((70 - slideY) / 40); 
+      // right text (margin 60vh) entra en slideY=40vh
+      var txtPR = clamp01((40 - slideY) / 40); 
       var blurLen = 8; // Difuminado de 8 letras para que sea muy suave
       
       if (textGrad) {
