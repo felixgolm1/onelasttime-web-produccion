@@ -1525,18 +1525,73 @@ window.onerror = function(msg, url, line, col, err) {
       <line id="mag-line-r" x1="100%" y1="50%" x2="100%" y2="50%" />
     </svg>
     <div class="carousel-track" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-      <!-- Slide 0: Secuencia crossfade divertido → sorprendente → profundo → emocional -->
+      <!-- Slide 0 -->
+      <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
+        <video src="assets/img/Anna Felix cena.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"></video>
+        <!-- Overlay copy: solo visible en el recuadro grande (data-large-only) -->
+        <div data-large-only="true" style="
+          position: absolute;
+          bottom: 40px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: calc(100% - 64px);
+          background: rgba(0, 0, 0, 0.88);
+          color: #ffffff;
+          font-family: 'Inter', 'Helvetica Neue', sans-serif;
+          font-size: 12.5px;
+          font-weight: 400;
+          line-height: 1.6;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          text-align: center;
+          padding: 14px 16px;
+          border-radius: 0;
+          pointer-events: none;
+        ">
+          <span style="color: #ccff00; font-weight: 600;">Tú marcas el contexto y propósito.</span>
+          ¿Romper la monotonía? ¿Celebrar un hito? ¿Comunicaros mejor? ¿Conseguir una 2ª cita?
+          Lo que quieras. La cena hace el resto
+        </div>
+      </div>
+      <!-- Slide 1: Secuencia crossfade divertido → sorprendente → profundo → emocional → neutro -->
       <div class="carousel-item" id="slide0-seq" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
         <img src="assets/img/divertido.jfif"    class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:1;transition:opacity 0.8s ease;">
         <img src="assets/img/sorprendente.jfif" class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.8s ease;">
         <img src="assets/img/profundo.jfif"     class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.8s ease;">
         <img src="assets/img/emocional.jfif"    class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.8s ease;">
+        <img src="assets/img/neutro.jfif"       class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.8s ease;">
+        <!-- Overlay dinámico: solo en track grande -->
+        <div data-large-only="true" style="
+          position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+          width: calc(100% - 64px); background: rgba(0,0,0,0.88);
+          font-family: 'Inter','Helvetica Neue',sans-serif; font-size: 12.5px;
+          font-weight: 400; line-height: 1.6; letter-spacing: 0.05em;
+          text-transform: uppercase; text-align: center;
+          padding: 14px 16px; border-radius: 0; pointer-events: none;">
+          <span style="color:#ccff00;font-weight:600;display:block;">Tú defines el tono</span>
+          <span class="seq0-word" style="color:#ffffff;display:block;transition:opacity 0.35s ease;">¿Divertido?</span>
+        </div>
       </div>
-      <!-- Slide 1 -->
+
+      <!-- Slide 2: Cena Sola -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <video src="assets/img/Anna Felix cena.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"></video>
+        <img src="assets/img/cena sola.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+        <div data-large-only="true" style="
+          position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+          width: calc(100% - 64px); background: rgba(0,0,0,0.88);
+          font-family: 'Inter','Helvetica Neue',sans-serif; font-size: 12.5px;
+          font-weight: 400; line-height: 1.6; letter-spacing: 0.05em;
+          text-transform: uppercase; text-align: center;
+          padding: 14px 16px; border-radius: 0; pointer-events: none;
+          color: #ffffff;">
+          ¿A solas o con distancia de por medio?
+        </div>
       </div>
-      <!-- Slide 2 -->
+      <!-- Slide 4 (Interactive Aging) -->
+      <div id="aging-slide" class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
+        <img src="assets/img/cita 1.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      </div>
+      <!-- Slide 5 -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
         <img src="assets/img/parrots.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
       </div>
@@ -1587,14 +1642,6 @@ window.onerror = function(msg, url, line, col, err) {
             Ver v&iacute;deo
           </button>
         </div>
-      </div>
-      <!-- Slide Nuevo Cena Sola -->
-      <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <img src="assets/img/cena sola.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      </div>
-      <!-- Slide 5 (Interactive Aging) - Imagen base visible en transición, overlay cubre cuando centrado -->
-      <div id="aging-slide" class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <img src="assets/img/cita 1.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
       </div>
       <!-- Slide 6 (Interactive Final Feliz) -->
       <div id="final-slide" class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
@@ -3505,6 +3552,8 @@ window.onerror = function(msg, url, line, col, err) {
 
       const largeTrack = originalTrack.cloneNode(true);
       largeTrack.className = 'carousel-track-large';
+      // Eliminar overlays "large-only" del track pequeño (solo deben verse en el recuadro grande)
+      originalTrack.querySelectorAll('[data-large-only]').forEach(el => el.remove());
       largeTrack.style.zIndex = '';
       // Asegurar que track-large no bloquee clics a menos que sea necesario
       largeTrack.style.pointerEvents = '';
@@ -3531,6 +3580,27 @@ window.onerror = function(msg, url, line, col, err) {
         ].map((f, i) =>
           `<img id="age-img-${i}" src="assets/img/${f}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:${i===0?1:0};transition:opacity 0.2s linear;">`
         ).join('');
+      }
+
+      // Crear wrapper-clip para el panel interactivo del aging-slide:
+      // position:fixed + overflow:hidden + tamaño del viewport → el panel queda clipado al frame
+      // pointer-events:none en el wrapper pero auto en el panel → botones siguen siendo clicables
+      const _agingPanelWrap = document.createElement('div');
+      _agingPanelWrap.id = 'aging-panel-clip';
+      _agingPanelWrap.style.cssText = 'position:fixed;overflow:hidden;pointer-events:none;z-index:10051;';
+      const _existingPanel = document.getElementById('citas-slider-panel');
+      if (_existingPanel) {
+        _existingPanel.parentNode.insertBefore(_agingPanelWrap, _existingPanel);
+        _agingPanelWrap.appendChild(_existingPanel);
+        // Panel: position absolute dentro del wrapper, sin transición CSS (el movimiento es por JS)
+        _existingPanel.style.position  = 'absolute';
+        _existingPanel.style.bottom    = '40px';
+        _existingPanel.style.left      = '32px';
+        _existingPanel.style.right     = '32px';
+        _existingPanel.style.width     = 'auto';
+        _existingPanel.style.transform = 'none';
+        _existingPanel.style.transition = 'none';
+        _existingPanel.style.opacity   = '1';
       }
     }
 
@@ -4763,7 +4833,15 @@ window.onerror = function(msg, url, line, col, err) {
           magazineScene.style.pointerEvents = 'auto';
         }
         
-        let transP = mapRange(prog, 9.62, 10.62, 0, 1);
+        // Animación TIME-BASED desde el flash (transP=0.80 a 1.0 en 400ms)
+        // El scroll es manual hasta transP=0.80 (prog 9.62→10.42). Desde el flash, tiempo real.
+        let transP;
+        if (window._carouselEntryStart !== null && window._carouselEntryStart !== undefined) {
+          const elapsed = Date.now() - window._carouselEntryStart;
+          transP = 0.80 + Math.min(0.20, (elapsed / 400) * 0.20); // 0.80 → 1.0 en 400ms
+        } else {
+          transP = Math.min(1, mapRange(prog, 9.62, 10.62, 0, 1)); // scroll-driven hasta el flash
+        }
         let boardY = mapRange(transP, 0, 0.8, 0, -150);
         gsap.set(scBoard, { y: boardY + 'vh' });
         
@@ -5295,12 +5373,33 @@ window.onerror = function(msg, url, line, col, err) {
 
 
       // --- MAGIC WINDOW CAROUSEL LOGIC ---
+      // Función que mapea prog → currIndex con zonas planas en cada slide
+      // Cuando prog está ±HOLD alrededor de cada centro, currIndex = entero exacto (pausa visual)
+      function getCarouselIndex(p) {
+        // Hold por slide: el primero tiene el doble de zona plana
+        const centers = [10.62, 11.12, 11.62, 12.12, 12.62, 13.12, 13.62, 14.12, 14.62];
+        const holds   = [0.112, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056];
+        // Zona plana: devolver entero exacto
+        for (let i = 0; i < centers.length; i++) {
+          if (Math.abs(p - centers[i]) <= holds[i]) return i;
+        }
+        // Zona de transición: interpolar entre el borde de una zona plana y la siguiente
+        for (let i = 0; i < centers.length - 1; i++) {
+          const fromEdge = centers[i] + holds[i];
+          const toEdge   = centers[i + 1] - holds[i + 1];
+          if (p >= fromEdge && p <= toEdge) {
+            const t = (p - fromEdge) / (toEdge - fromEdge); // 0→1
+            return i + t; // currIndex interpolado entre i e i+1
+          }
+        }
+        return Math.max(0, Math.min(8, (p - 10.62) * 2.0)); // fallback
+      }
+
       const smallItems = document.querySelectorAll('.carousel-track-small .carousel-item');
       const largeItems = document.querySelectorAll('.carousel-track-large .carousel-item');
       if (smallItems.length > 0 && largeItems.length > 0) {
         if (prog > 9.62) {
-          // currIndex: 0..8 entre prog 10.62 y 14.62 (9 slides, factor 2.0 = mismo rango)
-          let currIndex = Math.max(0, Math.min(8, (prog - 10.62) * 2.0));
+          let currIndex = getCarouselIndex(prog);
           
           // Resetear overlay si el usuario se aleja del slide
           if (Math.abs(currIndex - 3) > 1.0 && window._sensDismissed) {
@@ -5344,18 +5443,32 @@ window.onerror = function(msg, url, line, col, err) {
 
             let entryOffset = 0;
             let extraBrightness = 0;
-            let localTransP = mapRange(prog, 9.62, 10.62, 0, 1);
             if (i > 0) {
-                if (localTransP < 0.85) {
-                    entryOffset = 800;
-                    extraBrightness = 2.0;
-                } else if (localTransP >= 0.85 && localTransP <= 1.0) {
-                    let slideP = mapRange(localTransP, 0.85, 1.0, 0, 1);
-                    let easeSlide = 1 - Math.pow(1 - slideP, 3);
-                    entryOffset = mapRange(easeSlide, 0, 1, 800, 0);
-                    extraBrightness = mapRange(slideP, 0, 1, 2.0, 0);
+              // Entrada time-based: los items laterales entran desde la derecha en 700ms (suave)
+              if (window._carouselEntryStart !== null && window._carouselEntryStart !== undefined) {
+                const elapsed = Date.now() - window._carouselEntryStart;
+                const SIDE_DUR = 1100; // ms — más suave
+                if (elapsed < SIDE_DUR) {
+                  const slideP = elapsed / SIDE_DUR;
+                  const easeSlide = 1 - Math.pow(1 - slideP, 5); // ease-out quíntico (muy suave)
+                  entryOffset   = (1 - easeSlide) * 900;         // 900→0 px
+                  extraBrightness = (1 - slideP) * 1.2;
                 }
+                // Una vez terminado el timer: entryOffset = 0 (posición final)
+              } else {
+                // Fallback scroll-based (recarga de página en medio del carrusel)
+                const localTransP = mapRange(prog, 9.62, 10.62, 0, 1);
+                if (localTransP < 0.85) {
+                  entryOffset = 600; extraBrightness = 1.5;
+                } else if (localTransP <= 1.0) {
+                  const slideP   = mapRange(localTransP, 0.85, 1.0, 0, 1);
+                  const easeSlide = 1 - Math.pow(1 - slideP, 3);
+                  entryOffset     = (1 - easeSlide) * 600;
+                  extraBrightness = (1 - slideP) * 1.5;
+                }
+              }
             }
+
             translateXSmall += entryOffset + (i !== 8 ? exitOffsetSmall : 0);
             translateXLarge += (i !== 8 ? exitOffsetLarge : 0);
             brightness += extraBrightness;
@@ -5377,26 +5490,28 @@ window.onerror = function(msg, url, line, col, err) {
             }
           }
 
-          // --- SLIDER PANEL: aparece solo cuando el aging-slide está centrado ---
-          // Sin overlay. Las imágenes viven dentro del propio slide del carrusel.
+          // --- SLIDER PANEL: sigue el translateX del aging-slide (entra/sale con el slide) ---
           const citasSliderPanel = document.getElementById('citas-slider-panel');
-          if (citasSliderPanel && largeItems.length > 0) {
+          const agingPanelClip   = document.getElementById('aging-panel-clip');
+          if (citasSliderPanel && agingPanelClip && largeItems.length > 0) {
             let agingIndex = -1;
             for (let k = 0; k < largeItems.length; k++) {
               if (largeItems[k].id === 'aging-slide') { agingIndex = k; break; }
             }
             if (agingIndex >= 0) {
-              const distToAging = Math.abs(currIndex - agingIndex);
-              // Panel visible solo cuando el slide está muy cerca del centro (dist < 0.4)
-              const panelOpacity = Math.max(0, Math.min(1, 1 - distToAging * 2.5));
-              citasSliderPanel.style.opacity = panelOpacity;
-              if (panelOpacity > 0) {
-                // Posicionar el panel justo debajo del frame del carrusel
-                const sr = largeItems[agingIndex].getBoundingClientRect();
-                // Clamped: el slider no debe salir de pantalla
-                const panelBottom = Math.max(8, window.innerHeight - Math.min(sr.bottom, window.innerHeight) + 16);
-                citasSliderPanel.style.bottom = panelBottom + 'px';
+              const vp = document.querySelector('.carousel-viewport');
+              if (vp) {
+                const vpR = vp.getBoundingClientRect();
+                // Wrapper ocupa exactamente el frame del carrusel
+                agingPanelClip.style.left   = vpR.left   + 'px';
+                agingPanelClip.style.top    = vpR.top    + 'px';
+                agingPanelClip.style.width  = vpR.width  + 'px';
+                agingPanelClip.style.height = vpR.height + 'px';
               }
+              // Panel sigue el mismo translateX que el aging-slide: d = (agingIndex - currIndex)
+              const agingD = agingIndex - currIndex;
+              const slideX = agingD * 466;
+              citasSliderPanel.style.transform = `translateX(${slideX}px)`;
             }
           }
 
@@ -6040,30 +6155,48 @@ window.onerror = function(msg, url, line, col, err) {
 
     smoothScrollLoop();
 
+    // --- Snap Lock: pausa real en cada imagen del carrusel ---
+    let _snapLockPoint = null;   // snap point actualmente bloqueado
+    let _snapLockTicks = 0;      // ticks restantes para escapar
+    const SNAP_LOCK_TICKS = 5;  // ticks de scroll necesarios para pasar al siguiente slide
+
     function applyMagneticFriction(current, delta) {
-      const snapPoints = [10.62, 11.62, 12.62, 13.62, 14.62];
-      const minD = 0.18; // Zona magnética más sutil (18% del encuadre)
-      let newProg = current + delta;
+      // Los 9 slides con factor 2.0 → cada 0.5 unidades de prog desde 10.62
+      const snapPoints = [10.62, 11.12, 11.62, 12.12, 12.62, 13.12, 13.62, 14.12, 14.62];
 
-      for (let sp of snapPoints) {
-        // 1. Efecto Atrapar (Notch físico): Si el scroll cruza el centro exacto, paramos en el centro
-        if ( (current < sp && newProg >= sp) || (current > sp && newProg <= sp) ) {
-            if (Math.abs(current - sp) > 0.01) {
-                return sp - current; // Absorbe el momentum y te deja clavado en el centro
-            }
+      // ── Caso 1: Bloqueado en un snap point ──────────────────────────────
+      if (_snapLockPoint !== null && Math.abs(current - _snapLockPoint) < 0.02) {
+        if (_snapLockTicks > 0) {
+          _snapLockTicks--;
+          return 0; // bloqueo total: el scroll no avanza
+        } else {
+          _snapLockPoint = null; // suficientes ticks → soltar
         }
+      }
 
-        // 2. Fricción / Gravedad
+      // ── Caso 2: Cruza un snap point → snap + bloquear ────────────────────
+      let newProg = current + delta;
+      for (let sp of snapPoints) {
+        if ((current < sp && newProg >= sp) || (current > sp && newProg <= sp)) {
+          if (Math.abs(current - sp) > 0.008) {
+            _snapLockPoint = sp;
+            _snapLockTicks = SNAP_LOCK_TICKS;
+            return sp - current; // aterriza en el centro exacto
+          }
+        }
+      }
+
+      // ── Caso 3: Zona de gravedad (atracción suave hacia el centro) ────────
+      const minD = 0.14;
+      for (let sp of snapPoints) {
         let dist = Math.abs(current - sp);
         if (dist < minD) {
-          let newDist = Math.abs((current + delta) - sp);
+          let newDist = Math.abs(newProg - sp);
           let intensity = (minD - dist) / minD;
           if (newDist > dist) {
-            // Cuesta salir: fricción sutil (hasta 2.2x más duro)
-            delta /= (1 + intensity * 1.2);
+            delta /= (1 + intensity * 2.0); // resistencia al salir
           } else {
-            // Fácil entrar: resbala hacia el centro
-            delta *= (1 + intensity * 0.3);
+            delta *= (1 + intensity * 0.4); // aceleración al entrar
           }
           break;
         }
@@ -6074,12 +6207,32 @@ window.onerror = function(msg, url, line, col, err) {
     window.addEventListener('wheel', e => {
       e.preventDefault();
       const cappedDY = Math.sign(e.deltaY) * Math.min(Math.abs(e.deltaY), 60);
-      // Reducimos el divisor (de 1200 a 900) para un scroll general más ágil
       let divisor = 900;
         if (targetProg < 2.20) divisor = 6000;
       let rawDelta = cappedDY / divisor;
       let magneticDelta = applyMagneticFriction(targetProg, rawDelta);
+      const prevTarget = targetProg;
       targetProg = Math.max(0, Math.min(maxProg, targetProg + magneticDelta));
+
+      // ── Entrada carrusel TIME-BASED ──────────────────────────────────────
+      // Trigger en transP=0.80 (prog=10.42): el flash aparece → restá del reveal es automático
+      if (prevTarget <= 10.42 && targetProg > 10.42 && !window._carouselEntryStart) {
+        window._carouselEntryStart = Date.now();
+        // Primera vez que el usuario entra en el carrusel: vídeo slide 0 empieza desde 0
+        if (!window._slide0VideoReset) {
+          window._slide0VideoReset = true;
+          const slide0Video = document.querySelector('.carousel-item video');
+          if (slide0Video) { slide0Video.currentTime = 0; slide0Video.play(); }
+        }
+      }
+      // Si el usuario retrocede antes del flash: cancela el timer
+      if (targetProg <= 10.42) {
+        window._carouselEntryStart = null;
+      }
+      // Durante los 400ms: bloquear en 10.62 (slide 0 centrado)
+      if (window._carouselEntryStart && (Date.now() - window._carouselEntryStart) < 400) {
+        targetProg = Math.min(targetProg, 10.62);
+      }
     }, { passive: false });
     
     // --- Lógica de arrastre del scrollbar (Drag) ---
@@ -9386,28 +9539,22 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
 </div>
 
 
-<!-- Panel de progreso: fixed, solo aparece cuando el aging-slide está centrado -->
+<!-- Panel interactivo aging: vive dentro de #aging-panel-clip (wrapper fixed+overflow:hidden) -->
 <div id="citas-slider-panel" style="
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 72px;
+  position: absolute;
+  bottom: 40px;
+  left: 32px;
+  right: 32px;
   z-index: 10051;
-  width: min(400px, 86vw);
   pointer-events: auto;
   opacity: 0;
-  transition: opacity 0.35s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  background: rgba(8,8,8,0.82);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 20px;
-  padding: 20px 24px 18px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+  gap: 14px;
+  background: rgba(0,0,0,0.88);
+  border-radius: 0;
+  padding: 14px 16px;
 ">
 
   <!-- Header: label + flechas -->
@@ -9526,14 +9673,15 @@ window.chooseFinal = function(happy) {
   }
 };
 
-// --- SLIDE 0: SECUENCIA CROSSFADE (divertido → sorprendente → profundo → emocional) ---
+// --- SLIDE 1: SECUENCIA CROSSFADE (divertido → sorprendente → profundo → emocional → neutro) ---
 (function() {
   var _seq0Index = 0;
-  var _seq0Total = 4;
+  var _seq0Total = 5;
+  var _seq0Words = ['¿Divertido?', '¿Sorprendente?', '¿Profundo?', '¿Emocional?', '¿Otro?'];
 
   function seq0Tick() {
     _seq0Index = (_seq0Index + 1) % _seq0Total;
-    // Actualiza en todos los elementos .seq0-img del DOM (original + clon large track)
+    // Actualiza imágenes en todos los #slide0-seq del DOM (small + large track)
     var allGroups = document.querySelectorAll('#slide0-seq');
     allGroups.forEach(function(slide) {
       var imgs = slide.querySelectorAll('.seq0-img');
@@ -9541,15 +9689,24 @@ window.chooseFinal = function(happy) {
         img.style.opacity = (i === _seq0Index) ? '1' : '0';
       });
     });
+    // Actualiza palabra dinámica con fade (solo en large track por data-large-only)
+    var wordEls = document.querySelectorAll('.seq0-word');
+    wordEls.forEach(function(el) {
+      el.style.opacity = '0';
+      setTimeout(function() {
+        el.textContent = _seq0Words[_seq0Index];
+        el.style.opacity = '1';
+      }, 350);
+    });
   }
 
-  // Arranca el intervalo en cuanto el DOM esté listo
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setInterval(seq0Tick, 2000); });
   } else {
     setInterval(seq0Tick, 2000);
   }
 })();
+
 </script>
 
 </html>
