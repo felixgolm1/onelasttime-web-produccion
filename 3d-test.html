@@ -1525,9 +1525,12 @@ window.onerror = function(msg, url, line, col, err) {
       <line id="mag-line-r" x1="100%" y1="50%" x2="100%" y2="50%" />
     </svg>
     <div class="carousel-track" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-      <!-- Slide 0 -->
-      <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <img src="assets/img/amigacartes.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      <!-- Slide 0: Secuencia crossfade divertido → sorprendente → profundo → emocional -->
+      <div class="carousel-item" id="slide0-seq" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
+        <img src="assets/img/divertido.jfif"    class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:1;transition:opacity 0.8s ease;">
+        <img src="assets/img/sorprendente.jfif" class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.8s ease;">
+        <img src="assets/img/profundo.jfif"     class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.8s ease;">
+        <img src="assets/img/emocional.jfif"    class="seq0-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.8s ease;">
       </div>
       <!-- Slide 1 -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
@@ -1540,7 +1543,9 @@ window.onerror = function(msg, url, line, col, err) {
       <!-- Slide 3 -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
         <video src="assets/img/besos parejas.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"></video>
-        <div id="dummy-sens-ov" style="
+        <div id="dummy-sens-ov"
+          onclick="window.dismissSens(event)"
+          style="
           position:absolute; inset:0;
           border-radius:4px;
           overflow:hidden;
@@ -1550,8 +1555,9 @@ window.onerror = function(msg, url, line, col, err) {
           backdrop-filter:blur(22px) saturate(0.6) brightness(0.75);
           -webkit-backdrop-filter:blur(22px) saturate(0.6) brightness(0.75);
           background:rgba(0,0,0,0.28);
-          transition:opacity 0.55s cubic-bezier(0.4,0,0.2,1);
+          transition:opacity 0.45s cubic-bezier(0.4,0,0.2,1);
           pointer-events:auto;
+          cursor:pointer;
           z-index: 10;
         ">
           <svg width="38" height="38" viewBox="0 0 24 24" fill="none" style="opacity:0.92;margin-bottom:4px;">
@@ -1560,9 +1566,26 @@ window.onerror = function(msg, url, line, col, err) {
             <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             <line x1="1" y1="1" x2="23" y2="23" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
-          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:400;font-size:0.95rem;color:#fff;text-align:center;">Contenido sensible</div>
-          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:400;font-size:0.72rem;color:rgba(255,255,255,0.82);text-align:center;line-height:1.4;max-width:80%;">Este v&iacute;deo puede contener<br>contenido para adultos.</div>
-          <button onclick="window.dismissSens(event)" style="pointer-events:auto;margin-top:8px;background:#ccff00;color:#000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:700;font-size:0.78rem;letter-spacing:0.03em;border-radius:999px;padding:9px 22px;box-shadow:0 2px 12px rgba(204,255,0,0.35);cursor:pointer;border:none;">Ver im&aacute;genes</button>
+          <div style="font-family:'Inter',sans-serif;font-weight:500;font-size:0.92rem;color:#fff;text-align:center;">Contenido sensible</div>
+          <div style="font-family:'Inter',sans-serif;font-weight:400;font-size:0.70rem;color:rgba(255,255,255,0.75);text-align:center;line-height:1.4;max-width:80%;">Este v&iacute;deo puede contener<br>contenido para adultos.</div>
+          <button onclick="window.dismissSens(event)" style="
+            margin-top:10px;
+            background:rgba(163,204,0,1);
+            color:#0a0a0a;
+            font-family:'Inter',sans-serif;
+            font-weight:700;
+            font-size:0.78rem;
+            letter-spacing:0.02em;
+            border-radius:999px;
+            padding:10px 26px;
+            box-shadow:0 2px 16px rgba(163,204,0,0.35);
+            cursor:pointer;
+            border:none;
+            pointer-events:auto;
+            transition:transform 0.12s ease;
+          " onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+            Ver v&iacute;deo
+          </button>
         </div>
       </div>
       <!-- Slide Nuevo Cena Sola -->
@@ -5697,6 +5720,9 @@ window.onerror = function(msg, url, line, col, err) {
         updateFaceSwap();
         updateGlobalScenes();
 
+        // SAFEGUARD: fuerza stOverlay visible en toda la fase scatter (GSAP puede restablecerse a 0 en scrub)
+        if (stOverlay) stOverlay.style.opacity = (prog >= 0.82 && prog <= 2.2) ? '1' : '';
+
           const debugProg = document.getElementById('debug-scroll-prog');
           if (debugProg) debugProg.innerText = prog.toFixed(2);
 
@@ -9499,6 +9525,31 @@ window.chooseFinal = function(happy) {
     if (imgs[2]) imgs[2].style.opacity = happy ? '0' : '1';  // sin final feliz
   }
 };
+
+// --- SLIDE 0: SECUENCIA CROSSFADE (divertido → sorprendente → profundo → emocional) ---
+(function() {
+  var _seq0Index = 0;
+  var _seq0Total = 4;
+
+  function seq0Tick() {
+    _seq0Index = (_seq0Index + 1) % _seq0Total;
+    // Actualiza en todos los elementos .seq0-img del DOM (original + clon large track)
+    var allGroups = document.querySelectorAll('#slide0-seq');
+    allGroups.forEach(function(slide) {
+      var imgs = slide.querySelectorAll('.seq0-img');
+      imgs.forEach(function(img, i) {
+        img.style.opacity = (i === _seq0Index) ? '1' : '0';
+      });
+    });
+  }
+
+  // Arranca el intervalo en cuanto el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setInterval(seq0Tick, 2000); });
+  } else {
+    setInterval(seq0Tick, 2000);
+  }
+})();
 </script>
 
 </html>
