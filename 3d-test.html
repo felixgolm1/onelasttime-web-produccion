@@ -1588,16 +1588,34 @@ window.onerror = function(msg, url, line, col, err) {
         </div>
       </div>
       <!-- Slide 4 (Interactive Aging) -->
-      <div id="aging-slide" class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <img src="assets/img/cita 1.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      </div>
-            <!-- Slide 5 (video en envej-panel-clip, fuera del carousel) -->
+
+
+
+                  <!-- Slide 5 (video interactivo) -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <div style="width:100%;height:100%;background:#111;border-radius:4px;"></div>
+        <img data-small-only="true" src="assets/img/cita 10.992.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+        <video data-large-only="true" class="envej-thumb-vid" src="assets/img/embejecimiento_fast.mp4" muted playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;border-radius:4px;"></video>
+      
+
+      
+
       </div>
       <!-- Slide 6 -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
         <img src="assets/img/parrots.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      </div>
+      <!-- Slide 7 (duplicate) -->
+      <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
+        <img src="assets/img/pareja barco.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      </div>
+      <!-- Slide 6 (Interactive Final Feliz) -->
+      <div id="final-slide" class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
+        <!-- Imagen base: escoger final (visible por defecto) -->
+        <img src="assets/img/escoger final.jfif" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:1;transition:opacity 0.4s ease;">
+        <!-- Con final feliz (oculta hasta elección) -->
+        <img src="assets/img/con final feliz.jfif" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.4s ease;">
+        <!-- Sin final feliz (oculta hasta elección) -->
+        <img src="assets/img/sin final feliz.jfif" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.4s ease;">
       </div>
       <!-- Slide 3 -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
@@ -1646,19 +1664,6 @@ window.onerror = function(msg, url, line, col, err) {
             Ver v&iacute;deo
           </button>
         </div>
-      </div>
-      <!-- Slide 6 (Interactive Final Feliz) -->
-      <div id="final-slide" class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <!-- Imagen base: escoger final (visible por defecto) -->
-        <img src="assets/img/escoger final.jfif" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:1;transition:opacity 0.4s ease;">
-        <!-- Con final feliz (oculta hasta elección) -->
-        <img src="assets/img/con final feliz.jfif" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.4s ease;">
-        <!-- Sin final feliz (oculta hasta elección) -->
-        <img src="assets/img/sin final feliz.jfif" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.4s ease;">
-      </div>
-      <!-- Slide 7 (duplicate) -->
-      <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <img src="assets/img/pareja barco.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
       </div>
       <!-- Slide 5 (Magazine) -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
@@ -3556,8 +3561,10 @@ window.onerror = function(msg, url, line, col, err) {
 
       const largeTrack = originalTrack.cloneNode(true);
       largeTrack.className = 'carousel-track-large';
-      // Eliminar overlays "large-only" del track pequeño (solo deben verse en el recuadro grande)
+      // Eliminar elementos "large-only" del track pequeño
       originalTrack.querySelectorAll('[data-large-only]').forEach(el => el.remove());
+      // Eliminar elementos "small-only" del track grande
+      largeTrack.querySelectorAll('[data-small-only]').forEach(el => el.remove());
       largeTrack.style.zIndex = '';
       // Asegurar que track-large no bloquee clics a menos que sea necesario
       largeTrack.style.pointerEvents = '';
@@ -3574,17 +3581,17 @@ window.onerror = function(msg, url, line, col, err) {
 
       // Inyectar las 4 imágenes de envejecimiento DENTRO del aging-slide de la pista GRANDE
       // (no overlay, la imagen vive dentro del propio slide del carrusel)
-      const _largeAgingSlide = largeTrack.querySelector('[id="aging-slide"]');
-      if (_largeAgingSlide) {
-        _largeAgingSlide.innerHTML = [
-          'cita 1.jfif',
-          'cita 1.345.jfif',
-          'cita 5.766.jfif',
-          'cita 10.992.jfif'
-        ].map((f, i) =>
-          `<img id="age-img-${i}" src="assets/img/${f}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:${i===0?1:0};transition:opacity 0.2s linear;">`
-        ).join('');
-      }
+
+
+
+
+
+
+
+
+
+
+
 
       // Crear wrapper-clip para el panel interactivo del aging-slide:
       // position:fixed + overflow:hidden + tamaño del viewport → el panel queda clipado al frame
@@ -3613,28 +3620,23 @@ window.onerror = function(msg, url, line, col, err) {
       _envejPanelWrap.style.cssText = 'position:fixed;overflow:hidden;pointer-events:none;z-index:10051;';
       const _envejPanelEl = document.getElementById('envej-panel');
       if (_envejPanelEl) {
-        // El clip solo contiene el VIDEO (overflow:hidden para clipping)
-        // El PANEL es un fixed independiente (sin overflow:hidden encima -> pointer events funcionan)
-        document.body.appendChild(_envejPanelWrap);
-        var _envejVid = document.createElement('video');
-        _envejVid.id = 'envej-video';
-        _envejVid.src = 'assets/img/embejecimiento_fast.mp4';
-        _envejVid.muted = true;
-        _envejVid.setAttribute('playsinline','');
-        _envejVid.preload = 'auto';
-        _envejVid.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;border-radius:4px;';
-        _envejPanelWrap.appendChild(_envejVid);
-        // Panel: solo cambiar position/z-index/opacity - preservar el resto del CSS del HTML
-        _envejPanelEl.style.position     = 'fixed';
-        _envejPanelEl.style.zIndex       = '99999';
-        _envejPanelEl.style.opacity      = '0';
+        // Inicializar video references null
+        window._envejVideoRef = null;
+        window._envejSmallVid = null;
+        
+        // Envolver el panel en el clip
+        _envejPanelEl.parentNode.insertBefore(_envejPanelWrap, _envejPanelEl);
+        _envejPanelWrap.appendChild(_envejPanelEl);
+        
+        // Panel interactivo dentro del clip
+        _envejPanelEl.style.position      = 'absolute';
+        _envejPanelEl.style.zIndex        = '99999';
+        _envejPanelEl.style.opacity       = '1';
         _envejPanelEl.style.pointerEvents = 'auto';
-        _envejPanelEl.style.bottom       = '';
-        _envejPanelEl.style.left         = '';
-        _envejPanelEl.style.right        = '';
-        _envejPanelEl.style.width        = '';
-        // Referencia global al video (evita querySelectorAll)
-        window._envejVideoRef = _envejVid;
+        _envejPanelEl.style.bottom        = '20px';
+        _envejPanelEl.style.left          = '32px';
+        _envejPanelEl.style.right         = '32px';
+        _envejPanelEl.style.width         = 'auto';
         // Play/pause global
         window.envejPlayPause = function() {
           var v = window._envejVideoRef;
@@ -3653,20 +3655,107 @@ window.onerror = function(msg, url, line, col, err) {
           if (v.duration) v.currentTime = pct * v.duration;
           // Actualizar contador cita (1 - 10.000)
           var citaEl = document.getElementById('envej-cita-num');
-          if (citaEl) { var n = Math.round(1 + pct * 9999); citaEl.textContent = n.toLocaleString('es-ES'); }
+          if (citaEl) { var n = Math.round(1 + pct * 9999); citaEl.innerHTML = n >= 10000 ? '<span style="font-size:26px; line-height:0; position:relative; top:4px;">&infin;</span>' : n.toLocaleString('es-ES'); }
         };
-        // Seek via input[range] nativo (val: 0-9999)
+        // Sincronizar miniatura con el video principal al hacer seek
+        var _thumbVid = document.getElementById('envej-thumb-vid');
+        if (_thumbVid) {
+          // Al cargar, pausar la miniatura en el frame 0
+          _thumbVid.pause();
+        }
+
+        // Seek via input[range] nativo (val: 0-9999) - búsqueda lazy del video
+        
+        const envejCopies = [
+          "El tiempo parece infinito",
+          "Lo vuestro promete",
+          "Habéis construido algo fuerte",
+          "Ya nada puede con lo vuestro",
+          "¿Si esta fuera la última qué te habrías dejado por decir?"
+        ];
+        let currentCopyIdx = 0;
+        window.updateEnvejCopy = function(pct) {
+          let idx = 0;
+          if (pct > 0.90) idx = 4;
+          else if (pct > 0.66) idx = 3;
+          else if (pct > 0.33) idx = 2;
+          else if (pct > 0.05) idx = 1;
+          
+          const tEl = document.getElementById('envej-copy-title');
+          const sEl = document.getElementById('envej-copy-sub');
+          const ctaEl = document.getElementById('envej-final-cta');
+
+          if (sEl) sEl.style.display = 'none';
+
+          if (pct >= 0.99) {
+             if (tEl) {
+                 tEl.style.opacity = '0';
+                 tEl.style.pointerEvents = 'none';
+             }
+             if (ctaEl) {
+                 ctaEl.style.opacity = '1';
+                 ctaEl.style.pointerEvents = 'auto';
+             }
+          } else {
+             if (ctaEl) {
+                 ctaEl.style.opacity = '0';
+                 ctaEl.style.pointerEvents = 'none';
+             }
+             if (tEl) {
+                 tEl.style.pointerEvents = 'auto';
+                 if (idx !== currentCopyIdx) {
+                   currentCopyIdx = idx;
+                   tEl.style.opacity = '0';
+                   setTimeout(() => {
+                     tEl.textContent = envejCopies[idx];
+                     tEl.style.opacity = '1';
+                   }, 400);
+                 } else {
+                   if (tEl.style.opacity === '0') tEl.style.opacity = '1';
+                 }
+             }
+          }
+        };
         window.envejSeekByRange = function(val) {
           var pct = val / 9999;
+          if (!window._envejVideoRef) {
+            var _lt = document.querySelector('.carousel-track-large');
+            if (_lt) {
+              var _li = _lt.querySelectorAll('.carousel-item');
+              if (_li[3]) window._envejVideoRef = _li[3].querySelector('video.envej-thumb-vid');
+            }
+          }
           var v = window._envejVideoRef;
-          if (v && v.duration) v.currentTime = pct * v.duration;
+          if (v && v.duration) { 
+              v.currentTime = pct * v.duration; 
+              var p = v.play();
+              if (p && p.catch) { p.then(() => v.pause()).catch(() => {}); } else { v.pause(); }
+          }
+          if (!window._envejSmallVid) {
+            var _st = document.querySelector('.carousel-track-small');
+            if (_st) {
+              var _si2 = _st.querySelectorAll('.carousel-item');
+              if (_si2[3]) window._envejSmallVid = _si2[3].querySelector('video.envej-thumb-vid');
+            }
+          }
+          var sv = window._envejSmallVid;
+          if (sv && sv.duration) { 
+              sv.currentTime = pct * sv.duration; 
+              var sp = sv.play();
+              if (sp && sp.catch) { sp.then(() => sv.pause()).catch(() => {}); } else { sv.pause(); }
+          }
           var f = document.getElementById('envej-bar-fill');
           var t = document.getElementById('envej-bar-thumb');
           var c = document.getElementById('envej-cita-num');
+          var w = document.getElementById('envej-wave-fill');
           if (f) f.style.width = (pct*100)+'%';
           if (t) t.style.left  = (pct*100)+'%';
-          if (c) c.textContent = Math.round(1+pct*9999).toLocaleString('es-ES');
+          if (w) w.style.clipPath = 'inset(0 ' + (100 - (pct*100)) + '% 0 0)';
+          
+          window.updateEnvejCopy(pct);
+          if (c) { var n = Math.round(1 + pct * 9999); c.innerHTML = n >= 10000 ? '<span style="font-size:26px; line-height:0; position:relative; top:4px;">&infin;</span>' : n.toLocaleString('es-ES'); }
         };
+
       }
     }
 
@@ -5036,19 +5125,19 @@ window.onerror = function(msg, url, line, col, err) {
         const breakoutOverlay = document.getElementById('mag-breakout-overlay');
         if (breakoutOverlay) {
           // Safeguard: restaurar modelo si el usuario vuelve por debajo del breakout
-          if (prog < 15.12) {
-            const _mEl8s =             document.querySelectorAll('.carousel-track-large .carousel-item')[9];
+          if ((prog + 0.5) < 15.12) {
+            const _mEl8s =             document.querySelectorAll('.carousel-track-large .carousel-item')[8];
             const _lms = _mEl8s?.querySelector('img[src*="modelo-sin-fondo"]');
             if (_lms && _lms.style.visibility === 'hidden') _lms.style.visibility = '';
             const _cloneS = document.getElementById('mag-model-clone');
             if (_cloneS) _cloneS.remove();
           }
-          if (prog >= 15.12) {
+          if ((prog + 0.5) >= 15.12) {
 
             const vw = window.innerWidth;
             const vh = window.innerHeight;
             // Leer posición/tamaño REAL del elemento revista para evitar salto visual
-            const _magLargeEl =             document.querySelectorAll('.carousel-track-large .carousel-item')[9];
+            const _magLargeEl =             document.querySelectorAll('.carousel-track-large .carousel-item')[8];
             let boxW, boxH, startLeft, startTop;
             if (_magLargeEl) {
               const _r = _magLargeEl.getBoundingClientRect();
@@ -5060,10 +5149,10 @@ window.onerror = function(msg, url, line, col, err) {
             }
 
             // FASE 1: progress para exits (0→1 en prog 14.62→15.6)
-            const exitP = Math.min(Math.max(mapRange(prog, 15.12, 16.1, 0, 1), 0), 1);
+            const exitP = Math.min(Math.max(mapRange((prog + 0.5), 15.12, 16.1, 0, 1), 0), 1);
 
             // FASE 2: progress para expansión del marco (0→1 en prog 14.72→15.92)
-            const expansionP = Math.min(Math.max(mapRange(prog, 15.22, 16.42, 0, 1), 0), 1);
+            const expansionP = Math.min(Math.max(mapRange((prog + 0.5), 15.22, 16.42, 0, 1), 0), 1);
             const easeExpand = 1 - Math.pow(1 - expansionP, 3); // ease-out cubic
 
             // ── FASE 2: clip-path:inset() en el clon — sin overlay, sin fondo ──
@@ -5071,7 +5160,7 @@ window.onerror = function(msg, url, line, col, err) {
 
               if (!document.getElementById('mag-model-clone')) {
                 const carouselVp = magazineScene?.querySelector('.carousel-viewport');
-                const magEl      =             document.querySelectorAll('.carousel-track-large .carousel-item')[9];
+                const magEl      =             document.querySelectorAll('.carousel-track-large .carousel-item')[8];
                 const origImg    = magEl?.querySelector('img[src*="modelo-sin-fondo"]')
                                 || magazineScene?.querySelector('.carousel-track-large img[src*="modelo-sin-fondo"]');
                 if (carouselVp && origImg && origImg.naturalWidth && magEl) {
@@ -5124,7 +5213,7 @@ window.onerror = function(msg, url, line, col, err) {
               const clone = document.getElementById('mag-model-clone');
               if (clone) {
                 // Restaurar modelo en AMBOS tracks (small y large)
-                const _mEl8 =             document.querySelectorAll('.carousel-track-large .carousel-item')[9];
+                const _mEl8 =             document.querySelectorAll('.carousel-track-large .carousel-item')[8];
                 const origL = _mEl8?.querySelector('img[src*="modelo-sin-fondo"]');
                 const origS = magazineScene?.querySelector('img[src*="modelo-sin-fondo"]');
                 if (origL) origL.style.visibility = '';
@@ -5187,7 +5276,7 @@ window.onerror = function(msg, url, line, col, err) {
 
             // 5. COPY IZQUIERDO — empieza en prog 14.67
             { document.querySelectorAll('[id="mag-copy-left-clip"]').forEach(function(container) {
-                container.style.opacity = Math.max(0, 1 - mapRange(prog, 15.17, 15.7, 0, 1));
+                container.style.opacity = Math.max(0, 1 - mapRange((prog + 0.5), 15.17, 15.7, 0, 1));
               });
               document.querySelectorAll('.copy-left-line').forEach(function(line, idx) {
                 const stagger = idx * 0.02;
@@ -5198,7 +5287,7 @@ window.onerror = function(msg, url, line, col, err) {
 
             // 6. COPY DERECHO — empieza en prog 14.67
             { document.querySelectorAll('[id="mag-copy-right-clip"]').forEach(function(container) {
-                container.style.opacity = Math.max(0, 1 - mapRange(prog, 15.17, 15.7, 0, 1));
+                container.style.opacity = Math.max(0, 1 - mapRange((prog + 0.5), 15.17, 15.7, 0, 1));
               });
               document.querySelectorAll('.copy-right-line').forEach(function(line, idx) {
                 const stagger = idx * 0.02;
@@ -5251,19 +5340,19 @@ window.onerror = function(msg, url, line, col, err) {
 
         if (breakoutOverlay) {
           // Safeguard: restaurar modelo si el usuario vuelve por debajo del breakout
-          if (prog < 15.12) {
-            const _mEl8s =             document.querySelectorAll('.carousel-track-large .carousel-item')[9];
+          if ((prog + 0.5) < 15.12) {
+            const _mEl8s =             document.querySelectorAll('.carousel-track-large .carousel-item')[8];
             const _lms = _mEl8s?.querySelector('img[src*="modelo-sin-fondo"]');
             if (_lms && _lms.style.visibility === 'hidden') _lms.style.visibility = '';
             const _cloneS = document.getElementById('mag-model-clone');
             if (_cloneS) _cloneS.remove();
           }
-          if (prog >= 15.12) {
+          if ((prog + 0.5) >= 15.12) {
 
             const vw = window.innerWidth;
             const vh = window.innerHeight;
             // Leer posición/tamaño REAL del elemento revista para evitar salto visual
-            const _magLargeEl =             document.querySelectorAll('.carousel-track-large .carousel-item')[9];
+            const _magLargeEl =             document.querySelectorAll('.carousel-track-large .carousel-item')[8];
             let boxW, boxH, startLeft, startTop;
             if (_magLargeEl) {
               const _r = _magLargeEl.getBoundingClientRect();
@@ -5275,10 +5364,10 @@ window.onerror = function(msg, url, line, col, err) {
             }
 
             // FASE 1: progress para exits (0→1 en prog 14.62→15.6)
-            const exitP = Math.min(Math.max(mapRange(prog, 15.12, 16.1, 0, 1), 0), 1);
+            const exitP = Math.min(Math.max(mapRange((prog + 0.5), 15.12, 16.1, 0, 1), 0), 1);
 
             // FASE 2: progress para expansión del marco (0→1 en prog 14.72→15.92)
-            const expansionP = Math.min(Math.max(mapRange(prog, 15.22, 16.42, 0, 1), 0), 1);
+            const expansionP = Math.min(Math.max(mapRange((prog + 0.5), 15.22, 16.42, 0, 1), 0), 1);
             const easeExpand = 1 - Math.pow(1 - expansionP, 3); // ease-out cubic
 
             // ── FASE 2: Overlay expansión del marco ────────────────────────────────
@@ -5345,7 +5434,7 @@ window.onerror = function(msg, url, line, col, err) {
 
             // 5. COPY IZQUIERDO — sale por izquierda linea a linea (sync 0.05-0.55)
             { document.querySelectorAll('[id="mag-copy-left-clip"]').forEach(function(container) {
-                container.style.opacity = Math.max(0, 1 - mapRange(prog, 15.17, 15.7, 0, 1));
+                container.style.opacity = Math.max(0, 1 - mapRange((prog + 0.5), 15.17, 15.7, 0, 1));
               });
               document.querySelectorAll('.copy-left-line').forEach(function(line, idx) {
                 const stagger = idx * 0.02;
@@ -5356,7 +5445,7 @@ window.onerror = function(msg, url, line, col, err) {
 
             // 6. COPY DERECHO — sale por derecha linea a linea (sync 0.05-0.55)
             { document.querySelectorAll('[id="mag-copy-right-clip"]').forEach(function(container) {
-                container.style.opacity = Math.max(0, 1 - mapRange(prog, 15.17, 15.7, 0, 1));
+                container.style.opacity = Math.max(0, 1 - mapRange((prog + 0.5), 15.17, 15.7, 0, 1));
               });
               document.querySelectorAll('.copy-right-line').forEach(function(line, idx) {
                 const stagger = idx * 0.02;
@@ -5430,7 +5519,7 @@ window.onerror = function(msg, url, line, col, err) {
           mainDeck.style.filter = '';
           gsap.set(scBoard, { y: '0vh' });
           scrollTl.progress(0);
-          scrollTl.progress(Math.min(1, prog / 2.2));
+          scrollTl.progress(Math.min(1, (prog + 0.5) / 2.2));
         
             let hiddenFaces = document.getElementById('mainDeck').querySelectorAll('.box-flap, .tuck-lip, .dust-flap, .face-back, .face-front, .face-bottom, .interior-card, .face-right');
             hiddenFaces.forEach(f => f.style.display = '');
@@ -5443,8 +5532,8 @@ window.onerror = function(msg, url, line, col, err) {
       // Cuando prog está ±HOLD alrededor de cada centro, currIndex = entero exacto (pausa visual)
       function getCarouselIndex(p) {
         // Hold por slide: el primero tiene el doble de zona plana
-        const centers = [10.62, 11.12, 11.62, 12.12, 12.62, 13.12, 13.62, 14.12, 14.62, 15.12];
-        const holds   = [0.112, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056];
+        const centers = [10.62, 11.12, 11.62, 12.12, 12.62, 13.12, 13.62, 14.12, 14.62];
+        const holds   = [0.112, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056, 0.056];
         // Zona plana: devolver entero exacto
         for (let i = 0; i < centers.length; i++) {
           if (Math.abs(p - centers[i]) <= holds[i]) return i;
@@ -5458,7 +5547,7 @@ window.onerror = function(msg, url, line, col, err) {
             return i + t; // currIndex interpolado entre i e i+1
           }
         }
-        return Math.max(0, Math.min(9, (p - 10.62) * 2.0)); // fallback
+        return Math.max(0, Math.min(8, (p - 10.62) * 2.0)); // fallback
       }
 
       const smallItems = document.querySelectorAll('.carousel-track-small .carousel-item');
@@ -5468,7 +5557,7 @@ window.onerror = function(msg, url, line, col, err) {
           let currIndex = getCarouselIndex(prog);
           
           // Resetear overlay si el usuario se aleja del slide
-          if (Math.abs(currIndex - 3) > 1.0 && window._sensDismissed) {
+          if (Math.abs(currIndex - 7) > 1.0 && window._sensDismissed) {
             window._sensDismissed = false;
             document.querySelectorAll('#dummy-sens-ov').forEach(el => {
               el.style.opacity = '1';
@@ -5480,15 +5569,15 @@ window.onerror = function(msg, url, line, col, err) {
           let exitOffsetSmall = 0;
           let exitOffsetLarge = 0;
           let exitFade = 1;
-          if (prog > 15.12) {
-            const exitP = Math.min(mapRange(prog, 15.12, 15.8, 0, 1), 1);
+          if ((prog + 0.5) > 15.12) {
+            const exitP = Math.min(mapRange((prog + 0.5), 15.12, 15.8, 0, 1), 1);
             const easeExit = Math.pow(exitP, 2); // ease-in: acelera al salir
             exitOffsetSmall = -900 * easeExit;
             exitOffsetLarge = -900 * easeExit;
             exitFade = Math.max(0, 1 - mapRange(exitP, 0.4, 1.0, 0, 1));
           }
 
-          for (let i = 0; i < 10; i++) {
+          for (let i = 0; i < 9; i++) {
             let d = i - currIndex;
             let absD = Math.abs(d);
             
@@ -5535,8 +5624,8 @@ window.onerror = function(msg, url, line, col, err) {
               }
             }
 
-            translateXSmall += entryOffset + (i !== 9 ? exitOffsetSmall : 0);
-            translateXLarge += (i !== 9 ? exitOffsetLarge : 0);
+            translateXSmall += entryOffset + (i !== 8 ? exitOffsetSmall : 0);
+            translateXLarge += (i !== 8 ? exitOffsetLarge : 0);
             brightness += extraBrightness;
             
             // Pequeñas (fuera del recuadro)
@@ -5584,10 +5673,12 @@ window.onerror = function(msg, url, line, col, err) {
           // --- VIDEO PANEL: slide 5 (envejecimiento, index 4) ---
           const envejPanel = document.getElementById('envej-panel');
           const envejPanelClip = document.getElementById('envej-panel-clip');
-          const envejVideo = window._envejVideoRef || document.getElementById('envej-video');
+          const envejVideo = window._envejVideoRef;
           if (envejPanel && envejPanelClip && largeItems.length > 0) {
-            const videoSlideIndex = 4;
+            const videoSlideIndex = 3;
             const vp2 = document.querySelector('.carousel-viewport');
+            
+            // Clip wrapper ocupa exactamente el frame del carrusel
             if (vp2) {
               const vpR2 = vp2.getBoundingClientRect();
               envejPanelClip.style.left   = vpR2.left   + 'px';
@@ -5595,21 +5686,21 @@ window.onerror = function(msg, url, line, col, err) {
               envejPanelClip.style.width  = vpR2.width  + 'px';
               envejPanelClip.style.height = vpR2.height + 'px';
             }
-            const distToVideo = Math.abs(currIndex - videoSlideIndex);
-            const envejFade = Math.max(0, Math.min(1, 1 - distToVideo * 2.5));
-            // Clip: fade del video
-            envejPanelClip.style.opacity = envejFade;
-            // Panel fixed independiente: posicionado directamente con coords de viewport
-            if (vp2) {
-              var _vr = vp2.getBoundingClientRect();
-              envejPanel.style.left   = _vr.left + 'px';
-              envejPanel.style.width  = _vr.width + 'px';
-              envejPanel.style.bottom = (window.innerHeight - _vr.bottom) + 'px';
-            }
-            envejPanel.style.opacity = envejFade;
-            // Video siempre en pausa: solo se mueve arrastrando la barra
+            
+            // Panel interactivo se mueve con el slide usando translateX
+            const envejD = videoSlideIndex - currIndex;
+            const slideX2 = envejD * 466;
+            envejPanel.style.transform = `translateX(${slideX2}px)`;
+
+            // Video siempre en pausa
             if (envejVideo && !envejVideo.paused) envejVideo.pause();
-            // Actualizar controles del player en cada frame
+            
+            // Sincronizar small video con el mismo frame
+            var _sv = window._envejSmallVid;
+            if (_sv && envejVideo && Math.abs(_sv.currentTime - envejVideo.currentTime) > 0.05) {
+              _sv.currentTime = envejVideo.currentTime; _sv.pause();
+            }
+            // Actualizar controles del player
             if (envejVideo) {
               const vDur = envejVideo.duration || 0;
               const vCur = envejVideo.currentTime || 0;
@@ -5617,10 +5708,12 @@ window.onerror = function(msg, url, line, col, err) {
               const fillEl  = document.getElementById('envej-bar-fill');
               const thumbEl = document.getElementById('envej-bar-thumb');
               const citaEl2 = document.getElementById('envej-cita-num');
-              const playBtn = document.getElementById('envej-play-btn');
+              const waveEl  = document.getElementById('envej-wave-fill');
               if (fillEl)  fillEl.style.width = pct + '%';
               if (thumbEl) thumbEl.style.left  = pct + '%';
-              if (citaEl2 && vDur > 0) { var p2 = vCur/vDur; citaEl2.textContent = Math.round(1+p2*9999).toLocaleString('es-ES'); }
+              if (waveEl)  waveEl.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+              if (window.updateEnvejCopy) window.updateEnvejCopy(pct / 100);
+              if (citaEl2 && vDur > 0) { var p2 = vCur/vDur; var n = Math.round(1+p2*9999); citaEl2.innerHTML = n >= 10000 ? '<span style="font-size:26px; line-height:0; position:relative; top:4px;">&infin;</span>' : n.toLocaleString('es-ES'); }
             }
           }
 
@@ -5861,7 +5954,7 @@ window.onerror = function(msg, url, line, col, err) {
     // Restore state instantly on load if preserved
     if (prog > 0) {
       requestAnimationFrame(() => {
-        scrollTl.progress(Math.min(1, prog / 2.2)); // clamp scene logic
+        scrollTl.progress(Math.min(1, (prog + 0.5) / 2.2)); // clamp scene logic
         updateFaceSwap();
         updateBoxState(1);
         updateGlobalScenes();
@@ -5940,7 +6033,7 @@ window.onerror = function(msg, url, line, col, err) {
         prog += (targetProg - prog) * lerpF;
         if (Math.abs(targetProg - prog) <= 0.000005) prog = targetProg;
         sessionStorage.setItem('dev_prog', prog);
-        scrollTl.progress(Math.min(1, prog / 2.2));
+        scrollTl.progress(Math.min(1, (prog + 0.5) / 2.2));
         updateFaceSwap();
         updateGlobalScenes();
 
@@ -5989,7 +6082,7 @@ window.onerror = function(msg, url, line, col, err) {
       
       // ── THERMAL CURTAIN ── incondicional, ejecuta cada frame ──────
       {
-        const _tP = Math.min(1, Math.max(0, (prog - 16.27) / (17.2 - 16.27)));
+        const _tP = Math.min(1, Math.max(0, ((prog + 0.5) - 16.27) / (17.2 - 16.27)));
         const _tc = document.getElementById('thermal-canvas');
         if (_tc) {
           if (_tP <= 0) {
@@ -6016,7 +6109,7 @@ window.onerror = function(msg, url, line, col, err) {
 
       // ── THERMAL OVERLAY ── máscara gradiente suave en el overlay (sin línea dura)
       {
-        var _tPdiv = Math.min(1, Math.max(0, (prog - 16.27) / (16.8 - 16.27)));
+        var _tPdiv = Math.min(1, Math.max(0, ((prog + 0.5) - 16.27) / (16.8 - 16.27)));
         window._brainScrollProg = prog;
         if (window._updateNeuralText) window._updateNeuralText(prog);
         var _tOvr  = document.getElementById('thermal-overlay');
@@ -6024,7 +6117,7 @@ window.onerror = function(msg, url, line, col, err) {
         // Siempre limpiar la máscara del mag-breakout
         if (_mOvr) { _mOvr.style.webkitMaskImage = ''; _mOvr.style.maskImage = ''; }
         if (_tOvr) {
-          var _showOverlay = prog >= 15.35;
+          var _showOverlay = (prog + 0.5) >= 15.35;
           if (!_showOverlay) {
             _tOvr.style.display = 'none';
           } else {
@@ -8418,12 +8511,12 @@ window.onerror = function(msg, url, line, col, err) {
 
     // ── FASE 1: Rotación — bProg 16.3 → 17.0 ──────────────────────
     // rotEase va de 0 (frontal) a 1 (perfil lateral completo)
-    var _bProg   = window._brainScrollProg || 0;
-    var _rotT    = Math.max(0, Math.min(1, (_bProg - 16.3) / (17.0 - 16.3)));
+    var _bProg = window._brainScrollProg || 0; var _bProgM = _bProg + 0.5;
+    var _rotT    = Math.max(0, Math.min(1, (_bProgM - 16.3) / (17.0 - 16.3)));
     var _rotEase = _rotT < 0.5 ? 2 * _rotT * _rotT : 1 - Math.pow(-2 * _rotT + 2, 2) / 2;
 
     // ── FASE 2: Swap — bProg 17.0 → 17.8 (DESPUÉS de la rotación completa) ──
-    var swapT       = Math.max(0, Math.min(1, (_bProg - 17.0) / (17.8 - 17.0)));
+    var swapT       = Math.max(0, Math.min(1, (_bProgM - 17.0) / (17.8 - 17.0)));
     var fullOpacity = 1.0 - swapT;
     var halfOpacity = swapT;
 
@@ -8607,7 +8700,8 @@ function updateThermalCurtain(progress) {
 // ── Driver independiente: lee prog de sessionStorage cada 50ms ──────
 setInterval(function() {
   var p  = parseFloat(sessionStorage.getItem('dev_prog') || '0');
-  var tP = Math.min(1, Math.max(0, (p - 16.27) / (17.2 - 16.27)));
+    var pM = p + 0.5;
+  var tP = Math.min(1, Math.max(0, (pM - 16.27) / (17.2 - 16.27)));
   var tc = document.getElementById('thermal-canvas');
   if (!tc) return;
   if (tP <= 0) { tc.style.display = 'none'; return; }
@@ -8635,7 +8729,7 @@ setInterval(function() {
   if (!h2) return;
   var TEXT = 'NO ES MAGIA\nES QUÍMICA';
   var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#*+^~!';
-  var PROG_START = 15.35, PROG_END = 16.20;
+  var PROG_START = 14.85, PROG_END = 15.70;
   var spans = [];
   h2.textContent = ''; h2.style.opacity = '1';
   for (var i = 0; i < TEXT.length; i++) {
@@ -8734,7 +8828,7 @@ setInterval(function() {
   var _origNT = window._updateNeuralText||null;
   window._updateNeuralText = function(prog){
     if(_origNT)_origNT(prog);
-    if(prog<15.30){
+    if((prog + 0.5)<15.30){
       if(lastActive1>0||lastActive2>0){
         spans.forEach(resetChar); sparks=[];
         if(sctx)sctx.clearRect(0,0,sc.width,sc.height);
@@ -8946,10 +9040,10 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
 // Título: barre izquierda→derecha. Párrafo: barre derecha→izquierda.
 // Todo computado en cada frame desde window._brainScrollProg. Cero timers.
 (function() {
-  var SHOW_START = 17.43;
-  var SHOW_FADE  = 17.58;
-  var STEP_START = 17.5;
-  var STEP_END    = 26.6;  // 4 × (0.475 estatico + 0.60 entry + 1.20 exit) = 4×2.275
+  var SHOW_START = 16.93;
+  var SHOW_FADE  = 17.08;
+  var STEP_START = 17.0;
+  var STEP_END    = 26.1;  // 4 × (0.475 estatico + 0.60 entry + 1.20 exit) = 4×2.275
   var NUM_STEPS   = 4;
   var STEP_SIZE   = (STEP_END - STEP_START) / NUM_STEPS; // 2.275 por paso
   var TRANS_ENTRY = 0.60; // duracion animacion de ENTRADA (sin cambios)
@@ -9222,7 +9316,8 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
     var gLabel = document.getElementById('global-brain-label');
     if (gLabel) {
       // Fade in smoothly right before step 0
-      var activeProg = clamp01((p - 17.3)/0.2);
+      var pM = p + 0.5;
+      var activeProg = clamp01((pM - 17.3)/0.2);
       gLabel.style.opacity = activeProg.toString();
       
       if (activeProg > 0) {
@@ -9565,8 +9660,8 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
   if (!h2) return;
 
   // Rango de scroll en el que ocurre el movimiento
-  var MOVE_START = 17.0;    // mismo inicio que el zoom-in del overlay (swapT)
-  var MOVE_END   = 17.8;    // mismo final que el zoom-in del overlay (swapT)
+  var MOVE_START = 16.5;    // mismo inicio que el zoom-in del overlay (swapT)
+  var MOVE_END   = 17.3;    // mismo final que el zoom-in del overlay (swapT)
 
   // Inicio: centrado (top:67%, left:50%, scale:1)
   // Final: derecha junto al cerebro (top:22%, left:72%, scale:0.28)
@@ -9659,76 +9754,83 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 12px;
+  gap: 0px;
 ">
-  <!-- Copy superior -->
-  <div style="display:flex; flex-direction:column; gap:4px;">
-    <span style="color:#fff; font-family:'Inter',sans-serif; font-size:0.95rem; font-weight:600; line-height:1.3;">Para cualquier cita</span>
-    <span style="color:rgba(255,255,255,0.42); font-family:'Inter',sans-serif; font-size:0.75rem; font-weight:400; font-style:italic; letter-spacing:0.01em;">Siempre habr&aacute; una &uacute;ltima vez</span>
+    <!-- Titulo verde superior -->
+  <div style="text-align:center; margin-bottom: 14px;">
+    <span style="color:#a3cc00; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:3px;">Desde la cita 1 hasta la <span style="font-size:26px; line-height:0; margin-top:-2px;">&infin;</span></span>
   </div>
-  <!-- Contador -->
-  <div style="display:flex; align-items:baseline; gap:7px;">
-    <span style="color:rgba(255,255,255,0.45); font-family:'Inter',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;">Cita</span>
-    <span id="envej-cita-num" style="color:#fff; font-family:'Inter',sans-serif; font-size:2.6rem; font-weight:200; letter-spacing:-0.03em; line-height:1;">1</span>
-  </div>
-  <!-- Barra scrubber: input[range] nativo -->
-  <div style="position:relative; height:28px; display:flex; align-items:center;">
+  <!-- Barra scrubber: input[range] nativo (con contador flotante) -->
+  <div style="position:relative; height:28px; display:flex; align-items:center; margin-top:6px;">
     <div style="position:absolute; left:0; right:0; top:50%; height:2px; transform:translateY(-50%); background:rgba(255,255,255,0.15); border-radius:2px; pointer-events:none;"></div>
-    <div id="envej-bar-fill" style="position:absolute; left:0; top:50%; height:2px; transform:translateY(-50%); background:#a3cc00; width:0%; border-radius:2px; pointer-events:none;"></div>
-    <div id="envej-bar-thumb" style="position:absolute; top:50%; transform:translate(-50%,-50%); width:11px; height:11px; border-radius:50%; background:#a3cc00; left:0%; pointer-events:none; box-shadow:0 0 6px rgba(163,204,0,0.5);"></div>
+    
+    <div id="envej-bar-fill" style="position:absolute; left:0; top:50%; height:2px; transform:translateY(-50%); background:#fff; width:0%; border-radius:2px; pointer-events:none;"></div>
+    <div id="envej-bar-thumb" style="position:absolute; top:50%; transform:translate(-50%,-50%); width:13px; height:13px; border-radius:50%; background:#fff; left:0%; pointer-events:none; box-shadow:0 0 6px rgba(255,255,255,0.5);">
+      <!-- Contador flotante (CITA X) -->
+      <div style="position:absolute; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:4px; align-items:baseline; white-space:nowrap; pointer-events:none;">
+        <span style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase;">Cita</span>
+        <span id="envej-cita-num" style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase;">1</span>
+      </div>
+    </div>
     <input id="envej-range" type="range" min="0" max="9999" value="0" step="1" oninput="window.envejSeekByRange(this.value);" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:grab; margin:0; padding:0;">
   </div>
-  </div>
-  <!-- Labels extremos -->
-  <div style="display:flex; justify-content:space-between; margin-top:-6px;">
-    <span style="color:rgba(255,255,255,0.22); font-family:'Inter',sans-serif; font-size:0.57rem; letter-spacing:0.06em;">Cita 1</span>
-    <span style="color:rgba(255,255,255,0.22); font-family:'Inter',sans-serif; font-size:0.57rem; letter-spacing:0.06em;">Cita 10.000</span>
+
+  <!-- Copy superior (ahora debajo de la barra) -->
+  <div style="position:relative; display:flex; flex-direction:column; gap:4px; min-height: 42px; text-align:center; align-items:center; justify-content:center; margin-top:2px;">
+    <span id="envej-copy-title" style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase; transition:opacity 0.4s ease;">El tiempo parece infinito</span>
+    <span id="envej-copy-sub" style="display:none;"></span>
+    <button id="envej-final-cta" style="position: absolute; inset: 0; margin: auto; z-index: 100000; background-color: #a3cc00; color: #111; border: none; border-radius: 100px; padding: 6px 18px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; text-align: center; line-height: 1.3; text-transform: uppercase; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; box-shadow: 0 4px 12px rgba(163,204,0,0.4); width: max-content; height: max-content; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <span style="display:block;">No te dejes nada por decir.</span>
+      <span style="display:block;">Díselo en la próxima cena</span>
+    </button>
   </div>
   <button id="envej-play-btn" onclick="window.envejPlayPause()" style="display:none;">&#9654;</button>
+
+
 </div>
 
 <!-- Panel interactivo aging: vive dentro de #aging-panel-clip (wrapper fixed+overflow:hidden) -->
-<div id="citas-slider-panel" style="
-  position: absolute;
-  bottom: 40px;
-  left: 32px;
-  right: 32px;
-  z-index: 10051;
-  pointer-events: auto;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  background: rgba(0,0,0,0.88);
-  border-radius: 0;
-  padding: 14px 16px;
-">
 
-  <!-- Header: label + flechas -->
-  <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-    <span style="color:rgba(255,255,255,0.4); font-family:'Inter',sans-serif; font-size:0.58rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase;">¿En qué cita os conocisteis?</span>
-    <div style="display:flex; gap:6px;">
-      <button id="age-prev" onclick="window.ageNav(-1)" style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.7);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s ease;font-family:sans-serif;">&#8592;</button>
-      <button id="age-next" onclick="window.ageNav(1)" style="width:28px;height:28px;border-radius:50%;background:rgba(163,204,0,0.18);border:1px solid rgba(163,204,0,0.4);color:rgba(163,204,0,1);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s ease;font-family:sans-serif;">&#8594;</button>
-    </div>
-  </div>
 
-  <!-- Track con 4 puntos -->
-  <div style="position:relative; width:100%; height:40px; display:flex; align-items:center;">
-    <!-- Track fondo -->
-    <div style="position:absolute; left:0; right:0; height:2px; background:rgba(255,255,255,0.12); border-radius:2px;"></div>
-    <!-- Track fill animado -->
-    <div id="age-fill" style="position:absolute; left:0; height:2px; width:0%; background:rgba(163,204,0,1); border-radius:2px; transition:width 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
 
-    <!-- Los 4 puntos (left: 0%, 33.33%, 66.66%, 100%) -->
-    <div id="age-dot-0" onclick="window.setAgeStep(0)" style="position:absolute; left:0%; transform:translateX(-50%); width:12px; height:12px; border-radius:50%; background:rgba(163,204,0,1); border:2px solid rgba(163,204,0,1); cursor:pointer; transition:all 0.3s ease; box-shadow:0 0 0 4px rgba(163,204,0,0.2);"></div>
-    <div id="age-dot-1" onclick="window.setAgeStep(1)" style="position:absolute; left:33.33%; transform:translateX(-50%); width:10px; height:10px; border-radius:50%; background:rgba(30,30,30,1); border:2px solid rgba(255,255,255,0.25); cursor:pointer; transition:all 0.3s ease;"></div>
-    <div id="age-dot-2" onclick="window.setAgeStep(2)" style="position:absolute; left:66.66%; transform:translateX(-50%); width:10px; height:10px; border-radius:50%; background:rgba(30,30,30,1); border:2px solid rgba(255,255,255,0.25); cursor:pointer; transition:all 0.3s ease;"></div>
-    <div id="age-dot-3" onclick="window.setAgeStep(3)" style="position:absolute; left:100%; transform:translateX(-50%); width:10px; height:10px; border-radius:50%; background:rgba(30,30,30,1); border:2px solid rgba(255,255,255,0.25); cursor:pointer; transition:all 0.3s ease;"></div>
-  </div>
 
-  <!-- Labels debajo del track -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <div style="position:relative; width:100%; display:flex; justify-content:space-between; margin-top:-14px;">
     <span id="age-lbl-0" style="font-family:'Inter',sans-serif; font-size:0.65rem; font-weight:700; color:rgba(163,204,0,1); cursor:pointer; transition:color 0.3s;" onclick="window.setAgeStep(0)">Cita 1</span>
     <span id="age-lbl-1" style="font-family:'Inter',sans-serif; font-size:0.65rem; font-weight:500; color:rgba(255,255,255,0.35); cursor:pointer; transition:color 0.3s; transform:translateX(-50%); position:absolute; left:33.33%;" onclick="window.setAgeStep(1)">1.345</span>
@@ -9751,59 +9853,59 @@ window.dismissSens = function(e) {
 };
 
 
-var _ageCurrentStep = 0;
-var _ageFillPcts = ['0%', '33.33%', '66.66%', '100%'];
 
-window.setAgeStep = function(step) {
-  _ageCurrentStep = step;
 
-  // Track fill
-  var fill = document.getElementById('age-fill');
-  if (fill) fill.style.width = _ageFillPcts[step];
 
-  // Dots
-  for (var i = 0; i < 4; i++) {
-    var dot = document.getElementById('age-dot-' + i);
-    var lbl = document.getElementById('age-lbl-' + i);
-    if (!dot) continue;
-    if (i <= step) {
-      // Puntos ya pasados o activo: verde
-      dot.style.background = 'rgba(163,204,0,1)';
-      dot.style.borderColor = 'rgba(163,204,0,1)';
-      dot.style.width = i === step ? '14px' : '10px';
-      dot.style.height = i === step ? '14px' : '10px';
-      dot.style.boxShadow = i === step ? '0 0 0 5px rgba(163,204,0,0.22)' : 'none';
-    } else {
-      // Puntos futuros: gris
-      dot.style.background = 'rgba(30,30,30,1)';
-      dot.style.borderColor = 'rgba(255,255,255,0.25)';
-      dot.style.width = '10px';
-      dot.style.height = '10px';
-      dot.style.boxShadow = 'none';
-    }
-    if (lbl) lbl.style.color = i === step ? 'rgba(163,204,0,1)' : (i < step ? 'rgba(163,204,0,0.5)' : 'rgba(255,255,255,0.3)');
-  }
 
-  // Flechas: prev desactivada en step 0, next desactivada en step 3
-  var prev = document.getElementById('age-prev');
-  var next = document.getElementById('age-next');
-  if (prev) { prev.style.opacity = step === 0 ? '0.3' : '1'; prev.style.cursor = step === 0 ? 'default' : 'pointer'; }
-  if (next) { next.style.opacity = step === 3 ? '0.3' : '1'; next.style.cursor = step === 3 ? 'default' : 'pointer'; }
 
-  // Imágenes dentro del aging-slide de la pista grande
-  var largeAging = document.querySelector('.carousel-track-large [id="aging-slide"]');
-  if (largeAging) {
-    var imgs = largeAging.querySelectorAll('img');
-    imgs.forEach(function(img, i) { img.style.opacity = (i === step) ? '1' : '0'; });
-  }
-};
 
-window.ageNav = function(dir) {
-  var next = Math.max(0, Math.min(3, _ageCurrentStep + dir));
-  window.setAgeStep(next);
-};
 
-// Warmup: forzar buffering de todos los videos embejecimiento (incluido el clone del large track)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 setTimeout(function() {
   document.querySelectorAll('video[src*="embejecimiento"]').forEach(function(v) {
     v.muted = true;
@@ -9877,5 +9979,10 @@ window.chooseFinal = function(happy) {
 </script>
 
 </html>
+
+
+
+
+
 
 
