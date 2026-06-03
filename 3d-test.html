@@ -1636,25 +1636,20 @@ window.onerror = function(msg, url, line, col, err) {
         <img src="assets/img/sin final feliz.jfif" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0;transition:opacity 0.4s ease;">
 
       </div>
-      <!-- Slide 3 -->
-      <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
+      <!-- Slide besos parejas (sensible) -->
+      <div id="besos-slide" class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
         <video src="assets/img/besos parejas.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"></video>
-        <div id="dummy-sens-ov"
-          onclick="window.dismissSens(event)"
-          style="
+        <div id="dummy-sens-ov" style="
           position:absolute; inset:0;
           border-radius:4px;
-          overflow:hidden;
-          display:flex; flex-direction:column;
-          align-items:center; justify-content:center;
-          gap:10px;
           backdrop-filter:blur(22px) saturate(0.6) brightness(0.75);
           -webkit-backdrop-filter:blur(22px) saturate(0.6) brightness(0.75);
           background:rgba(0,0,0,0.28);
+          pointer-events:none;
+          z-index:10;
+          opacity:1;
           transition:opacity 0.45s cubic-bezier(0.4,0,0.2,1);
-          pointer-events:auto;
-          cursor:pointer;
-          z-index: 10;
+          display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
         ">
           <svg width="38" height="38" viewBox="0 0 24 24" fill="none" style="opacity:0.92;margin-bottom:4px;">
             <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1664,24 +1659,7 @@ window.onerror = function(msg, url, line, col, err) {
           </svg>
           <div style="font-family:'Inter',sans-serif;font-weight:500;font-size:0.92rem;color:#fff;text-align:center;">Contenido sensible</div>
           <div style="font-family:'Inter',sans-serif;font-weight:400;font-size:0.70rem;color:rgba(255,255,255,0.75);text-align:center;line-height:1.4;max-width:80%;">Este v&iacute;deo puede contener<br>contenido para adultos.</div>
-          <button onclick="window.dismissSens(event)" style="
-            margin-top:10px;
-            background:rgba(163,204,0,1);
-            color:#0a0a0a;
-            font-family:'Inter',sans-serif;
-            font-weight:700;
-            font-size:0.78rem;
-            letter-spacing:0.02em;
-            border-radius:999px;
-            padding:10px 26px;
-            box-shadow:0 2px 16px rgba(163,204,0,0.35);
-            cursor:pointer;
-            border:none;
-            pointer-events:auto;
-            transition:transform 0.12s ease;
-          " onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
-            Ver v&iacute;deo
-          </button>
+
         </div>
       </div>
       <!-- Slide 5 (Magazine) -->
@@ -5575,13 +5553,16 @@ window.onerror = function(msg, url, line, col, err) {
         if (prog > 9.62) {
           let currIndex = getCarouselIndex(prog);
           
-          // Resetear overlay si el usuario se aleja del slide
-          if (Math.abs(currIndex - 7) > 1.0 && window._sensDismissed) {
-            window._sensDismissed = false;
-            document.querySelectorAll('#dummy-sens-ov').forEach(el => {
-              el.style.opacity = '1';
-              el.style.pointerEvents = 'auto';
-            });
+          // Resetear overlay si el usuario se aleja del slide de besos parejas
+          {
+            let _bReset = -1;
+            for (let k = 0; k < largeItems.length; k++) {
+              if (largeItems[k].id === 'besos-slide') { _bReset = k; break; }
+            }
+            if (_bReset >= 0 && Math.abs(currIndex - _bReset) > 1.0 && window._sensDismissed) {
+              // Usar la función centralizada que borra la regla CSS !important
+              if (window._resetSensOverlay) window._resetSensOverlay();
+            }
           }
 
           // EXIT: slide hacia la izquierda durante el breakout (espejo de la entrada desde la derecha)
@@ -5686,6 +5667,20 @@ window.onerror = function(msg, url, line, col, err) {
               citasSliderPanel.style.transform = `translateX(${slideX}px)`;
             }
           }
+
+          // --- SENS PANEL: slide "besos parejas" (busca por ID igual que final-slide) ---
+          {
+            const _btn = document.getElementById('sens-cta-btn');
+            if (_btn) {
+              let _bIdx = -1;
+              for (let k = 0; k < largeItems.length; k++) {
+                if (largeItems[k].id === 'besos-slide') { _bIdx = k; break; }
+              }
+              const _nearBesos = _bIdx >= 0 && Math.abs(currIndex - _bIdx) < 0.45;
+              _btn.style.display = (!window._sensDismissed && _nearBesos) ? 'block' : 'none';
+            }
+          }
+
 
           // --- FINAL FELIZ PANEL: desliza con el carrusel (como el video) ---
           {
@@ -9752,6 +9747,41 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
 </div>
 
 
+<!-- sens-panel stub: referencia de posicionamiento -->
+<div id="sens-panel" style="position:fixed;z-index:10000020;pointer-events:none;display:none;"></div>
+
+<!-- BOTÓN SENSIBLE: position:fixed en el body, FUERA del carousel.
+     CSS centrado horizontalmente, sin coordenadas dinámicas. -->
+<button id="sens-cta-btn"
+  onclick="window.dismissSens(event)"
+  style="
+    display:none;
+    position:fixed;
+    left:50%;
+    top:72vh;
+    transform:translateX(-50%);
+    z-index:99999999;
+    pointer-events:auto;
+    background:rgba(163,204,0,1);
+    color:#0a0a0a;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:0.78rem;
+    letter-spacing:0.02em;
+    border-radius:999px;
+    padding:10px 26px;
+    box-shadow:0 2px 16px rgba(163,204,0,0.35);
+    cursor:pointer;
+    border:none;
+    white-space:nowrap;
+    transition:box-shadow 0.12s ease, transform 0.12s ease;
+  "
+  onmouseover="this.style.transform='translateX(-50%) scale(1.04)'"
+  onmouseout="this.style.transform='translateX(-50%) scale(1)'"
+>
+  Ver v&iacute;deo
+</button>
+
 <!-- Panel final feliz: vive dentro de #final-feliz-panel-clip -->
 <div id="final-feliz-panel" style="
   position: fixed;
@@ -9899,13 +9929,49 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
 <!-- SENSITIVE OVERLAY - fuera de toda jerarquía, z-index máximo
      Controlado desde la lógica JS del carousel (currIndex) -->
 <script>
+// ── SENS OVERLAY CONTROL ──────────────────────────────────────────────────
+// Inyectamos un <style> en el <head> con !important.
+// Las reglas de hoja de estilo con !important ganan sobre CUALQUIER inline style,
+// incluyendo el backdrop-filter que Chrome composita en GPU.
+(function() {
+  var _ss = document.createElement('style');
+  _ss.id  = '__sens_dismiss_css';
+  // Empieza vacío (overlay visible por defecto)
+  _ss.textContent = '';
+  document.head.appendChild(_ss);
+})();
+
 window.dismissSens = function(e) {
   if (e) { e.stopPropagation(); e.preventDefault(); }
-  document.querySelectorAll('#dummy-sens-ov').forEach(function(el) { 
-    el.style.opacity = '0'; 
-    el.style.pointerEvents = 'none'; 
-  });
+
+  // Ocultar botón
+  var btn = document.getElementById('sens-cta-btn');
+  if (btn) btn.style.display = 'none';
+
+  // Inyectar regla CSS !important que destruye el overlay
+  var ss = document.getElementById('__sens_dismiss_css');
+  if (ss) {
+    ss.textContent = [
+      '#dummy-sens-ov {',
+      '  display: none !important;',
+      '  backdrop-filter: none !important;',
+      '  -webkit-backdrop-filter: none !important;',
+      '  opacity: 0 !important;',
+      '  pointer-events: none !important;',
+      '}'
+    ].join('\n');
+  }
+
   window._sensDismissed = true;
+};
+
+// Función de reset: borra la regla CSS → overlay vuelve a sus estilos inline originales
+window._resetSensOverlay = function() {
+  var ss = document.getElementById('__sens_dismiss_css');
+  if (ss) ss.textContent = '';
+  window._sensDismissed = false;
+  var btn = document.getElementById('sens-cta-btn');
+  if (btn) btn.style.display = '';  // reset al estado del loop
 };
 
 
