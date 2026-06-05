@@ -6159,6 +6159,22 @@ window.onerror = function(msg, url, line, col, err) {
         updateFaceSwap();
         updateGlobalScenes();
 
+        // --- OVERRIDE ROTACIÓN CAJA ZONA MUERTA ---
+        // GSAP termina en prog ~1.7. De 1.7 a 2.2 la caja girará 360 grados exactos extra (335 -> 695) 
+        // para mantenerse en movimiento sin romper la transición hacia el carrusel (donde espera estar en 335).
+        if (prog > 1.7 && prog <= 9.62) {
+           const vol = document.querySelector('#mainDeck .box-3d-volume');
+           if (vol) {
+             let rotY = 335;
+             if (prog <= 2.2) {
+                 rotY = mapRange(prog, 1.7, 2.2, 335, 695);
+             } else {
+                 rotY = 695;
+             }
+             vol.style.transform = `rotateY(${rotY}deg) rotateX(0deg) rotateZ(0deg)`;
+           }
+        }
+
         // SAFEGUARD: fuerza stOverlay visible en toda la fase scatter (GSAP puede restablecerse a 0 en scrub)
         if (stOverlay) stOverlay.style.opacity = (prog >= 0.82 && prog <= 2.2) ? '1' : '';
 
