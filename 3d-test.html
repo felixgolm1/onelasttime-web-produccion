@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <script>
@@ -1601,7 +1601,7 @@ window.onerror = function(msg, url, line, col, err) {
       </div>
       <!-- Slide 7 (duplicate) -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
-        <img src="assets/img/pareja barco.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+        <img src="assets/img/acampada.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
         <!-- Overlay copy: solo visible en el recuadro grande (data-large-only) -->
         <div data-large-only="true" style="
           position: absolute;
@@ -2315,6 +2315,38 @@ window.onerror = function(msg, url, line, col, err) {
         max-width: 144px;
         border-radius: 0px;
         transform-origin: center center;
+      }
+      /* ── Historia + Testimonios: full-width en mobile ── */
+      .review-left-col,
+      .review-right-col {
+        width: 90% !important;
+        max-width: none !important;
+        align-self: flex-start !important;
+        text-align: left !important;
+        /* Opción B: fondo oscuro semitransparente, sin blur */
+        background: rgba(0, 8, 0, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 6px;
+        padding: 1.4rem 1.5rem;
+      }
+      .review-right-col {
+        align-items: flex-start !important;
+      }
+      .review-right-col .review-quote,
+      .review-right-col .review-author {
+        text-align: left !important;
+      }
+      .review-right-col .osr-top-line {
+        justify-content: flex-start !important;
+      }
+      .review-right-col .osr-stars-small,
+      .review-right-col .review-img-col {
+        justify-content: flex-start !important;
+      }
+      #end-reviews-container .osr-body {
+        gap: 2.5rem !important;
+        flex-direction: column !important;
+      }
     }
   </style>
   <div id="edge-glow" class="oryzo-glow">
@@ -9145,6 +9177,21 @@ setInterval(function() {
     </div>
   
     </div>
+
+<!-- ── IMG STRIP CAROUSEL (after testimonios) ── -->
+<div id="img-strip-container" style="position:fixed;inset:0;z-index:10000003;overflow:hidden;opacity:0;pointer-events:none;">
+  <div id="img-strip-wrapper" style="position:absolute;top:0;left:0;width:100%;height:100%;will-change:transform;">
+    <div id="img-strip-track" style="display:flex;flex-direction:row;position:absolute;top:0;left:0;height:100%;gap:0.5cm;will-change:transform;">
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/mesa sola.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/pareja sofa.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/paseo.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/durmiendo.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/mesa parada.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/cartas viejas.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 // Listener global para el botón de contenido sensible (capture phase para evitar bloqueos)
 window.addEventListener('click', function(e) {
@@ -9736,6 +9783,61 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
            if(eRev2){if(localP>4.72&&localP<6.32){var eRp2=mapRange(localP,4.72,6.32,0,1);eRev2.style.transform='translateY('+mapRange(localP,4.72,6.32,window.innerHeight*1.5,-window.innerHeight*1.5)+'px)';eRev2.style.opacity=eRp2>0.85?mapRange(eRp2,0.85,1.0,1,0):1; updateReviewPanelInternals(eRev2, eRp2);}else eRev2.style.opacity='0';}
            if(eRev3){if(localP>6.52&&localP<8.12){var eRp3=mapRange(localP,6.52,8.12,0,1);eRev3.style.transform='translateY('+mapRange(localP,6.52,8.12,window.innerHeight*1.5,-window.innerHeight*1.5)+'px)';eRev3.style.opacity=eRp3>0.85?mapRange(eRp3,0.85,1.0,1,0):1; updateReviewPanelInternals(eRev3, eRp3);}else eRev3.style.opacity='0';}
            if(eRev4){if(localP>8.32&&localP<9.92){var eRp4=mapRange(localP,8.32,9.92,0,1);eRev4.style.transform='translateY('+mapRange(localP,8.32,9.92,window.innerHeight*1.5,-window.innerHeight*1.5)+'px)';eRev4.style.opacity=eRp4>0.85?mapRange(eRp4,0.85,1.0,1,0):1; updateReviewPanelInternals(eRev4, eRp4);}else eRev4.style.opacity='0';}
+
+
+
+            // -- IMG STRIP CAROUSEL -- cortina per-slide estilo Oryzo
+            (function(){
+              var isCont    = document.getElementById('img-strip-container');
+              var isWrapper = document.getElementById('img-strip-wrapper');
+              var isTrack   = document.getElementById('img-strip-track');
+              if (!isCont || !isWrapper || !isTrack) return;
+              var IS_ENTER  = 9.7;
+              var IS_CENTER = 9.96;
+              var IS_END    = 15.9;  // 6 slides: 5 transiciones x ~1.2 unidades
+              var slides = isTrack.children;
+              isWrapper.style.clipPath = 'none';
+              isWrapper.style.transform = 'none';
+              if (localP >= IS_ENTER) {
+                isCont.style.opacity = '1';
+                if (localP <= IS_CENTER) {
+                  // FASE 1: todas las slides revelan a la vez con cortina izq->der
+                  var sep = mapRange(localP, IS_ENTER, IS_CENTER, 0, 1);
+                  sep = Math.max(0, Math.min(1, sep));
+                  sep = sep < 0.5 ? 2*sep*sep : 1 - Math.pow(-2*sep+2,2)/2;
+                  var clipR = (1 - sep) * 100;
+                  for (var s = 0; s < slides.length; s++) {
+                    slides[s].style.clipPath = 'inset(0 ' + clipR + '% 0 0)';
+                  }
+                  isTrack.style.transform = 'translateX(25vw)';
+                } else {
+                  // FASE 2: clip-path individual por posicion en el viewport
+                  var ssp = mapRange(localP, IS_CENTER, IS_END, 0, 1);
+                  ssp = Math.max(0, Math.min(1, ssp));
+                  ssp = ssp < 0.5 ? 2*ssp*ssp : 1 - Math.pow(-2*ssp+2,2)/2;
+                  var tx = 25 - (ssp * 200);
+                  isTrack.style.transform = 'translateX(' + tx + 'vw)';
+                  var vpW = window.innerWidth;
+                  for (var s2 = 0; s2 < slides.length; s2++) {
+                    var rect = slides[s2].getBoundingClientRect();
+                    if (rect.left >= vpW) {
+                      slides[s2].style.clipPath = 'inset(0 100% 0 0)';
+                    } else if (rect.left > 0) {
+                      var visF = Math.max(0, Math.min(1, (vpW - rect.left) / rect.width));
+                      slides[s2].style.clipPath = 'inset(0 ' + ((1 - visF) * 100) + '% 0 0)';
+                    } else {
+                      slides[s2].style.clipPath = 'none';
+                    }
+                  }
+                }
+              } else {
+                isCont.style.opacity = '0';
+                isTrack.style.transform = 'translateX(25vw)';
+                for (var s3 = 0; s3 < slides.length; s3++) {
+                  slides[s3].style.clipPath = 'inset(0 100% 0 0)';
+                }
+              }
+            })();
          }
       }
       
