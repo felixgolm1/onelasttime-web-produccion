@@ -39,7 +39,7 @@ window.onerror = function(msg, url, line, col, err) {
     body, html { width:100%; height:100%; background: #000; background-image: radial-gradient(ellipse at 0% 100%, rgba(204,255,0,0.36) 0%, transparent 80%), radial-gradient(ellipse at 100% 100%, rgba(204,255,0,0.18) 0%, transparent 70%); overflow:hidden; }
     /* CSS Scrollbar removido, se usa DOM custom abajo */
     #custom-scroll-track {
-      position: fixed; top: 0; right: 0; width: 16px; height: 100vh; z-index: 10000001; pointer-events: none;
+      position: fixed; top: 0; right: 0; width: 16px; height: 100vh; z-index: 10000010; pointer-events: none;
     }
     #custom-scroll-thumb {
       position: absolute; top: 0; right: 0; width: 100%; height: 29vh; background: #f5eedf; pointer-events: auto;
@@ -1138,7 +1138,7 @@ window.onerror = function(msg, url, line, col, err) {
       bottom: 1.25rem;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10000001;
+      z-index: 10000010;
       display: flex;
       align-items: center;
       gap: 0.8rem;
@@ -3553,7 +3553,7 @@ window.onerror = function(msg, url, line, col, err) {
 
     // ── Drivers ──────────────────────────────────────────────────
     // Reducido maxProg para que el scroll termine justo al completar la nueva sección
-    const maxProg = 37.0;  // Extendido para acomodar el bloque final completo (localP hasta 10.22)  // TRANS_EXIT x2 (1.20) + TRANS_ENTRY (0.60) + estatico (0.475) ×4 steps
+    const maxProg = 39.5;  // Extendido para 6 slides del carousel (localP hasta 18.4)  // TRANS_EXIT x2 (1.20) + TRANS_ENTRY (0.60) + estatico (0.475) ×4 steps
     let prog = parseFloat(sessionStorage.getItem('dev_prog')) || 0;
     // Si sessionStorage tiene un valor legacy en la zona prohibida (entre el salto cuantico 2.20 y 9.62),
     // reiniciamos a 0 para evitar un quantum jump inmediato al cargar.
@@ -9182,12 +9182,151 @@ setInterval(function() {
 <div id="img-strip-container" style="position:fixed;inset:0;z-index:10000003;overflow:hidden;opacity:0;pointer-events:none;">
   <div id="img-strip-wrapper" style="position:absolute;top:0;left:0;width:100%;height:100%;will-change:transform;">
     <div id="img-strip-track" style="display:flex;flex-direction:row;position:absolute;top:0;left:0;height:100%;gap:0.5cm;will-change:transform;">
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/mesa sola.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/pareja sofa.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/paseo.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/durmiendo.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/mesa parada.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/cartas viejas.jfif" style="width:100%;height:83vh;object-fit:cover;display:block;border-radius:0;"></div>
+      <style>
+  .pill-track { display: flex; flex-direction: column; width: 100%; align-items: center; will-change: transform; }
+  .pill-copy { display: flex; flex-direction: column; gap: 20px; padding: 20px 0; align-items: center; width: 100%; }
+  .pill-track-up { }
+  .pill-track-down { }
+  .pill { background: rgba(20, 20, 20, 0.4); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: #ccff00; padding: 10px 18px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; white-space: nowrap; border: 1px solid rgba(204, 255, 0, 0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.2); letter-spacing: 0.5px; }
+ 100% { transform: translateY(-50%); } }
+ 100% { transform: translateY(0); } }
+  
+  .spark-path { fill: none; stroke: #ccff00; stroke-width: 3; stroke-dasharray: 20 100; stroke-dashoffset: 120; animation: spark-shoot 2.5s infinite linear; filter: drop-shadow(0 0 6px #ccff00); }
+  .spark-path-left { animation-delay: 0s; }
+  .spark-path-right { animation-delay: 1.25s; }
+  @keyframes spark-shoot {
+    0% { stroke-dashoffset: 120; opacity: 0; }
+    5% { opacity: 1; }
+    40% { opacity: 1; }
+    50% { stroke-dashoffset: -20; opacity: 0; }
+    100% { stroke-dashoffset: -20; opacity: 0; }
+  }
+</style>
+<div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;">
+  <div style="position:relative; width:100%; height:79vh; margin-top:0.5cm; overflow:hidden;">
+    <img src="assets/img/mesa sola.jfif" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
+    
+    <!-- Titulo superior: "Seáis como seáis" -->
+    <div id="parallax-text-top" style="
+      position: absolute;
+      top: calc(28px + 0.2cm);
+      left: 50%;
+      transform: translateX(calc(-50% + 0.55cm));
+      z-index: 20;
+      text-align: center;
+      pointer-events: none;
+    ">
+      <p style="
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        font-size: clamp(1.96rem, 3.85vw, 4.2rem);
+        line-height: 1.02;
+        color: #ffffff;
+        margin: 0;
+        text-shadow: 0 2px 24px rgba(0,0,0,0.45);
+        letter-spacing: -0.025em;
+        text-transform: uppercase;
+      ">Seáis<br>como<br>seáis</p>
+    </div>
+
+    <!-- Subtitulo inferior: "Sin filtros" -->
+    <div id="parallax-text-bot" style="
+      position: absolute;
+      top: 62%;
+      left: 50%;
+      transform: translateX(calc(-50% + 0.55cm));
+      z-index: 20;
+      text-align: center;
+      pointer-events: none;
+    ">
+      <p style="
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        font-size: clamp(1.1rem, 2vw, 2rem);
+        line-height: 1;
+        color: #ffffff;
+        margin: 0;
+        text-shadow: 0 2px 24px rgba(0,0,0,0.45);
+        letter-spacing: -0.025em;
+        text-transform: uppercase;
+      ">Sin filtros</p>
+    </div>
+
+    <!-- Columna Izquierda (Sube) -->
+    <div style="position:absolute; left: 6%; top: 0; height: 100%; width: 180px; overflow: hidden; z-index: 10; display:flex; justify-content:center;">
+       <div class="pill-track pill-track-up" id="pill-col-up">
+          <div class="pill-copy">
+            <div class="pill">Introvertidxs</div>
+            <div class="pill">Extrovertidxs</div>
+            <div class="pill">Aventurerxs</div>
+            <div class="pill">Competitivxs</div>
+            <div class="pill">Tímidxs</div>
+            <div class="pill">Espontánexs</div>
+            <div class="pill">Exploradorxs</div>
+            <div class="pill">Románticxs</div>
+            <div class="pill">Curiosxs</div>
+            <div class="pill">Inseparables</div>
+            <div class="pill">Racionales</div>
+            <div class="pill">Soñadorxs</div>
+            <div class="pill">Apasionadxs</div>
+            <div class="pill">Intelectuales</div>
+            <div class="pill">Divertidxs</div>
+            <div class="pill">Intensxs</div>
+            <div class="pill">Relajadxs</div>
+            <div class="pill">Polos opuestos</div>
+            <div class="pill">Recién conocidxs</div>
+            <div class="pill">Incondicionales</div>
+          </div>
+       </div>
+    </div>
+
+    <!-- Columna Derecha (Baja) -->
+    <div style="position:absolute; right: 6%; top: 0; height: 100%; width: 180px; overflow: hidden; z-index: 10; display:flex; justify-content:center;">
+       <div class="pill-track pill-track-down" id="pill-col-down">
+          <div class="pill-copy">
+            <div class="pill">Independientes</div>
+            <div class="pill">Juguetonxs</div>
+            <div class="pill">Observadorxs</div>
+            <div class="pill">Alocadxs</div>
+            <div class="pill">Protectorxs</div>
+            <div class="pill">Nostálgicxs</div>
+            <div class="pill">Impulsivxs</div>
+            <div class="pill">Dramáticxs</div>
+            <div class="pill">Despreocupadxs</div>
+            <div class="pill">Íntimxs</div>
+            <div class="pill">Diferentes</div>
+            <div class="pill">Creativxs</div>
+            <div class="pill">Transparentes</div>
+            <div class="pill">Un gran equipo</div>
+            <div class="pill">Viajerxs</div>
+            <div class="pill">Extravagantes</div>
+            <div class="pill">Tradicionales</div>
+            <div class="pill">Modernxs</div>
+            <div class="pill">Conectadxs</div>
+            <div class="pill">Rebeldes</div>
+            <div class="pill">Analíticxs</div>
+            <div class="pill">Casadxs</div>
+            <div class="pill">Prometidxs</div>
+            <div class="pill">Ilusionadxs</div>
+            <div class="pill">Madurxs</div>
+            <div class="pill">Intrépidxs</div>
+            <div class="pill">Inconformistas</div>
+            <div class="pill">Enigmáticxs</div>
+            <div class="pill">Profundxs</div>
+          </div>
+       </div>
+    </div>
+  </div>
+</div>
+      <div style="flex-shrink:0;width:25vw;height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;">
+          <img id="slide2-pan-img" src="assets/img/pareja sofa recortado.jpg" style="position:absolute;top:0;left:0;width:200%;height:100%;object-fit:cover;object-position:left center;display:block;border-radius:0;will-change:transform;">
+        </div>
+      </div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/paseo.jfif" style="width:100%;height:79vh;object-fit:cover;display:block;border-radius:0;margin-top:0.5cm;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/durmiendo.jfif" style="width:100%;height:79vh;object-fit:cover;display:block;border-radius:0;margin-top:0.5cm;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/mesa parada.jfif" style="width:100%;height:79vh;object-fit:cover;display:block;border-radius:0;margin-top:0.5cm;"></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/cartas viejas.jfif" style="width:100%;height:79vh;object-fit:cover;display:block;border-radius:0;margin-top:0.5cm;"></div>
     </div>
   </div>
 </div>
@@ -9205,7 +9344,58 @@ window.addEventListener('click', function(e) {
   }
 }, true);
 </script>
-</body>
+<script>
+(function() {
+  function initMarquee(trackEl, direction) {
+    // Duplicar el pill-copy para tener 2 copias identicas
+    var original = trackEl.querySelector('.pill-copy');
+    if (!original) return;
+    var clone = original.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    trackEl.appendChild(clone);
+
+    var offset = 0;
+    var speed = 77.4; // px/s — misma velocidad que antes
+    var lastTime = null;
+    var copyHeight = null;
+
+    function getHeight() {
+      return original.offsetHeight;
+    }
+
+    function step(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      var delta = (timestamp - lastTime) / 1000; // segundos
+      lastTime = timestamp;
+
+      if (!copyHeight) copyHeight = getHeight();
+
+      if (direction === 'up') {
+        // Columna izquierda: sube
+        offset += speed * delta;
+        if (offset >= copyHeight) offset -= copyHeight;
+        trackEl.style.transform = 'translateY(-' + offset + 'px)';
+      } else {
+        // Columna derecha: baja (sentido contrario)
+        offset += speed * delta;
+        if (offset >= copyHeight) offset -= copyHeight;
+        trackEl.style.transform = 'translateY(' + (offset - copyHeight) + 'px)';
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  window.addEventListener('load', function() {
+    var up = document.getElementById('pill-col-up');
+    var down = document.getElementById('pill-col-down');
+    if (up) initMarquee(up, 'up');
+    if (down) initMarquee(down, 'down');
+  });
+})();
+</script></body>
 <script>
 document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-container .review-left-quote').forEach(el => { if (typeof splitTextIntoChars === 'function') splitTextIntoChars(el); });
 </script>
@@ -9793,8 +9983,8 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
               var isTrack   = document.getElementById('img-strip-track');
               if (!isCont || !isWrapper || !isTrack) return;
               var IS_ENTER  = 9.7;
-              var IS_CENTER = 9.96;
-              var IS_END    = 15.9;  // 6 slides: 5 transiciones x ~1.2 unidades
+              var IS_CENTER = 10.48; // 3x mas lento (duración 0.78 localP)
+              var IS_END    = 17.5;  // 6 slides: 5a imagen centrada con margen final
               var slides = isTrack.children;
               isWrapper.style.clipPath = 'none';
               isWrapper.style.transform = 'none';
@@ -9809,14 +9999,28 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
                   for (var s = 0; s < slides.length; s++) {
                     slides[s].style.clipPath = 'inset(0 ' + clipR + '% 0 0)';
                   }
-                  isTrack.style.transform = 'translateX(25vw)';
+                  isTrack.style.transform = 'translateX(0.5cm)';
+                  // En fase de entrada, resetear parallax a base
+                  var _ptTopF1 = document.getElementById('parallax-text-top');
+                  var _ptBotF1 = document.getElementById('parallax-text-bot');
+                  var _ptxBase = 'translateX(calc(-50% + 0.55cm))';
+                  if (_ptTopF1) _ptTopF1.style.transform = _ptxBase;
+                  if (_ptBotF1) _ptBotF1.style.transform = _ptxBase;
                 } else {
                   // FASE 2: clip-path individual por posicion en el viewport
                   var ssp = mapRange(localP, IS_CENTER, IS_END, 0, 1);
                   ssp = Math.max(0, Math.min(1, ssp));
                   ssp = ssp < 0.5 ? 2*ssp*ssp : 1 - Math.pow(-2*ssp+2,2)/2;
-                  var tx = 25 - (ssp * 200);
-                  isTrack.style.transform = 'translateX(' + tx + 'vw)';
+                  // calc: ancho total track 300vw + 2.5cm gap. Meta final para alinear 6a imagen = -200vw - 3cm
+                  isTrack.style.transform = 'translateX(calc(0.5cm - ' + (ssp * 175) + 'vw - ' + (ssp * 3.5) + 'cm))';
+                  // Parallax: textos se mueven al 85% de la velocidad del track (15% de contrarretraso)
+                  var _pxVw = (ssp * 200 * 0.075).toFixed(2);
+                  var _pxCm = (ssp * 3.5  * 0.075).toFixed(3);
+                  var _ptx  = 'translateX(calc(-50% + 0.55cm + ' + _pxVw + 'vw + ' + _pxCm + 'cm))';
+                  var _ptTop = document.getElementById('parallax-text-top');
+                  var _ptBot = document.getElementById('parallax-text-bot');
+                  if (_ptTop) _ptTop.style.transform = _ptx;
+                  if (_ptBot) _ptBot.style.transform = _ptx;
                   var vpW = window.innerWidth;
                   for (var s2 = 0; s2 < slides.length; s2++) {
                     var rect = slides[s2].getBoundingClientRect();
@@ -9828,11 +10032,20 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
                     } else {
                       slides[s2].style.clipPath = 'none';
                     }
+                    // Pan imagen slide 2 (pareja sofa) según posición en viewport
+                    if (s2 === 2) {
+                      var _s2Pan = document.getElementById('slide2-pan-img');
+                      if (_s2Pan) {
+                        var _panFull = vpW - rect.width; // rect.left donde el slide esta 100% visible
+                        var _pf2 = Math.max(0, Math.min(1, (_panFull - rect.left) / (_panFull + rect.width)));
+                        _s2Pan.style.transform = 'translateX(' + (-_pf2 * 50).toFixed(2) + '%)';
+                      }
+                    }
                   }
                 }
               } else {
                 isCont.style.opacity = '0';
-                isTrack.style.transform = 'translateX(25vw)';
+                isTrack.style.transform = 'translateX(0.5cm)';
                 for (var s3 = 0; s3 < slides.length; s3++) {
                   slides[s3].style.clipPath = 'inset(0 100% 0 0)';
                 }
