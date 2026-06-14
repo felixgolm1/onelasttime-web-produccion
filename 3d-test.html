@@ -9229,28 +9229,6 @@ setInterval(function() {
       ">Seáis<br>como<br>seáis</p>
     </div>
 
-    <!-- Subtitulo inferior: "Sin filtros" -->
-    <div id="parallax-text-bot" style="
-      position: absolute;
-      top: 62%;
-      left: 50%;
-      transform: translateX(calc(-50% + 0.55cm));
-      z-index: 20;
-      text-align: center;
-      pointer-events: none;
-    ">
-      <p style="
-        font-family: 'Inter', sans-serif;
-        font-weight: 800;
-        font-size: clamp(1.1rem, 2vw, 2rem);
-        line-height: 1;
-        color: #ffffff;
-        margin: 0;
-        text-shadow: 0 2px 24px rgba(0,0,0,0.45);
-        letter-spacing: -0.025em;
-        text-transform: uppercase;
-      ">Sin filtros</p>
-    </div>
 
     <!-- Columna Izquierda (Sube) -->
     <div style="position:absolute; left: 6%; top: 0; height: 100%; width: 180px; overflow: hidden; z-index: 10; display:flex; justify-content:center;">
@@ -9321,9 +9299,40 @@ setInterval(function() {
       <div style="flex-shrink:0;width:25vw;height:100%;display:flex;align-items:center;justify-content:center;">
         <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;">
           <img id="slide2-pan-img" src="assets/img/pareja sofa recortado.jpg" style="position:absolute;top:0;left:0;width:200%;height:100%;object-fit:cover;object-position:left center;display:block;border-radius:0;will-change:transform;">
+          <div id="slide2-copy" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;writing-mode:vertical-rl;text-align:center;">
+            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:3.24rem;line-height:1.15;color:#ffffff;margin:0 0.6em 0 0;text-shadow:0 2px 24px rgba(0,0,0,0.45);letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">No es suerte</p>
+            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:3.24rem;line-height:1.15;color:#ffffff;margin:0;text-shadow:0 2px 24px rgba(0,0,0,0.45);letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">Es compromiso</p>
+          </div>
         </div>
       </div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;background:#000;"><img id="slide3-iris-img" src="assets/img/paseo.jfif" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:0;will-change:clip-path;"></div></div>
+      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;background:#000;">
+          <!-- Imagen fantasma z:1 (siempre visible, full slide) -->
+          <img src="assets/img/paseo.jfif" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1;">
+          <!-- Overlay negro 50% z:2 (atenúa la imagen fantasma) -->
+          <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2;"></div>
+          <!-- Texto oscuro z:5 -->
+          <div id="slide3-text-dark" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;pointer-events:none;display:flex;align-items:center;">
+            <div style="padding-left:50%;text-align:left;transform:translateY(-2cm);">
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;">Para</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;">Romper la monoton&iacute;a</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;">Superar una crisis</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;">Y romper el silencio</p>
+            </div>
+          </div>
+          <!-- Imagen iris z:10 (revela imagen a 100% dentro del círculo) -->
+          <img id="slide3-iris-img" src="assets/img/paseo.jfif" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;z-index:10;will-change:clip-path;clip-path:circle(0px at 45% 64%);">
+          <!-- Texto luz z:15 (mismo clip que iris) -->
+          <div id="slide3-text-light" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:15;pointer-events:none;display:flex;align-items:center;clip-path:circle(0px at 45% 64%);">
+            <div style="padding-left:50%;text-align:left;transform:translateY(-2cm);">
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.6);">O para</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.6);">La intensidad del inicio</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.6);">Conocerse non-stop</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.6);">Y seguir construyendo</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/durmiendo.jfif" style="width:100%;height:79vh;object-fit:cover;display:block;border-radius:0;margin-top:0.5cm;"></div>
       <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/mesa parada.jfif" style="width:100%;height:79vh;object-fit:cover;display:block;border-radius:0;margin-top:0.5cm;"></div>
       <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;"><img src="assets/img/cartas viejas.jfif" style="width:100%;height:79vh;object-fit:cover;display:block;border-radius:0;margin-top:0.5cm;"></div>
@@ -10039,6 +10048,12 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
                         var _panFull = vpW - rect.width; // rect.left donde el slide esta 100% visible
                         var _pf2 = Math.max(0, Math.min(1, (_panFull - rect.left) / (_panFull + rect.width)));
                         _s2Pan.style.transform = 'translateX(' + (-_pf2 * 50).toFixed(2) + '%)';
+                        // Subrayado animado en 'compromiso' sincronizado con scroll
+                        var _ulEl = document.getElementById('compromiso-underline');
+                        if (_ulEl) {
+                          var _ulP = Math.max(0, Math.min(1, _pf2 * 2));
+                          _ulEl.style.transform = 'scaleY(' + _ulP.toFixed(3) + ')';
+                        }
                       }
                     }
                     // Efecto iris en slide 3 (paseo) - crece solo cuando slide esta 100% visible
@@ -10046,10 +10061,17 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
                       var _s3 = document.getElementById('slide3-iris-img');
                       if (_s3) {
                         var _irisFullStart = vpW - rect.width;
-                        var _pf3 = Math.max(0, Math.min(1, (_irisFullStart - rect.left) / (_irisFullStart + rect.width)));
                         var _maxR3 = rect.width * 1.4;
-                        var _r3 = 60 + Math.sqrt(_pf3) * (_maxR3 - 60);
+                        // Fase entrada: iris 5px -> 60px mientras el slide entra (clip reveal)
+                        var _entryP = Math.max(0, Math.min(1, (vpW - rect.left) / rect.width));
+                        var _entryEase = _entryP * _entryP * (3 - 2 * _entryP);
+                        var _rEntry = 5 + _entryEase * 55;
+                        // Fase pan: iris 60px -> maxR mientras el slide se desplaza
+                        var _pf3 = Math.max(0, Math.min(1, (_irisFullStart - rect.left) / (_irisFullStart + rect.width)));
+                        var _ease3 = _pf3 * _pf3 * (3 - 2 * _pf3);
+                        var _r3 = (rect.left > _irisFullStart) ? _rEntry : (60 + _ease3 * (_maxR3 - 60));
                         _s3.style.clipPath = 'circle(' + _r3.toFixed(1) + 'px at 45% 64%)';
+                        var _s3TL = document.getElementById('slide3-text-light'); if (_s3TL) _s3TL.style.clipPath = 'circle(' + _r3.toFixed(1) + 'px at 45% 64%)';
                       }
                     }
                   }
@@ -10060,6 +10082,9 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
                 for (var s3 = 0; s3 < slides.length; s3++) {
                   slides[s3].style.clipPath = 'inset(0 100% 0 0)';
                 }
+                // Reset subrayado compromiso al salir del carrusel
+                var _ulReset = document.getElementById('compromiso-underline');
+                if (_ulReset) _ulReset.style.transform = 'scaleY(0)';
               }
             })();
          }
