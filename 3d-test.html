@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <script>
@@ -2089,7 +2089,7 @@ window.onerror = function(msg, url, line, col, err) {
   </div>
   <!-- Subheadline derecha -->
   <div id="subheadline">
-    <p>¿Otra cena más con tu pareja, amigxs, familia, cita, compañerxs de trabajo...?<br>Nah, hagámosla inolvidable</p>
+    <p>¿Otra cena más con tu pareja u otra cita?<br>Nah, hagámosla inolvidable</p>
   </div>
   <!-- Headline izquierda -->
   <div id="headline">
@@ -2161,7 +2161,7 @@ window.onerror = function(msg, url, line, col, err) {
         <polyline points="7 10 12 15 17 10"></polyline>
       </svg>
     </div>
-    <span>O SCROLL PARA DESCUBRIR</span>
+    <span>SCROLL PARA DESCUBRIR</span>
   </div>
 
   <!-- Oryzo Volumetric Glow: Conic Gradient with Mask and heavy Blur -->
@@ -3553,7 +3553,7 @@ window.onerror = function(msg, url, line, col, err) {
 
     // ── Drivers ──────────────────────────────────────────────────
     // Reducido maxProg para que el scroll termine justo al completar la nueva sección
-    const maxProg = 39.5;  // Extendido para 6 slides del carousel (localP hasta 18.4)  // TRANS_EXIT x2 (1.20) + TRANS_ENTRY (0.60) + estatico (0.475) ×4 steps
+    const maxProg = 43.0;  // Extendido para 6 slides del carousel (localP hasta 18.4)  // TRANS_EXIT x2 (1.20) + TRANS_ENTRY (0.60) + estatico (0.475) ×4 steps
     let prog = parseFloat(sessionStorage.getItem('dev_prog')) || 0;
     // Si sessionStorage tiene un valor legacy en la zona prohibida (entre el salto cuantico 2.20 y 9.62),
     // reiniciamos a 0 para evitar un quantum jump inmediato al cargar.
@@ -9356,6 +9356,25 @@ setInterval(function() {
   </div>
 </div>
 
+<!-- OLT Logo Reveal: sube desde abajo cuando img-strip sale por arriba -->
+<div id="olt-logo-reveal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:10000001;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <img id="olt-logo-img-big"
+       src="assets/img/logo one last time.png"
+       alt="One Last Time"
+       style="width:70vw;max-width:900px;transform:translateY(100vh);will-change:transform;filter: brightness(0) invert(1);">
+  <div id="olt-final-text" style="width:70vw; max-width:900px; color:rgba(255,255,255,0.85); font-family:'Inter', sans-serif; font-size:clamp(1rem, 1.3vw, 1.2rem); font-weight:400; line-height:1.6; margin-top:3rem; text-align:center; transform:translateY(100vh); opacity:0; will-change:transform, opacity;">
+    <p style="margin-bottom: 1.5rem;"><i>"Si vives cada día como si fuera el último, algún día estarás en lo cierto"</i></p>
+    <p style="margin-bottom: 1.5rem;">Y aunque esperamos que este día quede lejos, no hay duda de que nunca volveremos a vivir cada preciso instante de nuevo.</p>
+    <p style="margin-bottom: 0;">Así que amemos a las personas que nos importan ahora, nunca sabremos cuando será la última oportunidad para hacerlo.</p>
+  </div>
+  <a href="#" id="olt-final-cta" class="btn btn-blue btn-full" style="margin-top:3rem; opacity:0; pointer-events:auto; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
+    <div class="mini-marquee-container" style="animation-duration: 50s;">
+      <div class="marquee-content">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
+      <div class="marquee-content" aria-hidden="true">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
+    </div>
+  </a>
+</div>
+
 <script>
 // Listener global para el botón de contenido sensible (capture phase para evitar bloqueos)
 window.addEventListener('click', function(e) {
@@ -9423,6 +9442,7 @@ window.addEventListener('click', function(e) {
 </script></body>
 <script>
 document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-container .review-left-quote').forEach(el => { if (typeof splitTextIntoChars === 'function') splitTextIntoChars(el); });
+document.querySelectorAll('#olt-final-text p').forEach(el => { if (typeof splitTextIntoChars === 'function') splitTextIntoChars(el); });
 </script>
 <script>
 // ── CONTROLADOR SECCIÓN NEUROCIENCIA — wipe Oryzo scroll-driven ──
@@ -9776,8 +9796,13 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
     if (oryzoSec && oryzoTxtL && oryzoTxtR && oryzoDeck) {
       // 1. Translación fluida de la sección (hasta el centro de la pantalla)
       var tSlide = clamp01((p - 21.7) / 1.6); // Termina en 23.3, justo cuando empieza a abrirse
-      var slideY = (1 - ease(tSlide)) * 130; // Nunca baja de 0 para no romper el fondo
+      // Empieza a bajar (38.6) con el carrusel y termina de desaparecer del todo (40.76)
+      var tExitBox = clamp01((p - 38.6) / (40.76 - 38.6)); 
+      var slideY = (1 - ease(tSlide)) * 130; // La pantalla se queda anclada
       oryzoSec.style.transform = 'translateY(' + slideY + 'vh)';
+      
+      // La baraja de cartas baja independientemente de la pantalla (80vh es suficiente para ocultarla)
+      oryzoDeck.style.transform = 'translateY(' + (tExitBox * 80) + 'vh)';
       oryzoSec.style.pointerEvents = tSlide > 0.5 ? 'auto' : 'none';
 
       // Sincronizamos el fondo morado 
@@ -9811,8 +9836,10 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
          }
          
          // tOpen: animacion de apertura SEPARADA de la subida — arranca cuando la caja ya es visible
-         var tOpen = clamp01((p - 23.3) / 0.3); // 23.7 a 25.7
-         let eOpen = ease(tOpen);
+         var tOpen = clamp01((p - 23.3) / 0.3); // 23.3 a 23.6
+         // tClose: cierra la caja a la misma velocidad en p = 30.79
+         var tClose = clamp01((p - 30.79) / 0.3);
+         let eOpen = ease(tOpen) * (1 - ease(tClose));
          if(deckClone) {
            let df1 = deckClone.querySelector('.interior-cards .interior-card:nth-child(1)');
            if(df1) df1.style.transform = `translateZ(6px) translateY(${-35 * eOpen}px)`;
@@ -10107,6 +10134,59 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
                     }
                   }
                 }
+                  // ── EXIT PHASE: img-strip sube por arriba, logo OLT sube desde abajo ──
+                  var IS_EXIT_END = 20.0;
+                  var IS_FINAL_END = 22.0;
+                  var _exitP  = Math.max(0, Math.min(1, (localP - IS_END) / (IS_EXIT_END - IS_END)));
+                  var _exitEA = _exitP < 0.5 ? 2*_exitP*_exitP : 1 - Math.pow(-2*_exitP+2,2)/2;
+                  var _finalP = Math.max(0, Math.min(1, (localP - IS_EXIT_END) / (IS_FINAL_END - IS_EXIT_END)));
+                  
+                  // El carrusel sigue subiendo sin limite
+                  var _carUpP = Math.max(0, (localP - IS_END) / (IS_EXIT_END - IS_END));
+                  isCont.style.transform = 'translateY(' + (-_carUpP * 100).toFixed(2) + 'vh)';
+                  
+                  // Fade out del scroll indicator: desaparece justo al final del scroll
+                  var _scrollInd = document.querySelector('.scroll-indicator');
+                  if (_scrollInd) _scrollInd.style.opacity = Math.max(0, 1 - _finalP * 1.15).toFixed(3);
+                  
+                  
+                  var _logoBaseY = ((1 - _exitEA) * 100);
+                  var _logoY = _logoBaseY + (_finalP * 20);
+                  
+                  var _oltLogo = document.getElementById('olt-logo-img-big');
+                  if (_oltLogo) _oltLogo.style.transform = 'translateY(' + _logoY.toFixed(2) + 'vh)';
+                  
+                  var _ctaBaseY = ((1 - _exitEA) * 100);
+                  var _ctaY = _ctaBaseY - (_finalP * 20);
+                  
+                  var _oltCta = document.getElementById('olt-final-cta');
+                  if (_oltCta) {
+                    var _ctaP = Math.max(0, Math.min(1, (_exitP - 0.7) / 0.3));
+                    _oltCta.style.opacity = _ctaP.toFixed(2);
+                    _oltCta.style.transform = 'translateY(' + _ctaY.toFixed(2) + 'vh)';
+                  }
+                  var _oltText = document.getElementById('olt-final-text');
+                  if (_oltText) {
+                    var _txtP = Math.max(0, Math.min(1, (_exitP - 0.4) / 0.6));
+                    _oltText.style.transform = 'translateY(' + ((1 - _exitEA) * 100).toFixed(2) + 'vh)';
+                    // _eraseFP es el doble de rapido: el texto queda borrado cuando _finalP = 0.5
+                    var _eraseFP = Math.min(1, _finalP * 2);
+                    // El contenedor se oculta cuando _eraseFP llega a 1 (fallback para texto sin .char)
+                    _oltText.style.opacity = (_eraseFP >= 1) ? '0' : _txtP.toFixed(2);
+                    
+                    var chars = _oltText.querySelectorAll('.char');
+                    if (chars.length > 0) {
+                      var total = chars.length;
+                      var eraseHalf = (_eraseFP * total) / 2;
+                      for (var k = 0; k < total; k++) {
+                        if (_eraseFP >= 1 || k < eraseHalf || k >= total - eraseHalf) {
+                          chars[k].style.opacity = '0';
+                        } else {
+                          chars[k].style.opacity = '1';
+                        }
+                      }
+                    }
+                  }
               } else {
                 isCont.style.opacity = '0';
                 isTrack.style.transform = 'translateX(0.5cm)';
@@ -10116,6 +10196,22 @@ document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-co
                 // Reset subrayado compromiso al salir del carrusel
                 var _ulReset = document.getElementById('compromiso-underline');
                 if (_ulReset) _ulReset.style.transform = 'scaleY(0)';
+                  isCont.style.transform = '';
+                  var _oltLogoR = document.getElementById('olt-logo-img-big');
+                  if (_oltLogoR) _oltLogoR.style.transform = 'translateY(100vh)';
+                  var _oltTextR = document.getElementById('olt-final-text');
+                  if (_oltTextR) {
+                      _oltTextR.style.transform = 'translateY(100vh)';
+                      _oltTextR.style.opacity = '0';
+                  }
+                  var _oltCtaR = document.getElementById('olt-final-cta');
+                  if (_oltCtaR) {
+                      _oltCtaR.style.transform = 'translateY(100vh)';
+                      _oltCtaR.style.opacity = '0';
+                  }
+                  // Restaurar el scroll indicator al salir de la fase final
+                  var _scrollIndR = document.querySelector('.scroll-indicator');
+                  if (_scrollIndR) _scrollIndR.style.opacity = '';
               }
             })();
          }
