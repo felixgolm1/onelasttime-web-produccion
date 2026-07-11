@@ -1139,6 +1139,7 @@ window.onerror = function(msg, url, line, col, err) {
       left: 50%;
       transform: translateX(-50%);
       z-index: 10000010;
+      pointer-events: none;
       display: flex;
       align-items: center;
       gap: 0.8rem;
@@ -1246,8 +1247,6 @@ window.onerror = function(msg, url, line, col, err) {
       font-weight: 700;
       overflow: hidden;
       white-space: nowrap;
-      backface-visibility: hidden;
-      transform: translate3d(0, 0, 0);
       pointer-events: auto;
       -webkit-font-smoothing: antialiased;
     }
@@ -2141,7 +2140,7 @@ window.onerror = function(msg, url, line, col, err) {
   <div id="visible-input-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 10050; display: flex; align-items: center; justify-content: center;">
     <div id="visible-input-group" style="width: 380px; height: 234px; pointer-events: none; transform-style: preserve-3d; opacity: 0;">
       <!-- scaleX(-1) deshace el espejo cuando rotationY llega a -180 o -540 -->
-      <div style="position: absolute; inset: 0; transform: scaleX(-1); display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: auto;">
+      <div style="position: absolute; inset: 0; transform: scaleX(-1); display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;">
         <div style="display: flex; align-items: center; justify-content: center;">
           <!-- Texto Hola transparente para ocupar el mismo espacio que en WebGL y empujar el input a la derecha -->
           <span style="font-family:'Poppins',sans-serif; font-weight:600; font-size:32px; color:transparent; pointer-events:none; user-select:none; -webkit-user-select:none;">Hola</span>
@@ -2921,6 +2920,9 @@ window.onerror = function(msg, url, line, col, err) {
       if (cbi) cbi.style.opacity = '1';
     }, null, 0);
 
+    // Garantizar estado inicial limpio del CTA inferior (sin transforms residuales de GSAP)
+    gsap.set('#heroCta', { clearProps: 'transform,visibility,opacity', transformOrigin: '50% 50%' });
+
     // ─ Fase 1 (0→0.16): Zoom + oscurecimiento suave ──────────────────
     scrollTl.to([mg, visGroup], {
       x: 0, y: 0, scaleX: 1.22, scaleY: 1.22,
@@ -3210,7 +3212,7 @@ window.onerror = function(msg, url, line, col, err) {
     }, 0.82);
 
     // El CTA original desaparece justo antes del scatter
-    scrollTl.to('#heroCta', { autoAlpha: 0, scale: 0.95, duration: 0.06, ease: 'power2.inOut' }, 0.84);
+    scrollTl.to('#heroCta', { autoAlpha: 0, scale: 0.95, transformOrigin: '50% 50%', duration: 0.06, ease: 'power2.inOut' }, 0.84);
 
     // La carta central desaparece MIENTRAS hace el último grado del giro
     scrollTl.to(mg, { opacity: 0, duration: 0.03 }, 0.85);
@@ -3449,7 +3451,7 @@ window.onerror = function(msg, url, line, col, err) {
     }, t2);
 
     // ─ CTA: fade in suave del botón cuando las cartas terminan de recogerse ──────────
-    scrollTl.to('#heroCta', { autoAlpha: 1, scale: 1, duration: 0.20, ease: 'power2.out' }, t2 + 0.075);
+    scrollTl.to('#heroCta', { autoAlpha: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.20, ease: 'power2.out' }, t2 + 0.075);
 
     // ─ Fase 10: 2 Flips y cambianzo (1.33) ──────────────────────
     let t3 = t2 + 0.15;
@@ -9367,7 +9369,7 @@ setInterval(function() {
     <p style="margin-bottom: 1.5rem;">Y aunque esperamos que este día quede lejos, no hay duda de que nunca volveremos a vivir cada preciso instante de nuevo.</p>
     <p style="margin-bottom: 0;">Así que amemos a las personas que nos importan ahora, nunca sabremos cuando será la última oportunidad para hacerlo.</p>
   </div>
-  <a href="#" id="olt-final-cta" class="btn btn-blue btn-full" style="margin-top:3rem; opacity:0; pointer-events:auto; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
+  <a href="#" id="olt-final-cta" class="btn btn-blue btn-full" style="margin-top:3rem; opacity:0; pointer-events:none; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
     <div class="mini-marquee-container" style="animation-duration: 50s;">
       <div class="marquee-content">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
       <div class="marquee-content" aria-hidden="true">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
@@ -10163,6 +10165,7 @@ document.querySelectorAll('#olt-final-text p').forEach(el => { if (typeof splitT
                   if (_oltCta) {
                     var _ctaP = Math.max(0, Math.min(1, (_exitP - 0.7) / 0.3));
                     _oltCta.style.opacity = _ctaP.toFixed(2);
+                    _oltCta.style.pointerEvents = _ctaP > 0 ? 'auto' : 'none';
                     _oltCta.style.transform = 'translateY(' + _ctaY.toFixed(2) + 'vh)';
                   }
                   var _oltText = document.getElementById('olt-final-text');
@@ -10208,6 +10211,7 @@ document.querySelectorAll('#olt-final-text p').forEach(el => { if (typeof splitT
                   if (_oltCtaR) {
                       _oltCtaR.style.transform = 'translateY(100vh)';
                       _oltCtaR.style.opacity = '0';
+                      _oltCtaR.style.pointerEvents = 'none';
                   }
                   // Restaurar el scroll indicator al salir de la fase final
                   var _scrollIndR = document.querySelector('.scroll-indicator');
@@ -10337,7 +10341,7 @@ document.querySelectorAll('#olt-final-text p').forEach(el => { if (typeof splitT
 <div id="final-feliz-panel" style="
   position: fixed;
   z-index: 10052;
-  pointer-events: auto;
+  pointer-events: none;
   opacity: 0;
   background: rgba(0, 0, 0, 0.88);
   color: #ffffff;
@@ -10382,7 +10386,7 @@ document.querySelectorAll('#olt-final-text p').forEach(el => { if (typeof splitT
 <div id="envej-panel" style="
   position: fixed;
   z-index: 10052;
-  pointer-events: auto;
+  pointer-events: none;
   opacity: 0;
   background: rgba(4,4,4,0.97);
   border-radius: 0 0 4px 4px;
