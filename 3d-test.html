@@ -1512,27 +1512,14 @@ window.onerror = function(msg, url, line, col, err) {
     #envej-range:active {
       cursor: grabbing !important;
     }
-    
-    /* Efecto Latido (Pulse) */
-    #envej-bar-thumb::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 9px;
-      background: transparent;
-      border: 2px solid rgba(204,255,0,0.8);
-      animation: pulse-latido 2s infinite cubic-bezier(0.66, 0, 0, 1);
-      pointer-events: none;
+    /* Efecto Fantasma (Teaser) */
+    @keyframes ghost-slide {
+      0%   { transform: translate(-50%, -50%); }
+      40%  { transform: translate(calc(-50% + 24px), -50%); }
+      100% { transform: translate(-50%, -50%); }
     }
-    #envej-range:hover ~ #envej-bar-thumb::after,
-    #envej-range:active ~ #envej-bar-thumb::after,
-    #envej-bar-thumb.has-interacted::after {
-      animation: none !important;
-      display: none !important;
-    }
-    @keyframes pulse-latido {
-      0% { transform: scale(1); opacity: 0.8; }
-      100% { transform: scale(1.6, 2.0); opacity: 0; }
+    #envej-bar-thumb.ghost-anim:not(.has-interacted) {
+      animation: ghost-slide 1.5s ease-in-out 0.2s; /* 0.2s delay para que lo vea tras hacer snap */
     }
   </style>
 </head>
@@ -5927,6 +5914,21 @@ window.onerror = function(msg, url, line, col, err) {
             const envejD = videoSlideIndex - currIndex;
             const slideX2 = envejD * 466;
             envejPanel.style.transform = `translateX(${slideX2}px)`;
+
+            // Efecto Fantasma (Teaser)
+            if (Math.abs(envejD) < 0.3) {
+              if (!envejPanel.dataset.ghostDone) {
+                envejPanel.dataset.ghostDone = 'true';
+                const thumb = document.getElementById('envej-bar-thumb');
+                if (thumb && !thumb.classList.contains('has-interacted')) {
+                  thumb.classList.add('ghost-anim');
+                }
+              }
+            } else if (Math.abs(envejD) > 0.8) {
+              envejPanel.dataset.ghostDone = '';
+              const thumb = document.getElementById('envej-bar-thumb');
+              if (thumb) thumb.classList.remove('ghost-anim');
+            }
 
             // Video siempre en pausa
             if (envejVideo && !envejVideo.paused) envejVideo.pause();
