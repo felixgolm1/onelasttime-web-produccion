@@ -18,3 +18,5 @@
 *.js
 !assets/**/*.js
 _backups/
+
+!arbol.html
