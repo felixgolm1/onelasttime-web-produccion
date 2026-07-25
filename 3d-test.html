@@ -293,7 +293,7 @@ window.onerror = function(msg, url, line, col, err) {
       width: 110%;
       height: 60%;
       object-fit: cover;
-      z-index: 1;
+      z-index: 99999;
       -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%);
       mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%);
     }
@@ -1572,7 +1572,7 @@ window.onerror = function(msg, url, line, col, err) {
     body.hide-all-cards-final-scene .interior-card,
     body.hide-all-cards-final-scene #intro-card,
     body.hide-all-cards-final-scene #card-table,
-    body.hide-all-cards-final-scene #end-card-table {
+    body.hide-all-cards-final-scene #end-card-table, body.hide-all-cards-final-scene .olt-card-div {
         display: none !important;
         opacity: 0 !important;
         visibility: hidden !important;
@@ -6394,6 +6394,7 @@ window.onerror = function(msg, url, line, col, err) {
     }
 
     function smoothScrollLoop() {
+        try {
         const lerpF = 0.40;
         
         // SALTO CUÃNTICO DE TIMELINE
@@ -6759,7 +6760,16 @@ window.onerror = function(msg, url, line, col, err) {
       }   // â”€â”€ fin if (globalGlbCard) â”€â”€
 
       updateNavState(prog);
-      requestAnimationFrame(smoothScrollLoop);
+      } catch(err) { 
+            if(!window.didAlertErr) { 
+                var eD = document.createElement('div'); 
+                eD.style.cssText = 'position:fixed;inset:0;background:red;color:white;z-index:99999999;font-size:30px;padding:50px;'; 
+                eD.innerText = 'CRASH: ' + err.message + '\n' + err.stack; 
+                document.body.appendChild(eD); 
+                window.didAlertErr = true; 
+            } 
+        }
+requestAnimationFrame(smoothScrollLoop);
     }
 
     smoothScrollLoop();
@@ -9618,7 +9628,7 @@ setInterval(function() {
   <div id="pricing-clip-container" style="flex:1; width:100vw; position:relative; display:flex; flex-direction:column; justify-content:center; align-items:center; margin: 0;">
   
   <!-- DYNAMIC PHASE 1 & 2 -->
-  <div id="olt-phase-dynamic" style="width:80vw; max-width:1000px; color:rgba(255,255,255,0.85); font-family:'Inter', sans-serif; font-size:clamp(1.1rem, 2vw, 1.6rem); font-weight:700; line-height:1.35; letter-spacing:-0.02em; text-align:center; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 1;">
+  <div id="olt-phase-dynamic" style="width:80vw; max-width:1000px; color:rgba(255,255,255,0.85); font-family:'Inter', sans-serif; font-size:clamp(1.1rem, 2vw, 1.6rem); font-weight:700; line-height:1.35; letter-spacing:-0.02em; text-align:center; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 99999;">
     
     <!-- P1 Question -->
     <div id="p1-question" style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); width: 100%; opacity: 0; will-change: opacity;">
@@ -9644,7 +9654,7 @@ setInterval(function() {
   </div>
 
     <!-- PHASE 3 (Final Image) -->
-  <div id="olt-final-text" style="display:none !important; width:90vw; max-width:800px; position:absolute; top:50%; left:50%; transform:translate(-50%, calc(-50% + 2cm)); opacity:0; will-change:opacity, filter; display:none !important; justify-content:center; align-items:center; z-index: 1;">
+  <div id="olt-final-text" style="display:none !important; width:90vw; max-width:800px; position:absolute; top:50%; left:50%; transform:translate(-50%, calc(-50% + 2cm)); opacity:0; will-change:opacity, filter; display:none !important; justify-content:center; align-items:center; z-index: 99999;">
       <img src="assets/img/polaroid.png" alt="Polaroid" style="width:100%; height:auto; display:block; filter: drop-shadow(0px 10px 40px rgba(0,0,0,0.4));">
       
       <!-- Handwritten Text Overlay -->
@@ -9655,7 +9665,7 @@ setInterval(function() {
       </div>
   </div>
 </div>
-  <a href="arbol.html" id="olt-final-cta" class="btn btn-blue btn-full" style="position:relative; z-index:10; margin-top:0; opacity:0; pointer-events:none; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
+  <a href="arbol.html" id="olt-final-cta" class="btn btn-blue btn-full" style="position:relative; z-index:99999; margin-top:0; opacity:0; pointer-events:none; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
     <div class="mini-marquee-container" style="animation-duration: 50s;">
       <div class="marquee-content">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
       <div class="marquee-content" aria-hidden="true">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
@@ -9727,7 +9737,12 @@ window.addEventListener('click', function(e) {
     if (down) initMarquee(down, 'down');
   });
 })();
-</script></body>
+</script>
+  <div id="transition-flash" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background-color:#ffffff; opacity:0; pointer-events:none; z-index:99998; will-change:opacity;"></div>
+
+  
+</body>
+
 <script>
 document.querySelectorAll('#end-reviews-container .review-quote, #end-reviews-container .review-left-quote').forEach(el => { if (typeof splitTextIntoChars === 'function') splitTextIntoChars(el); });
 document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { if (typeof splitTextIntoChars === 'function') splitTextIntoChars(el); });
@@ -10689,6 +10704,13 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                       fadeProg = 1;
                   }
                   
+                  
+                  // DEBUG INJECT
+                  var debugEl = document.getElementById('debug-scroll-prog');
+                  if (debugEl) {
+                      debugEl.innerHTML = "p:" + p.toFixed(2) + " locP:" + localP.toFixed(2) + " clss:" + document.body.classList.contains("hide-all-cards-final-scene") + " isRet:" + ("OK");
+                  }
+                  
                   var EARLY_FADE_START = 27.5;
                   var earlyFadeProg = 0;
                   if (localP > EARLY_FADE_START) {
@@ -10701,6 +10723,9 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                   if (localP > EARLY_FADE_START) {
                       document.body.classList.add("hide-all-cards-final-scene");
                       if (typeof globalGlbCard !== "undefined" && globalGlbCard) { globalGlbCard.visible = false; }
+                      if (typeof cards !== 'undefined' && Array.isArray(cards)) {
+                          cards.forEach(function(c) { if (c) c.visible = false; });
+                      }
                       if (oryzoBg) oryzoBg.style.opacity = (1 - earlyFadeProg).toFixed(3);
                       if (magClone) magClone.style.opacity = (1 - earlyFadeProg).toFixed(3);
                       
@@ -10735,6 +10760,9 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                       if (_c) _c.style.backgroundColor = '#0d0b09';
                   } else {
                       document.body.classList.remove("hide-all-cards-final-scene");
+                      if (typeof cards !== 'undefined' && Array.isArray(cards)) {
+                          cards.forEach(function(c) { if (c) c.visible = true; });
+                      }
                       var _scOverlay = document.getElementById('scene-overlay');
                       if (_scOverlay) _scOverlay.style.opacity = '1';
                       if (oryzoBg) oryzoBg.style.opacity = '1';
