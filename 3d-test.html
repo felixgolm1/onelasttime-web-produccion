@@ -9600,7 +9600,7 @@ setInterval(function() {
   <div id="pricing-clip-container" style="flex:1; width:100vw; position:relative; display:flex; flex-direction:column; justify-content:center; align-items:center; margin: 0;">
   
   <!-- DYNAMIC PHASE 1 & 2 -->
-  <div id="olt-phase-dynamic" style="width:80vw; max-width:1000px; color:rgba(255,255,255,0.85); font-family:'Inter', sans-serif; font-size:clamp(1.1rem, 2vw, 1.6rem); font-weight:700; line-height:1.35; letter-spacing:-0.02em; text-align:center; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 10;">
+  <div id="olt-phase-dynamic" style="width:80vw; max-width:1000px; color:rgba(255,255,255,0.85); font-family:'Inter', sans-serif; font-size:clamp(1.1rem, 2vw, 1.6rem); font-weight:700; line-height:1.35; letter-spacing:-0.02em; text-align:center; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 1;">
     
     <!-- P1 Question -->
     <div id="p1-question" style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); width: 100%; opacity: 0; will-change: opacity;">
@@ -10479,7 +10479,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                   if (_oltPhaseDyn) {
                       var blurAmount = Math.sin(_p3FadeInP * Math.PI) * 20;
                       var opDyn = _p1FadeInP;
-                      if (_p3FadeInP > 0.5) opDyn = 0; // Swap happens at peak blur
+                      if (localP >= 28.5) opDyn = 0; // Hide at flash peak
                       _oltPhaseDyn.style.opacity = opDyn.toFixed(2);
                       _oltPhaseDyn.style.filter = 'blur(' + blurAmount.toFixed(1) + 'px)';
                       
@@ -10535,6 +10535,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                           
                           // Opacity is tied to _p1FadeInP
                           var counterOp = Math.min(1, _p1FadeInP * 2.0);
+                          if (localP >= 28.5) counterOp = 0; // Hide at flash peak
                           counterContainer.style.opacity = counterOp.toFixed(2);
                           dynRow.style.opacity = counterOp.toFixed(2);
                           
@@ -10628,12 +10629,46 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                   
                   // ----- PHASE 4: Fade out UI and Reveal 3D Table -----
                   
-                  var START_3D_REVEAL = 28.5; // Empieza el fade de la UI vieja
-                  var END_3D_REVEAL = 32.9; // Termina la interpolacion de la camara
+                  var START_3D_REVEAL = 28.5; // El peak del flash
+                  var END_3D_REVEAL = 32.9;
+                  
+                  // Flash effects
+                  var FLASH_START = 27.5;
+                  var FLASH_PEAK = 28.5;
+                  var FLASH_END = 29.5;
+                  var flashOpacity = 0;
+                  if (localP >= FLASH_START && localP <= FLASH_PEAK) {
+                      flashOpacity = (localP - FLASH_START) / (FLASH_PEAK - FLASH_START);
+                  } else if (localP > FLASH_PEAK && localP <= FLASH_END) {
+                      flashOpacity = 1.0 - ((localP - FLASH_PEAK) / (FLASH_END - FLASH_PEAK));
+                  }
+                  
+                  var tFlash = document.getElementById('transition-flash');
+                  if (!tFlash) {
+                      tFlash = document.createElement('div');
+                      tFlash.id = 'transition-flash';
+                      tFlash.style.position = 'fixed';
+                      tFlash.style.top = '0';
+                      tFlash.style.left = '0';
+                      tFlash.style.width = '100vw';
+                      tFlash.style.height = '100vh';
+                      tFlash.style.background = '#ffffff';
+                      tFlash.style.zIndex = '5'; // Above phase-dynamic (1), below logo/cta (10)
+                      tFlash.style.pointerEvents = 'none';
+                      tFlash.style.opacity = '0';
+                      var logoReveal = document.getElementById('olt-logo-reveal');
+                      if (logoReveal) {
+                          logoReveal.appendChild(tFlash);
+                      } else {
+                          document.body.appendChild(tFlash);
+                      }
+                  }
+                  tFlash.style.opacity = flashOpacity.toFixed(3);
                   
                   var fadeProg = 0;
                   if (localP > START_3D_REVEAL) {
-                      fadeProg = Math.min(1, (localP - START_3D_REVEAL) / 1.5);
+                      // Instant cut while hidden by flash
+                      fadeProg = 1;
                   }
                   
                   var EARLY_FADE_START = 27.5;
@@ -10654,6 +10689,15 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                       
                       var _thermal = document.getElementById('thermal-overlay');
                       if (_thermal) _thermal.style.opacity = (1 - earlyFadeProg).toFixed(3);
+                      
+                      var _oryzoSec = document.getElementById('oryzo-section');
+                      if (_oryzoSec) _oryzoSec.style.opacity = (1 - earlyFadeProg).toFixed(3);
+                      var _deckC = document.getElementById('oryzo-deck-clone');
+                      if (_deckC) _deckC.style.opacity = (1 - earlyFadeProg).toFixed(3);
+                      var _endT = document.getElementById('end-card-table');
+                      if (_endT) _endT.style.opacity = (1 - earlyFadeProg).toFixed(3);
+                      var _cCanvas = document.getElementById('card-canvas');
+                      if (_cCanvas) _cCanvas.style.opacity = (1 - earlyFadeProg).toFixed(3);
                   }
                   
                   if (localP > START_3D_REVEAL) {
@@ -10674,6 +10718,14 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                       if (_scOverlay) _scOverlay.style.opacity = '1';
                       if (oryzoBg) oryzoBg.style.opacity = '1';
                       if (magClone) magClone.style.opacity = '1';
+                      var _oryzoSec = document.getElementById('oryzo-section');
+                      if (_oryzoSec) _oryzoSec.style.opacity = '1';
+                      var _deckC = document.getElementById('oryzo-deck-clone');
+                      if (_deckC) _deckC.style.opacity = '1';
+                      var _endT = document.getElementById('end-card-table');
+                      if (_endT) _endT.style.opacity = '1';
+                      var _cCanvas = document.getElementById('card-canvas');
+                      if (_cCanvas) _cCanvas.style.opacity = '1';
                       if (typeof renderer !== 'undefined') {
                           renderer.setClearColor(0x000000, 0); // volver a transparente
                       }
