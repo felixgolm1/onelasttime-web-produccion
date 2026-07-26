@@ -8020,36 +8020,37 @@ requestAnimationFrame(smoothScrollLoop);
           }
         });
         
-        // 1. Aplicar rotacion para que quede plana en la mesa
-        // La mayoria de modelos 3D verticales se tumban con -PI/2 en X.
-        window.polaroidMesh.rotation.set(-Math.PI / 2, 0, Math.PI / 12);
-        
-        // Forzar actualizacion de las matrices despues de rotar
+        // DEBUG UI LOGIC
+        // Reset rotation to default
+        window.polaroidMesh.rotation.set(0, 0, 0);
         window.polaroidMesh.updateMatrixWorld(true);
         
-        // 2. Escalar el modelo (hacerlo mas grande que antes, las cartas median 3.36)
+        // Escalar a un tamano decente
         const box = new THREE.Box3().setFromObject(window.polaroidMesh);
         const size = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
+        const maxDim = Math.max(size.x, size.y, size.z); 
         if (maxDim > 0) {
             const targetScale = 3.5 / maxDim;
             window.polaroidMesh.scale.setScalar(targetScale);
         }
         window.polaroidMesh.updateMatrixWorld(true);
         
-        // 3. Recalcular caja final para posicionamiento exacto
+        // Valores de calibracion finales aprobados por el usuario
+        const rx = -14 * Math.PI / 180;
+        const ry = 30 * Math.PI / 180;
+        const rz = -25 * Math.PI / 180;
+        const py = -1.495;
+        
+        window.polaroidMesh.rotation.set(rx, ry, rz);
+        
+        // Posicionar centro en X=0, Z=0 y usar la altura calibrada
         const boxFinal = new THREE.Box3().setFromObject(window.polaroidMesh);
         const centerFinal = boxFinal.getCenter(new THREE.Vector3());
+        window.polaroidMesh.position.set(-centerFinal.x, py, -centerFinal.z); 
         
-        // 4. Colocar centro en X=0, Z=0, apoyada en Y=0.005 (justo sobre el mantel)
-        // NOTA: Si al rotar en X se invirtieron los ejes locales, setFromObject nos da el bounding box global (AABB) correcto
-        window.polaroidMesh.position.set(
-            window.polaroidMesh.position.x - centerFinal.x, 
-            window.polaroidMesh.position.y - boxFinal.min.y + 0.005, 
-            window.polaroidMesh.position.z - centerFinal.z
-        ); 
+        window.polaroidMesh.visible = false;
         
-        window.polaroidMesh.visible = false; // Empezamos ocultos
+
         scene.add(window.polaroidMesh);
       },
       null,
