@@ -8030,25 +8030,25 @@ requestAnimationFrame(smoothScrollLoop);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z); 
         if (maxDim > 0) {
-            const targetScale = 3.5 / maxDim;
+            const targetScale = 5.25 / maxDim;
             window.polaroidMesh.scale.setScalar(targetScale);
         }
         window.polaroidMesh.updateMatrixWorld(true);
         
-        // Valores de calibracion finales aprobados por el usuario
+        // FINAL CALIBRATION LOGIC (Scale 1.5x)
         const rx = -14 * Math.PI / 180;
         const ry = 30 * Math.PI / 180;
         const rz = -25 * Math.PI / 180;
-        const py = -1.495;
+        const py = -2.255;
         
         window.polaroidMesh.rotation.set(rx, ry, rz);
         
-        // Posicionar centro en X=0, Z=0 y usar la altura calibrada
         const boxFinal = new THREE.Box3().setFromObject(window.polaroidMesh);
         const centerFinal = boxFinal.getCenter(new THREE.Vector3());
         window.polaroidMesh.position.set(-centerFinal.x, py, -centerFinal.z); 
-        
         window.polaroidMesh.visible = false;
+        
+
         
 
         scene.add(window.polaroidMesh);
