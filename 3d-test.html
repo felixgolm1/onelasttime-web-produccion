@@ -11,7 +11,7 @@ window.onerror = function(msg, url, line, col, err) {
 </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>One Last Time ”” Mesa 3D</title>
+  <title>One Last Time 3D V2</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Caveat:wght@400;500;600;700&family=Archivo:wght@700&family=Inter:wght@300;400;500;600;700&family=Barlow+Condensed:wght@700;800;900&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -646,8 +646,8 @@ window.onerror = function(msg, url, line, col, err) {
       position: fixed;
       left: 5%;
       top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
+      transform: translateY(-50%) translateZ(1000px);
+      z-index: 100000; /* Superpuesto a las cartas 3D */
       max-width: 40vw;
       opacity: 0;
       /* Frosted blur ”” sin color propio, hereda el fondo */
@@ -687,7 +687,7 @@ window.onerror = function(msg, url, line, col, err) {
       letter-spacing: 0.04em;
       line-height: 1.4;
     }
-    /* â”€â”€ NAV HOVER: Oryzo stagger effect â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ——— NAV HOVER: Oryzo stagger effect ————————————————————————— */
     #nav-overlay {
       position: fixed;
       inset: 0;
@@ -725,8 +725,8 @@ window.onerror = function(msg, url, line, col, err) {
       position: fixed;
       left: 65%;
       top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
+      transform: translateY(-50%) translateZ(1000px);
+      z-index: 100000;
       max-width: 29vw;
       opacity: 0;
     }
@@ -1579,6 +1579,7 @@ window.onerror = function(msg, url, line, col, err) {
         pointer-events: none !important;
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
 </head>
 
 
@@ -8010,77 +8011,127 @@ requestAnimationFrame(smoothScrollLoop);
       (err) => { console.error('Error copa:', err); }
     );
     
-    gltfLoader.load('assets/img/polaroid_3d.glb',
-      (gltf) => {
-        window.polaroidMesh = gltf.scene;
-        window.polaroidMesh.traverse(c => {
-          if (c.isMesh) {
-            c.castShadow = true;
-            c.receiveShadow = true;
-          }
-        });
-        
-        // DEBUG UI LOGIC
-        // Reset rotation to default
-        window.polaroidMesh.rotation.set(0, 0, 0);
-        window.polaroidMesh.updateMatrixWorld(true);
-        
-        // Escalar a un tamano decente
-        const box = new THREE.Box3().setFromObject(window.polaroidMesh);
-        const size = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z); 
-        if (maxDim > 0) {
-            const targetScale = 5.25 / maxDim;
-            window.polaroidMesh.scale.setScalar(targetScale);
+    // -------------------------------------------------------------
+    // POLAROID CREADA CON CODIGO (Sin .glb)
+    // -------------------------------------------------------------
+    const polaroidGroup = new THREE.Group();
+    
+    // 1. Base de papel blanco (ligero grosor para realismo)
+    const paperW = 4.2; 
+    const paperH = 5.0; 
+    const paperD = 0.05;
+    const paperGeo = new THREE.BoxGeometry(paperW, paperD, paperH);
+    const paperMat = new THREE.MeshStandardMaterial({
+        color: 0xf5f5f5,
+        roughness: 0.9,
+        metalness: 0.1
+    });
+    const paperMesh = new THREE.Mesh(paperGeo, paperMat);
+    paperMesh.castShadow = true;
+    paperMesh.receiveShadow = true;
+    
+    // 2. Foto (ligeramente mas pequena y brillante)
+    const photoW = 3.8;
+    const photoH = 3.8;
+    const photoGeo = new THREE.PlaneGeometry(photoW, photoH);
+    
+    const texLoader = new THREE.TextureLoader();
+    const photoTex = texLoader.load('assets/img/anna-felix-jugando.jpg');
+    
+    // Recorte "cover" sin deformar (Imagen = 4:3, Geometria = 1:1)
+    // Mostramos el 100% del alto, pero solo el 75% del ancho (centrado)
+    photoTex.repeat.set(3840/5120, 1.0);
+    photoTex.offset.set((1.0 - (3840/5120)) / 2, 0);
+    
+    if (THREE.sRGBEncoding) photoTex.encoding = THREE.sRGBEncoding;
+    // (Por defecto flipY = true, lo cual pone la foto del derecho)
+    
+    const polaroidShader = {
+      uniforms: {
+        tDiffuse: { value: photoTex },
+        uProgress: { value: 0.0 } // 0.0 = borrosa/blanca, 1.0 = nitida
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          // Recorte cover (3840/5120 = 0.75 de ancho)
+          vUv = uv * vec2(0.75, 1.0) + vec2(0.125, 0.0);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
-        window.polaroidMesh.updateMatrixWorld(true);
-        
-        // FINAL CALIBRATION LOGIC (Scale 1.5x)
-        const rx = -14 * Math.PI / 180;
-        const ry = 30 * Math.PI / 180;
-        const rz = -25 * Math.PI / 180;
-        const py = -2.255;
-        
-        window.polaroidMesh.rotation.set(rx, ry, rz);
-        
-        const boxFinal = new THREE.Box3().setFromObject(window.polaroidMesh);
-        const centerFinal = boxFinal.getCenter(new THREE.Vector3());
-        window.polaroidMesh.position.set(-centerFinal.x, py, -centerFinal.z); 
-        window.polaroidMesh.visible = false;
-        // -------------------------------------------------------------
-        // SUSTITUIR TEXTURA POLAROID DIRECTAMENTE (Comentado temporalmente para aislar error)
-        // -------------------------------------------------------------
-        /*
-        const texLoader = new THREE.TextureLoader();
-        // Usamos cache-buster para asegurar que carga la nueva
-        const newPhoto = texLoader.load('assets/img/polaroid-atlas-final.jpg?v=' + Date.now());
-        if (THREE.sRGBEncoding) newPhoto.encoding = THREE.sRGBEncoding;
-        newPhoto.flipY = false; // El GLTF original usa flipY=false
-        
-        window.polaroidMesh.traverse((child) => {
+      `,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        uniform float uProgress;
+        varying vec2 vUv;
+        void main() {
+          float blur = (1.0 - uProgress) * 0.015;
+          vec4 c = vec4(0.0);
+          c += texture2D(tDiffuse, vUv + vec2(-blur, -blur));
+          c += texture2D(tDiffuse, vUv + vec2(blur, -blur));
+          c += texture2D(tDiffuse, vUv + vec2(-blur, blur));
+          c += texture2D(tDiffuse, vUv + vec2(blur, blur));
+          c += texture2D(tDiffuse, vUv);
+          c /= 5.0;
+          
+          // Color base de polaroid sin revelar (gris oscuro / verdoso)
+          vec3 baseColor = vec3(0.1, 0.15, 0.12);
+          // Mezclar con la foto usando un curve no lineal para que suba rapido
+          float mixAmt = smoothstep(0.0, 0.8, uProgress);
+          vec3 finalColor = mix(baseColor, c.rgb, mixAmt);
+          
+          // Anadir un efecto de "quemado" o "brillo" inicial que se desvanece
+          float flash = (1.0 - smoothstep(0.0, 0.3, uProgress)) * 0.8;
+          finalColor += vec3(flash);
+          
+          gl_FragColor = vec4(finalColor, 1.0);
+        }
+      `
+    };
+    const photoMat = new THREE.ShaderMaterial({
+      uniforms: polaroidShader.uniforms,
+      vertexShader: polaroidShader.vertexShader,
+      fragmentShader: polaroidShader.fragmentShader
+    });
+    window.polaroidPhotoMat = photoMat;
+    const photoMesh = new THREE.Mesh(photoGeo, photoMat);
+    photoMesh.rotation.x = -Math.PI / 2; // Tumbar plano
+    photoMesh.position.y = paperD / 2 + 0.005; // Justo encima del papel
+    photoMesh.position.z = -0.4; // Desplazar hacia arriba (dejando margen ancho abajo)
+    
+    polaroidGroup.add(paperMesh);
+    polaroidGroup.add(photoMesh);
+    
+    window.polaroidMesh = polaroidGroup;
+    window.polaroidMesh.visible = false; // Oculta por defecto al cargar la página
+    
+    // Rotacion y posicion fijas elegidas por el usuario
+    const rx = 0; 
+    const ry = -0.26; 
+    const rz = 0; 
+    
+    window.polaroidMesh.rotation.set(rx, ry, rz);
+    
+    // Posicion final
+    window.polaroidMesh.position.set(0, 0.117, 0.03); 
+    
+    // Escala final
+    window.polaroidMesh.scale.set(0.83, 0.83, 0.83); 
+    scene.add(window.polaroidMesh);
+
+
+    // OCULTAR LA POLAROID BAKEADA EN LA MESA
+    if (window.tableMesh) {
+        window.tableMesh.traverse((child) => {
             if (child.isMesh && child.material) {
                 let mats = Array.isArray(child.material) ? child.material : [child.material];
                 mats.forEach(mat => {
-                    if (mat.map) {
-                        mat.map = newPhoto;
-                        mat.needsUpdate = true;
+                    if (mat.name && (mat.name.toLowerCase().includes('polaroid') || mat.name.toLowerCase().includes('photo') || mat.name.toLowerCase().includes('picture'))) {
+                        child.visible = false;
                     }
                 });
             }
         });
-        */
-
-
-
-        
-        
-
-        scene.add(window.polaroidMesh);
-      },
-      null,
-      (err) => { console.error('Error cargando polaroid:', err); }
-    );
-    
+    }
     // Carga nuestro prisma/carta local (.glb proxy a B64)
     if (typeof ID_CARD_B64 !== 'undefined') {
       gltfLoader.load(ID_CARD_B64,
@@ -10798,6 +10849,12 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                           cards.forEach(function(c) { if (c) c.visible = false; });
                       }
                       if (typeof window.polaroidMesh !== 'undefined' && window.polaroidMesh) { window.polaroidMesh.visible = true; }
+                      if (window.polaroidPhotoMat) {
+                          // localP va de START_3D_REVEAL (0) en adelante
+                          // Queremos que se revele justo al final de la escena
+                          let devProg = Math.max(0, Math.min(1, (localP - START_3D_REVEAL) / 4.0));
+                          window.polaroidPhotoMat.uniforms.uProgress.value = devProg;
+                      }
                       if (oryzoBg) oryzoBg.style.opacity = (1 - earlyFadeProg).toFixed(3);
                       if (magClone) magClone.style.opacity = (1 - earlyFadeProg).toFixed(3);
                       
