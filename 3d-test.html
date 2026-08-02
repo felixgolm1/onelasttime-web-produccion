@@ -2181,11 +2181,9 @@ window.onerror = function(msg, url, line, col, err) {
   <!-- Menú superior derecha -->
   <nav id="nav-menu">
     <a href="#" class="active" data-text="INTRO" data-scroll="0.00">INTRO</a>
-    <a href="#" data-text="CÓMO FUNCIONA" data-scroll="0.98">CÓMO FUNCIONA</a>
-    <a href="#" data-text="LA EXPERIENCIA" data-scroll="10.65">LA EXPERIENCIA</a>
-    <a href="#" data-text="RESEÑAS" data-scroll="23.17">RESEÑAS</a>
-    <a href="#" data-text="MÁS..." data-scroll="31.58">MÁS...</a>
-    <a href="#" data-text="ONE LAST TIME" data-scroll="41.03">ONE LAST TIME</a>
+    <a href="#" data-text="CÓMO FUNCIONA" data-scroll="0.91">CÓMO FUNCIONA</a>
+    <a href="#" data-text="LA EXPERIENCIA" data-scroll="2.18">LA EXPERIENCIA</a>
+    <a href="#" data-text="ONE LAST TIME" data-scroll="41.87">ONE LAST TIME</a>
     
     <!-- CTA superior derecha -->
     <div id="cta-top-container">
@@ -6141,7 +6139,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 
 
-    // Ã¢â€€Ã¢â€€ DRAG CARTAS Ã¢â€€Ã¢â€€ Funcionan con position:fixed en body (fuera de preserve-3d)
+    // Ã¢â€ €Ã¢â€ € DRAG CARTAS Ã¢â€ €Ã¢â€ € Funcionan con position:fixed en body (fuera de preserve-3d)
     document.querySelectorAll('.card-wrap').forEach(card => {
       let isDragging = false;
       let startX, startY, initialLeft, initialTop;
@@ -6348,7 +6346,67 @@ window.onerror = function(msg, url, line, col, err) {
     let lastScrollTime = 0;
 
     window.jumpToProg = function(val) {
+      if (Math.abs(val - 2.18) < 0.01) {
+          window.isAutoScrolling = true;
+          
+          if (prog > 9.62) {
+              // 1. Estamos en el carrusel. Rebobinamos hasta el borde del vacio.
+              gsap.to({ p: prog }, {
+                  p: 9.62,
+                  duration: 0.5,
+                  ease: "power2.inOut",
+                  onUpdate: function() {
+                      targetProg = this.targets()[0].p;
+                      prog = targetProg;
+                  },
+                  onComplete: function() {
+                      // 2. Saltamos el vacio matematico
+                      prog = 2.20; targetProg = 2.20;
+                      // 3. Aterrizamos en 2.19 y nos quedamos ahi
+                      gsap.to({ p: 2.20 }, {
+                          p: 2.19,
+                          duration: 0.3,
+                          ease: "power2.out",
+                          onUpdate: function() {
+                              targetProg = this.targets()[0].p;
+                              prog = targetProg;
+                          },
+                          onComplete: function() {
+                              window.isAutoScrolling = false;
+                              sessionStorage.setItem('dev_prog', prog);
+                              if (typeof scrollTl !== 'undefined') scrollTl.progress(Math.min(1, prog / 2.2));
+                              if (window.cssRenderer && window.scene && window.camera) { window.cssRenderer.render(window.scene, window.camera); }
+                              if (typeof updateBoxState === 'function') updateBoxState();
+                              if (typeof updateFaceSwap === 'function') updateFaceSwap();
+                          }
+                      });
+                  }
+              });
+          } else {
+              // Estamos antes del vacio. Vamos directo a 2.19 y nos quedamos ahi
+              gsap.to({ p: Math.min(prog, 2.20) }, {
+                  p: 2.19,
+                  duration: 0.8,
+                  ease: "power2.inOut",
+                  onUpdate: function() {
+                      targetProg = this.targets()[0].p;
+                      prog = targetProg;
+                  },
+                  onComplete: function() {
+                      window.isAutoScrolling = false;
+                      sessionStorage.setItem('dev_prog', prog);
+                      if (typeof scrollTl !== 'undefined') scrollTl.progress(Math.min(1, prog / 2.2));
+                      if (window.cssRenderer && window.scene && window.camera) { window.cssRenderer.render(window.scene, window.camera); }
+                      if (typeof updateBoxState === 'function') updateBoxState();
+                      if (typeof updateFaceSwap === 'function') updateFaceSwap();
+                  }
+              });
+          }
+          return;
+      }
+      
       window.isAutoScrolling = true;
+
       gsap.to({ p: prog }, {
         p: val,
         duration: 0.5,
@@ -6466,9 +6524,9 @@ window.onerror = function(msg, url, line, col, err) {
 
         // SAFEGUARD PERMANENTE: corre SIEMPRE cada frame (incluso cuando el scroll está parado)
         // Evita que GSAP deje stOverlay / detailGlobal visibles fuera de su rango correcto
-        if (stOverlay) stOverlay.style.opacity = (prog >= 0.88 && prog <= 2.20) ? '1' : '0';
+        if (stOverlay) stOverlay.style.opacity = (prog >= 0.923 && prog <= 2.20) ? '1' : '0';
         const _dg = document.getElementById('sc-detail-global');
-        if (_dg) _dg.style.opacity = (prog >= 0.88 && prog <= 2.20) ? '' : '0';
+        if (_dg) _dg.style.opacity = (prog >= 0.923 && prog <= 2.20) ? '' : '0';
 
 
       
@@ -6619,7 +6677,7 @@ window.onerror = function(msg, url, line, col, err) {
           // Con 3 flips el destino es -540Â°; el umbral de -179Â° disparaba tras el 1er flip
           // haciendo que la carta GLB se desacoplara y el scroll pareciera muerto.
           const flipRotY  = gsap.getProperty(mgEl, 'rotationY') || 0;
-          const inScatter = (prog >= 0.08 && flipRotY <= -526.0) || prog > 1.22;
+          const inScatter = (prog >= 0.08 && flipRotY <= -539.5) || prog > 1.22;
           // Solo forzar opacity=1 y visible=true cuando el crossfade NO está activo
           // (si mainDeck es visible, el crossfade ya gestiona opacity y visible arriba)
           if (!mainDeckEl || mainDeckEl.style.display !== 'block') {
@@ -6650,7 +6708,7 @@ window.onerror = function(msg, url, line, col, err) {
               const gx    = gsap.getProperty(mgEl, 'x')      || 0;
               const gy    = gsap.getProperty(mgEl, 'y')      || 0;
               const gSY   = gsap.getProperty(mgEl, 'scaleY') || 1;
-              const screenCX = window.innerWidth  / 2 + gx;
+              const screenCX = document.documentElement.clientWidth / 2 + gx;
               const screenCY = window.innerHeight / 2 + gy;
               const ndcX  =  (screenCX / window.innerWidth)  * 2 - 1;
               const ndcY  = -(screenCY / window.innerHeight) * 2 + 1;
@@ -6745,10 +6803,8 @@ window.onerror = function(msg, url, line, col, err) {
 
                   // Modificador de escala para que desaparezca durante el carrusel y YA NO reaparezca
                   let scaleMod = 1.0;
-                  if (prog > 9.62 && prog <= 10.62) {
-                      scaleMod = 1.0 - (prog - 9.62);
-                  } else if (prog > 10.62) {
-                      scaleMod = 0.00001; // oculto en carrusel y magazine
+                  if (prog >= 2.2) {
+                      scaleMod = 0.00001; // oculto al aparecer mainDeck y no reaparece en carrusel
                   }
                   
                   // REAPARECER AL FINAL DEL SCROLL
@@ -8692,7 +8748,7 @@ requestAnimationFrame(smoothScrollLoop);
 
 
   <!-- Debug: Mostrar scroll prog -->
-  <div id="debug-scroll-prog" style="display: none; position: fixed; bottom: 20px; left: 20px; color: #00ff00; font-family: monospace; font-size: 24px; font-weight: bold; z-index: 99999999; pointer-events: none; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;">0.00</div>
+  <div id="debug-scroll-prog" style="display: block; position: fixed; bottom: 20px; left: 20px; color: #00ff00; font-family: monospace; font-size: 24px; font-weight: bold; z-index: 99999999; pointer-events: none; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;">0.00</div>
   <!-- MAGAZINE BREAKOUT OVERLAY â€â€ body-level para evitar problemas con transforms del carrusel -->
   <div id="mag-breakout-overlay" style="display:none;position:fixed;z-index:99998;background:transparent;pointer-events:none;border:none;will-change:top,left,width,height;"></div>
   <!-- THERMAL OVERLAY â€â€ efecto cámara termográfica -->
@@ -10781,7 +10837,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                   
                   // Fade out del scroll indicator: desaparece justo al final del scroll
                   var _scrollInd = document.querySelector('.scroll-indicator');
-                  if (_scrollInd) _scrollInd.style.opacity = Math.max(0, 1 - _finalP * 1.15).toFixed(3);
+                  // if (_scrollInd) _scrollInd.style.opacity = Math.max(0, 1 - _finalP * 1.15).toFixed(3);
                   
                   // Fase de entrada de Logo y CTA movida al final de la función para unificar la lógica
 
@@ -11089,7 +11145,10 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                   }
                   
                   var sInd = document.querySelector('.scroll-indicator');
-                  if (sInd) sInd.style.opacity = (1 - fadeProg).toFixed(3);
+                  if (sInd) {
+                      var scrollIndP = Math.max(0, Math.min(1, (localP - 34.5) / 1.4));
+                      sInd.style.opacity = (1 - scrollIndP).toFixed(3);
+                  }
                   
                   // 3. Movimiento de camara hacia la mesa 3D
                   // Se fuerza la camara a estar en initialCameraPos inmediatamente
