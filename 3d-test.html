@@ -7247,8 +7247,11 @@ requestAnimationFrame(smoothScrollLoop);
   // Ã¢â€€Ã¢â€€ ILUMINACIÓN LUZ NATURAL â€â€ restaurante casual mediodía Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
   // Sin focos. Luz difusa de ventanas + techo, como en un bistró con luz natural.
 
+  const mainLightGroup = new THREE.Group();
+  scene.add(mainLightGroup);
+
   // 1. Skylight: luz ambiental muy baja (solo llena las sombras)
-  scene.add(new THREE.AmbientLight(0xd0dde8, 0.65));
+  mainLightGroup.add(new THREE.AmbientLight(0xd0dde8, 0.65));
 
   // 2. Ventana principal izquierda â€â€ SpotLight amplio para falloff natural en la mesa
   const winLeft = new THREE.SpotLight(0xfff4e0, 3.8);
@@ -7270,17 +7273,17 @@ requestAnimationFrame(smoothScrollLoop);
   // 3. Relleno del lado derecho â€â€ luz ambiental de sala, más fría
   const winRight = new THREE.DirectionalLight(0xe8eef5, 0.35);
   winRight.position.set(10, 8, 2);
-  scene.add(winRight);
+  mainLightGroup.add(winRight);
 
   // 4. Rim trasero muy suave â€â€ separa los platos del mantel
   const rimLight = new THREE.DirectionalLight(0xfff0e0, 0.22);
   rimLight.position.set(0, 5, -14);
-  scene.add(rimLight);
+  mainLightGroup.add(rimLight);
 
   // 5. Luz de techo del restaurante â€â€ cenital suave desde arriba
   const ceilLight = new THREE.DirectionalLight(0xfff5e8, 0.3);
   ceilLight.position.set(2, 18, 4);
-  scene.add(ceilLight);
+  mainLightGroup.add(ceilLight);
 
   // Ã¢â€€Ã¢â€€ CARGA DEL MODELO GLB (llamado desde startLoading tras la animación) Ã¢â€€Ã¢â€€
   const loaderBar = document.getElementById('loader-bar');
@@ -8552,7 +8555,7 @@ requestAnimationFrame(smoothScrollLoop);
     // Ã¢â€€Ã¢â€€ Parallax de ratón sobre la cámara principal Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
     // Intensidad máxima al inicio, se apaga al scrollear (progress > 0.15)
     const scrollProg = (typeof scrollTl !== 'undefined') ? scrollTl.progress() : 0;
-    const parallaxStr = Math.max(0, 1 - scrollProg / 0.15); // 1→0 en los primeros 15% del scroll
+    const parallaxStr = 1.0;
     const lerpK = 1 - Math.pow(0.04, dt);  // suavizado independiente de FPS
     mouseNX += (mouseRawX - mouseNX) * lerpK;
     mouseNY += (mouseRawY - mouseNY) * lerpK;
@@ -8591,6 +8594,11 @@ requestAnimationFrame(smoothScrollLoop);
     camera.position.x = currentCamX + mouseNX * PX * parallaxStr;
     camera.position.y = currentCamY - mouseNY * PY * parallaxStr;
     camera.position.z = currentCamZ;
+    // Mover las luces junto con la cámara para que los reflejos especulares no se escapen de la geometría
+    if (typeof mainLightGroup !== 'undefined') {
+        mainLightGroup.position.x = mouseNX * PX * parallaxStr;
+        mainLightGroup.position.y = -mouseNY * PY * parallaxStr;
+    }
     camera.lookAt(currentLookX + mouseNX * 0.1 * parallaxStr,
                   currentLookY - mouseNY * 0.05 * parallaxStr,
                   currentLookZ);
@@ -8990,7 +8998,8 @@ requestAnimationFrame(smoothScrollLoop);
 
   window.HEAT_ZONES = ZONES;
 
-    })();
+    
+})();
 </script>
 
 
@@ -9569,7 +9578,8 @@ setInterval(function() {
     }
   };
 
-    })();
+    
+})();
 </script>
 </script>
 
@@ -9987,7 +9997,8 @@ window.addEventListener('click', function(e) {
     if (down) initMarquee(down, 'down');
   });
 
-    })();
+    
+})();
 </script>
   <div id="transition-flash" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background-color:#ffffff; opacity:0; pointer-events:none; z-index:99998; will-change:opacity;"></div>
 
@@ -11013,10 +11024,15 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                       // (Se controla dinámicamente en la sección de convergencia más abajo)
                   } else {
                       document.body.classList.remove("hide-all-cards-final-scene");
+                      if (typeof globalGlbCard !== "undefined" && globalGlbCard) { globalGlbCard.visible = true; }
                       if (typeof cards !== 'undefined' && Array.isArray(cards)) {
                           cards.forEach(function(c) { if (c) c.visible = true; });
                       }
                       if (typeof window.polaroidMesh !== 'undefined' && window.polaroidMesh) { window.polaroidMesh.visible = false; }
+                      var _strip = document.getElementById('img-strip-container');
+                      if (_strip) _strip.style.opacity = '1';
+                      var _thermal = document.getElementById('thermal-overlay');
+                      if (_thermal) _thermal.style.opacity = '1';
                       var _scOverlay = document.getElementById('scene-overlay');
                       if (_scOverlay) _scOverlay.style.opacity = '1';
                       if (oryzoBg) oryzoBg.style.opacity = '1';
@@ -11030,7 +11046,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                       var _cCanvas = document.getElementById('card-canvas');
                       if (_cCanvas) _cCanvas.style.opacity = '1';
                       if (typeof renderer !== 'undefined') {
-                          renderer.setClearColor(0x000000, 0); // volver a transparente
+                          renderer.setClearColor(0x0d0b09, 1); // restaurar fondo original en lugar de transparente
                       }
                       if (typeof scene !== 'undefined') {
                           scene.background = null;
@@ -11102,9 +11118,10 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                   
                   // Fade in del fondo negro-verde (haciendo el gris transparente mediante CSS)
                   var bgAlpha = 1.0 - convergeP;
-                  if (typeof renderer !== 'undefined') {
-                      renderer.setClearColor(0x000000, 0);
-                  }
+                  // ANULADO: Hacía que el fondo base se viera verde si se interrumpía el scroll
+                  // if (typeof renderer !== 'undefined') {
+                  //     renderer.setClearColor(0x000000, 0);
+                  // }
                   // En lugar de hacer transparente el canvas (que da bugs en navegadores),
                   // simplemente hacemos aparecer un div verde por encima que tapa todo menos el logo y CTA.
                   var _fakeBg = document.getElementById('fake-bg-fade');
@@ -11251,7 +11268,8 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
     h2.style.textAlign       = 'center';
   };
 
-    })();
+    
+})();
 </script>
 
 
@@ -11704,9 +11722,10 @@ document.addEventListener('mouseover', e => {
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 
                 if (distance < 150) { 
-                    let force = (150 - distance) / 150;
-                    this.vx += (dx / distance) * force * 0.15;
-                    this.vy += (dy / distance) * force * 0.15;
+                    // Repulsión deshabilitada para que las "luces" (bolitas) no desaparezcan al mover el ratón rápido
+                    // let force = (150 - distance) / 150;
+                    // this.vx += (dx / distance) * force * 0.15;
+                    // this.vy += (dy / distance) * force * 0.15;
                 }
 
                 this.vx *= 0.95; 
@@ -11778,6 +11797,14 @@ document.addEventListener('mouseover', e => {
         }
         animate();
 
+        
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                // Force a full reload to correctly reset WebGL, GSAP, and scroll state
+                window.location.reload();
+            }
+        });
+
         document.addEventListener('click', (e) => {
             const cta = e.target.closest('a[href*="arbol.html"], button[onclick*="arbol.html"], .hero-cta-area a, #heroCta, #olt-final-cta, .btn-blue, .btn');
             if (cta) {
@@ -11829,9 +11856,19 @@ document.addEventListener('mouseover', e => {
     }
 
     
+
 })();
 </script>
 \n</html>
+
+
+
+
+
+
+
+
+
 
 
 
