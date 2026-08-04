@@ -5757,7 +5757,7 @@ window.onerror = function(msg, url, line, col, err) {
       function getCarouselIndex(p) {
         // Hold por slide: el primero tiene el doble de zona plana
         const centers = [10.62, 11.12, 11.62, 12.12, 12.62, 13.12, 13.62, 14.12, 14.62];
-        const holds   = [0.056, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028];
+        const holds   = [0.224, 0.112, 0.112, 0.112, 0.112, 0.112, 0.112, 0.112, 0.112];
         // Zona plana: devolver entero exacto
         for (let i = 0; i < centers.length; i++) {
           if (Math.abs(p - centers[i]) <= holds[i]) return i;
@@ -6962,9 +6962,49 @@ requestAnimationFrame(smoothScrollLoop);
         divisor = divisor / 2.0;
       }
       
-      // Ajuste pedido: de 24.16 a 34.17 un 100% más rapido extra (fricción / 6)
-      if (targetProg >= 24.16 && targetProg <= 34.17) {
-        divisor = divisor / 6.0;
+      // Ajuste pedido: de 24.16 a 41.54 (para homogeneizar tramo visual hasta 34.12) velocidad reducida 20% (fricción / 4.8)
+      if (targetProg >= 24.16 && targetProg <= 41.54) {
+        divisor = divisor / 4.8;
+      }
+      
+      // Ajuste pedido: de 3.00 a 7.10 (visual) un 50% más lento extra (fricción * 3.0)
+      if (targetProg >= 10.42 && targetProg <= 14.52) {
+        divisor = divisor * 3.0;
+      }
+      
+      // Ajuste pedido: de 16.68 a 24.20 (visual) el doble de lento (fricción * 2.0)
+      if (targetProg >= 24.10 && targetProg <= 31.62) {
+        divisor = divisor * 2.0;
+      }
+      
+      // Ajuste pedido: de 35.2 a 38.8 (visual) un 30% más rápido (fricción / 1.3)
+      if (targetProg >= 42.62 && targetProg <= 46.22) {
+        divisor = divisor / 1.3;
+      }
+      
+      // Ajuste pedido: de 36.22 a 37.18 (visual) 3 veces más rápido extra (fricción / 3.0)
+      if (targetProg >= 43.64 && targetProg <= 44.60) {
+        divisor = divisor / 3.0;
+      }
+      
+      // Ajuste pedido: de 37.18 a 38.7 (visual) el doble de rápido extra (fricción / 2.0)
+      if (targetProg >= 44.60 && targetProg <= 46.12) {
+        divisor = divisor / 2.0;
+      }
+      
+      // Ajuste pedido: de 38.8 a 42.18 (visual). Tramo vacío, pasarlo 10x más rápido (elimina el 90% del scroll físico)
+      if (targetProg >= 46.22 && targetProg <= 49.60) {
+        divisor = divisor / 10.0;
+      }
+      
+      // Ajuste pedido: de 42.8 a 48.15 (visual) 3 veces más rápido (fricción / 3.0)
+      if (targetProg >= 50.22 && targetProg <= 55.57) {
+        divisor = divisor / 3.0;
+      }
+      
+      // Ajuste pedido: de 48.10 al final (visual) un 100% más rápido (fricción / 2.0)
+      if (targetProg >= 55.52) {
+        divisor = divisor / 2.0;
       }
       
       let rawDelta = cappedDY / divisor;
@@ -7041,6 +7081,52 @@ requestAnimationFrame(smoothScrollLoop);
       const cappedDY = Math.sign(dy) * Math.min(Math.abs(dy), 30);
       let divisorT = 450;
         if (targetProg < 0.50) divisorT = 3000;
+        
+      // Ajuste pedido: de 24.16 a 41.54 (para homogeneizar tramo visual hasta 34.12) velocidad reducida 20% (fricción / 4.8)
+      if (targetProg >= 24.16 && targetProg <= 41.54) {
+        divisorT = divisorT / 4.8;
+      }
+        
+      // Ajuste pedido: de 3.00 a 7.10 (visual) un 50% más lento extra (fricción * 3.0)
+      if (targetProg >= 10.42 && targetProg <= 14.52) {
+        divisorT = divisorT * 3.0;
+      }
+      
+      // Ajuste pedido: de 16.68 a 24.20 (visual) el doble de lento (fricción * 2.0)
+      if (targetProg >= 24.10 && targetProg <= 31.62) {
+        divisorT = divisorT * 2.0;
+      }
+      
+      // Ajuste pedido: de 35.2 a 38.8 (visual) un 30% más rápido (fricción / 1.3)
+      if (targetProg >= 42.62 && targetProg <= 46.22) {
+        divisorT = divisorT / 1.3;
+      }
+      
+      // Ajuste pedido: de 36.22 a 37.18 (visual) 3 veces más rápido extra (fricción / 3.0)
+      if (targetProg >= 43.64 && targetProg <= 44.60) {
+        divisorT = divisorT / 3.0;
+      }
+      
+      // Ajuste pedido: de 37.18 a 38.7 (visual) el doble de rápido extra (fricción / 2.0)
+      if (targetProg >= 44.60 && targetProg <= 46.12) {
+        divisorT = divisorT / 2.0;
+      }
+      
+      // Ajuste pedido: de 38.8 a 42.18 (visual). Tramo vacío, pasarlo 10x más rápido (elimina el 90% del scroll físico)
+      if (targetProg >= 46.22 && targetProg <= 49.60) {
+        divisorT = divisorT / 10.0;
+      }
+      
+      // Ajuste pedido: de 42.8 a 48.15 (visual) 3 veces más rápido (fricción / 3.0)
+      if (targetProg >= 50.22 && targetProg <= 55.57) {
+        divisorT = divisorT / 3.0;
+      }
+      
+      // Ajuste pedido: de 48.10 al final (visual) un 100% más rápido (fricción / 2.0)
+      if (targetProg >= 55.52) {
+        divisorT = divisorT / 2.0;
+      }
+        
       let rawDelta = cappedDY / divisorT;
       let magneticDelta = applyMagneticFriction(targetProg, rawDelta);
       targetProg = Math.max(0, Math.min(maxProg, targetProg + magneticDelta));
