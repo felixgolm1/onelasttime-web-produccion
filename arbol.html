@@ -1188,218 +1188,106 @@
         };
 
         const TonesNoria = ({ onComplete, progress, onBack }) => {
-            const [scrollPos, setScrollPos] = useState(0);
-            const maxScroll = dbTones.length - 1;
-
             const [selectedCards, setSelectedCards] = useState([]);
-            const [shakeCardId, setShakeCardId] = useState(null);
             const [limitWarning, setLimitWarning] = useState(false);
             const [customToneText, setCustomToneText] = useState('');
-
-            const containerRef = useRef(null);
-            const touchStartX = useRef(null);
-            const touchStartY = useRef(null);
-            const lastScrollPos = useRef(0);
-            const isDragging = useRef(false);
-
-            const DRAG_SENSITIVITY = window.innerWidth * 0.5;
             const MAX_SELECTIONS = 5;
 
             useEffect(() => {
                 window.scrollTo(0, 0);
             }, []);
 
-            useEffect(() => {
-                const container = containerRef.current;
-                if (!container) return;
-                const handleWheel = (e) => {
-                    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-                        e.preventDefault(); 
-                        setScrollPos(prev => {
-                            let newPos = prev + (e.deltaX * 0.002);
-                            return Math.max(0, Math.min(maxScroll, newPos));
-                        });
-                    }
-                };
-                container.addEventListener('wheel', handleWheel, { passive: false });
-                return () => container.removeEventListener('wheel', handleWheel);
-            }, [maxScroll]);
-
-            const handleDragStart = (clientX, clientY) => { 
-                touchStartX.current = clientX; 
-                touchStartY.current = clientY; 
-                lastScrollPos.current = scrollPos;
-                isDragging.current = false;
-            };
-
-            const handleDragMove = (clientX, clientY) => {
-                if (touchStartX.current !== null && touchStartY.current !== null) {
-                    const diffX = clientX - touchStartX.current;
-                    const diffY = clientY - touchStartY.current;
-                    if (Math.abs(diffY) > Math.abs(diffX) + 5 && !isDragging.current) {
-                        touchStartX.current = null; 
-                        return;
-                    }
-                    if (Math.abs(diffX) > 5) isDragging.current = true;
-                    let newPos = lastScrollPos.current - (diffX / DRAG_SENSITIVITY);
-                    newPos = Math.max(0, Math.min(maxScroll, newPos));
-                    setScrollPos(newPos);
-                }
-            };
-
-            const handleDragEnd = () => {
-                touchStartX.current = null;
-                touchStartY.current = null;
-                setTimeout(() => { isDragging.current = false; }, 50);
-            };
-
             const toggleSelection = (cardId) => {
-                if (isDragging.current) return;
                 if (selectedCards.includes(cardId)) {
                     setSelectedCards(prev => prev.filter(id => id !== cardId));
                 } else {
                     if (selectedCards.length < MAX_SELECTIONS) {
                         setSelectedCards(prev => [...prev, cardId]);
                     } else {
-                        setShakeCardId(cardId);
                         setLimitWarning(true);
                         setTimeout(() => setLimitWarning(false), 2200);
-                        setTimeout(() => setShakeCardId(null), 400);
                     }
                 }
             };
 
-            const getGroupStyles = (index) => {
-                const offset = index - scrollPos;
-                const translateX = offset * 90; 
-                const rotateY = offset * -18; 
-                const scale = 1 - Math.min(Math.abs(offset) * 0.15, 0.3); 
-                const translateZ = Math.min(Math.abs(offset) * -120, 0); 
-                const zIndex = 20 - Math.round(Math.abs(offset) * 10);
-                return {
-                    transform: `translateX(${translateX}%) scale(${scale}) translateZ(${translateZ}px) rotateY(${rotateY}deg)`,
-                    opacity: 1, 
-                    zIndex: zIndex
-                };
-            };
-
             return (
-                <>
-                    <div className="w-full min-h-screen flex flex-col pb-48 fade-in relative">
-                        <GlobalHeader progress={progress} onBack={onBack} />
-                        
-                        <div className={`fixed top-8 left-1/2 -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-full font-semibold text-sm shadow-[0_10px_30px_rgba(239,68,68,0.3)] transition-all duration-300 z-[200] flex items-center gap-2 ${limitWarning ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-                            Máximo {MAX_SELECTIONS} selecciones
-                        </div>
-
-                        <div className="w-full px-6 pt-28 pb-4 text-center z-20 pointer-events-none mt-4">
-                            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-2">
-                                ¿Qué tono quieres que tenga la cena?
-                            </h2>
-                            <p className="text-sm font-medium text-gray-500">
-                                Selecciona hasta {MAX_SELECTIONS} tonos
-                            </p>
-                        </div>
-
-                        <div 
-                            className="ferris-wheel-container"
-                            ref={containerRef}
-                            onTouchStart={(e) => handleDragStart(e.touches[0].clientX, e.touches[0].clientY)}
-                            onTouchMove={(e) => handleDragMove(e.touches[0].clientX, e.touches[0].clientY)}
-                            onTouchEnd={handleDragEnd}
-                            onMouseDown={(e) => handleDragStart(e.clientX, e.clientY)}
-                            onMouseMove={(e) => handleDragMove(e.clientX, e.clientY)}
-                            onMouseUp={handleDragEnd}
-                            onMouseLeave={handleDragEnd}
-                        >
-                            {dbTones.map((group, groupIndex) => {
-                                const groupStyles = getGroupStyles(groupIndex);
-                                return (
-                                    <div key={group.id} className="deck-group" style={groupStyles}>
-                                        <div className="text-center mb-6">
-                                            <span className="inline-block px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-[10px] font-bold uppercase tracking-widest mb-2">
-                                                {group.subtitle}
-                                            </span>
-                                            <h3 className="text-xl font-semibold text-white">
-                                                {group.title}
-                                            </h3>
-                                        </div>
-                                        <div className="relative w-full flex flex-col items-center">
-                                            {group.subtones.map((card, cardIndex) => {
-                                                const isSelected = selectedCards.includes(card.id);
-                                                const isShaking = shakeCardId === card.id;
-                                                const marginTop = cardIndex > 0 ? '-1.25rem' : '0';
-                                                const rotZ = [0, -1.5, 1.5, -2][cardIndex % 4];
-                                                const baseZIndex = 15 - cardIndex;
-
-                                                if (card.id === 't_custom') {
-                                                    return (
-                                                        <div 
-                                                            key={card.id}
-                                                            onClick={() => toggleSelection(card.id)}
-                                                            className={`v27-card ${isSelected ? 'is-selected' : ''} ${isShaking ? 'shake-animation' : ''}`}
-                                                            style={{ marginTop: marginTop, zIndex: baseZIndex, '--rot-z': `${rotZ}deg` }}
-                                                        >
-                                                            <input
-                                                                type="text"
-                                                                className={`w-full bg-transparent outline-none text-[16px] tracking-wide font-medium text-center relative z-10 transition-colors duration-700 ${isSelected ? 'text-white placeholder:text-white/60' : 'text-gray-800 placeholder:text-gray-800/60'}`}
-                                                                placeholder={card.text}
-                                                                value={customToneText}
-                                                                onChange={(e) => setCustomToneText(e.target.value)}
-                                                                onClick={(e) => e.stopPropagation()}
-                                                                onFocus={(e) => {
-                                                                    isDragging.current = true; 
-                                                                }}
-                                                                onBlur={(e) => {
-                                                                    isDragging.current = false;
-                                                                    const val = e.target.value.trim();
-                                                                    if (val !== '') {
-                                                                        if (!selectedCards.includes(card.id)) {
-                                                                            if (selectedCards.length < MAX_SELECTIONS) {
-                                                                                setSelectedCards(prev => [...prev, card.id]);
-                                                                            } else {
-                                                                                setShakeCardId(card.id);
-                                                                                setLimitWarning(true);
-                                                                                setTimeout(() => setLimitWarning(false), 2200);
-                                                                                setTimeout(() => setShakeCardId(null), 400);
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        if (selectedCards.includes(card.id)) {
-                                                                            setSelectedCards(prev => prev.filter(id => id !== card.id));
-                                                                        }
-                                                                    }
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    );
-                                                }
-
-                                                return (
-                                                    <div 
-                                                        key={card.id}
-                                                        onClick={() => toggleSelection(card.id)}
-                                                        className={`v27-card ${isSelected ? 'is-selected' : ''} ${isShaking ? 'shake-animation' : ''}`}
-                                                        style={{ marginTop: marginTop, zIndex: baseZIndex, '--rot-z': `${rotZ}deg` }}
-                                                    >
-                                                        <span className={`text-[16px] tracking-wide font-medium relative z-10 transition-colors duration-700 ${isSelected ? 'text-white' : 'text-gray-800'}`}>
-                                                            {card.text}
-                                                        </span>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                <div className="w-full min-h-screen flex flex-col pb-48 fade-in relative">
+                    <GlobalHeader progress={progress} onBack={onBack} />
+                    
+                    <div className={`fixed top-8 left-1/2 -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-full font-semibold text-sm shadow-[0_10px_30px_rgba(239,68,68,0.3)] transition-all duration-300 z-[200] flex items-center gap-2 ${limitWarning ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
+                        Máximo {MAX_SELECTIONS} selecciones
                     </div>
 
-                    <div className="sticky-bottom-bar pointer-events-none fade-in-opacity">
-                        <div className="w-full pointer-events-auto relative z-20">
-                            <CurvedSlider value={scrollPos} max={maxScroll} onChange={setScrollPos} />
-                        </div>
-                        <div className="pointer-events-auto w-full max-w-[320px] flex justify-center mt-2">
+                    <div className="w-full px-6 pt-28 pb-8 text-center z-20">
+                        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3">
+                            ¿Qué tono quieres que tenga la cena?
+                        </h2>
+                        <p className="text-base font-medium text-gray-400">
+                            Selecciona hasta {MAX_SELECTIONS} tonos que encajen con lo que buscas
+                        </p>
+                    </div>
+
+                    <div className="w-full max-w-2xl mx-auto px-6 flex flex-col gap-10 z-20 mt-8">
+                        {dbTones.map((group) => (
+                            <div key={group.id} className="flex flex-col items-center">
+                                <div className="text-center mb-5">
+                                    <span className="inline-block px-3 py-1 bg-[#1a1a1a] text-[#CCFF00] rounded-full text-[10px] font-bold uppercase tracking-widest mb-2 border border-[#333]">
+                                        {group.subtitle}
+                                    </span>
+                                    <h3 className="text-xl font-semibold text-white">
+                                        {group.title}
+                                    </h3>
+                                </div>
+                                <div className="flex flex-wrap justify-center gap-3">
+                                    {group.subtones.map((card) => {
+                                        const isSelected = selectedCards.includes(card.id);
+                                        if (card.id === 't_custom') {
+                                            return (
+                                                <div 
+                                                    key={card.id} 
+                                                    className={`transition-all duration-300 rounded-full border px-4 py-3 flex items-center min-w-[220px] ${isSelected ? 'bg-[#CCFF00] border-[#CCFF00] shadow-[0_0_15px_rgba(204,255,0,0.4)]' : 'bg-[#111] border-[#333] hover:border-[#555]'}`}
+                                                    onClick={() => {
+                                                        if (!isSelected && selectedCards.length < MAX_SELECTIONS) {
+                                                            setSelectedCards(prev => [...prev, card.id]);
+                                                        }
+                                                    }}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        className={`w-full bg-transparent outline-none text-[15px] font-medium text-center transition-colors ${isSelected ? 'text-black placeholder:text-black/60' : 'text-gray-300 placeholder:text-gray-600'}`}
+                                                        placeholder={card.text}
+                                                        value={customToneText}
+                                                        onChange={(e) => setCustomToneText(e.target.value)}
+                                                        onBlur={(e) => {
+                                                            if (e.target.value.trim() === '' && isSelected) {
+                                                                toggleSelection(card.id);
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+                                            );
+                                        }
+                                        return (
+                                            <button
+                                                key={card.id}
+                                                onClick={() => toggleSelection(card.id)}
+                                                className={`transition-all duration-300 rounded-full px-6 py-3 text-[15px] font-medium border ${
+                                                    isSelected 
+                                                    ? 'bg-[#CCFF00] text-black border-[#CCFF00] shadow-[0_0_15px_rgba(204,255,0,0.4)] scale-105' 
+                                                    : 'bg-[#111] text-gray-300 border-[#333] hover:border-[#666] hover:bg-[#1a1a1a]'
+                                                }`}
+                                            >
+                                                {card.text}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="sticky-bottom-bar pointer-events-none fade-in-opacity flex justify-center z-30">
+                        <div className="pointer-events-auto w-full max-w-[320px] flex justify-center mt-2 px-6 pb-6">
                             <button 
                                 disabled={selectedCards.length === 0}
                                 onClick={() => {
@@ -1408,27 +1296,26 @@
                                 }}
                                 className={`w-full px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider transition-all duration-300 shadow-xl flex items-center justify-center gap-2
                                     ${selectedCards.length > 0 
-                                        ? 'bg-black text-white hover:bg-gray-800 hover:-translate-y-0.5 active:translate-y-0' 
-                                        : 'bg-gray-200 text-gray-500 cursor-not-allowed shadow-none'
+                                        ? 'bg-[#CCFF00] text-black hover:bg-[#d4ff33] hover:-translate-y-0.5 active:translate-y-0' 
+                                        : 'bg-gray-800 text-gray-500 cursor-not-allowed shadow-none'
                                     }`}
                             >
                                 {selectedCards.length > 0 ? (
                                     <>
                                         Continuar 
-                                        <span className="px-2 py-0.5 rounded-full text-[10px] bg-white text-black">
+                                        <span className="px-2 py-0.5 rounded-full text-[10px] bg-black text-[#CCFF00]">
                                             {selectedCards.length} / {MAX_SELECTIONS}
                                         </span>
                                     </>
                                 ) : (
-                                    "Selecciona como mínimo 1 carta"
+                                    "Elige 1 ingrediente mínimo"
                                 )}
                             </button>
                         </div>
                     </div>
-                </>
+                </div>
             );
         };
-
         const CustomizationN4 = ({ onComplete, onBack, globalData, progress }) => {
             const [subStep, setSubStep] = useState(1);
             const [isOut, setIsOut] = useState(false);
