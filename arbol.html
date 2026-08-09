@@ -317,7 +317,7 @@
         ];
 
         const dbLogistics = [
-            { id: 'direccion_group', label: 'Dirección de entrega', type: 'address_group', req: true, conditions: ['cartas_fisicas'] },
+            { id: 'direccion', label: 'Dirección de entrega completa', type: 'text', placeholder: '', req: true, conditions: ['cartas_fisicas'] },
             { id: 'fecha', label: 'Día y hora de la cena', type: 'datetime-local', req: true, conditions: ['siempre'] },
             { id: 'restaurante', label: 'Nombre del restaurante', type: 'text', req: true, conditions: ['cartas_fisicas_en_un_restaurante'] },
             { id: 'reserva', label: 'Nombre de la reserva', type: 'text', req: true, conditions: ['cartas_fisicas_en_un_restaurante'] },
@@ -857,7 +857,7 @@
         };
 
         const LogisticsForm = ({ contextId, initialData, onComplete, progress, onBack }) => {
-            const [form, setForm] = useState(initialData || { calle: '', numero: '', piso: '', ciudad: '', cp: '', fecha: '', restaurante: '', reserva: '', notas_entrega: '', comida: [] });
+            const [form, setForm] = useState(initialData || { direccion: '', fecha: '', restaurante: '', reserva: '', notas_entrega: '', comida: [] });
             const [errs, setErrs] = useState([]);
             const [shakeFields, setShakeFields] = useState([]);
             const [showGlobalError, setShowGlobalError] = useState(false);
@@ -872,15 +872,7 @@
             const fields = useMemo(() => dbLogistics.filter(f => f.conditions.includes('siempre') || f.conditions.some(c => contextId?.includes(c))), [contextId]);
 
             const submit = () => {
-                let newErrs = fields.filter(f => f.type !== 'address_group' && f.req && (!form[f.id] || form[f.id].trim() === '')).map(f => f.id);
-                
-                if (fields.some(f => f.type === 'address_group')) {
-                    if (!form.calle?.trim()) newErrs.push('calle');
-                    if (!form.numero?.trim()) newErrs.push('numero');
-                    if (!form.ciudad?.trim()) newErrs.push('ciudad');
-                    if (!form.cp?.trim()) newErrs.push('cp');
-                }
-
+                const newErrs = fields.filter(f => f.req && (!form[f.id] || form[f.id].trim() === '')).map(f => f.id);
                 if (newErrs.length > 0) {
                     setErrs(newErrs); setShakeFields(newErrs); setShowGlobalError(true);
                     setTimeout(() => setShakeFields([]), 400); setTimeout(() => setShowGlobalError(false), 4000);
@@ -928,19 +920,6 @@
                                             />
                                         )}
                                         {f.type === 'text' && <input type="text" placeholder={f.placeholder} className={inputClasses} value={form[f.id]} onChange={e => {setForm({...form, [f.id]: e.target.value}); setErrs(errs.filter(id => id !== f.id));}} />}
-                                        {f.type === 'address_group' && (
-                                            <div className="flex flex-col gap-3 mt-1">
-                                                <div className="flex gap-3">
-                                                    <input type="text" placeholder="Calle" className={`pill-input !px-4 w-[50%] ${errs.includes('calle') ? 'input-error' : ''} ${shakeFields.includes('calle') ? 'shake' : ''}`} value={form.calle || ''} onChange={e => {setForm({...form, calle: e.target.value}); setErrs(errs.filter(id => id !== 'calle'));}} />
-                                                    <input type="text" placeholder="Nº" className={`pill-input !px-2 w-[20%] ${errs.includes('numero') ? 'input-error' : ''} ${shakeFields.includes('numero') ? 'shake' : ''}`} value={form.numero || ''} onChange={e => {setForm({...form, numero: e.target.value}); setErrs(errs.filter(id => id !== 'numero'));}} />
-                                                    <input type="text" placeholder="Piso, pta" className={`pill-input !px-2 w-[30%]`} value={form.piso || ''} onChange={e => setForm({...form, piso: e.target.value})} />
-                                                </div>
-                                                <div className="flex gap-3">
-                                                    <input type="text" placeholder="Ciudad" className={`pill-input !px-4 w-[60%] ${errs.includes('ciudad') ? 'input-error' : ''} ${shakeFields.includes('ciudad') ? 'shake' : ''}`} value={form.ciudad || ''} onChange={e => {setForm({...form, ciudad: e.target.value}); setErrs(errs.filter(id => id !== 'ciudad'));}} />
-                                                    <input type="text" placeholder="C.P." className={`pill-input !px-2 w-[40%] ${errs.includes('cp') ? 'input-error' : ''} ${shakeFields.includes('cp') ? 'shake' : ''}`} value={form.cp || ''} onChange={e => {setForm({...form, cp: e.target.value}); setErrs(errs.filter(id => id !== 'cp'));}} />
-                                                </div>
-                                            </div>
-                                        )}
                                         {f.type === 'datetime-local' && <input type="datetime-local" onClick={e => { try { e.target.showPicker(); } catch(err){} }} onFocus={e => { try { e.target.showPicker(); } catch(err){} }} className={`${inputClasses} ${!form[f.id] ? 'is-empty' : ''}`} value={form[f.id]} onChange={e => {setForm({...form, [f.id]: e.target.value}); setErrs(errs.filter(id => id !== f.id));}} />}
                                         {f.type === 'multi_pills' && (
                                             (() => {
@@ -2244,7 +2223,7 @@
                             if (globalData.formatId?.includes('digital')) {
                                 advanceTo('participants', {logistics: data});
                             } else {
-                                const isBcn = isBarcelonaCity(`${data.ciudad} ${data.cp}`);
+                                const isBcn = isBarcelonaCity(data.direccion);
                                 const reqHours = isBcn ? 4 : 48;
                                 
                                 const eventDate = new Date(data.fecha);
