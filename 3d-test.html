@@ -2706,14 +2706,7 @@ window.onerror = function(msg, url, line, col, err) {
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   
-  <!-- Modelo 3D: puesto completo de mesa (plato + cubiertos + servilleta) -->
-  <script src="assets/models/tablewareset_base64.js"></script>
-  <!-- Copa de vino (Zinfandel, alta calidad) -->
-  <script src="assets/models/sm_zinfandel_glass_base64.js"></script>
-  <!-- Mano animable / realista -->
-  <script src="assets/models/hand_base64.js"></script>
-  <!-- Tarjeta ID (.glb a Base64 bypass CORS) -->
-  <script src="assets/models/id_card_base64.js"></script>
+
 
   <script>
 
@@ -2745,71 +2738,9 @@ window.onerror = function(msg, url, line, col, err) {
     tryReveal();
   }
 
-  // Helper para el Matrix en la carta 3D
-  function playMatrixOn3DCard() {
-    if (typeof makeCardFrontTex !== 'function' || typeof applyDesign !== 'function') return;
-    const final1 = "CONEXIONES SIGNIFICATIVAS";
-    const final2 = "PARA PERSONAS QUE IMPORTAN";
-    const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#*+^~!';
-    let iteration = 0;
-    
-    function drawMatrixFrame() {
-      let t1 = '', t2 = '';
-      
-      // Line 1
-      for (let i = 0; i < final1.length; i++) {
-        if (final1[i] === ' ') {
-          t1 += ' ';
-        } else if (i < Math.floor(iteration)) {
-          t1 += final1[i];
-        } else if (i < Math.floor(iteration) + 6) {
-          t1 += glyphs[Math.floor(Math.random() * glyphs.length)];
-        } else {
-          t1 += ' ';
-        }
-      }
-      
-      // Line 2
-      for (let i = 0; i < final2.length; i++) {
-        let j = i + Math.floor(final1.length * 0.4);
-        if (final2[i] === ' ') {
-          t2 += ' ';
-        } else if (j < Math.floor(iteration)) {
-          t2 += final2[i];
-        } else if (j < Math.floor(iteration) + 6) {
-          t2 += glyphs[Math.floor(Math.random() * glyphs.length)];
-        } else {
-          t2 += ' ';
-        }
-      }
-      
-      if (typeof window._applyDesignWithMatrix === 'function') {
-        window._applyDesignWithMatrix(t1, t2);
-      }
-    }
-    
-    // Forzamos el primer frame INMEDIATAMENTE (todo borrado) para evitar 
-    // que se vea la carta con el texto normal durante 30ms.
-    drawMatrixFrame();
-
-    const timer = setInterval(() => {
-      iteration += 1.2;
-      drawMatrixFrame();
-      
-      if (iteration >= final1.length + final2.length) {
-        clearInterval(timer);
-        if (typeof window._applyDesignWithMatrix === 'function') {
-          window._applyDesignWithMatrix(final1, final2);
-        }
-      }
-    }, 30);
-  }
 
   function tryReveal() {
     if (!animReady || !gltfReady) return;
-    
-    // Disparar matrix en la carta 3D
-    playMatrixOn3DCard();
       
     requestAnimationFrame(() => {
       const loaderEl   = document.getElementById('loader');
@@ -2825,6 +2756,7 @@ window.onerror = function(msg, url, line, col, err) {
       if (introLine) introLine.style.display = 'none';
       if (svgWrap) svgWrap.style.display = 'none';
       if (realCard) realCard.style.opacity = '0'; 
+      if (cardCanvasEl) cardCanvasEl.style.opacity = '1';
       // Mantenemos realCard en el DOM porque GSAP scrollTl lo lee para visibility swaps
 
       // Estado auxiliar para escalar la carta inicial
@@ -8194,18 +8126,8 @@ requestAnimationFrame(smoothScrollLoop);
       document.body.appendChild(_svgWrap);
     }
 
-    // 2) Ocultar el contenido visual de la CSS card (la 3D la reemplaza desde ya)
-    const _realCardEl = document.getElementById('intro-real-card');
-    if (_realCardEl) _realCardEl.style.opacity = '0';
-
-    // 3) Mostrar 3D card con fade-in suave
-    const _ccEl = document.getElementById('card-canvas');
-    if (_ccEl) {
-      _ccEl.style.transition = 'opacity 0.8s cubic-bezier(0.4,0,0.2,1)';
-    }
-    requestAnimationFrame(() => {
-      if (_ccEl) _ccEl.style.opacity = '1';   // carta 3D: fade-in 0.8s
-    });
+    // 2) (Ocultar DOM card y mostrar 3D card se hace ahora en tryReveal() para respetar los tiempos)
+    
     pivot.visible = true;  // override del pivot.visible = false previo
   }
 
@@ -8276,20 +8198,15 @@ requestAnimationFrame(smoothScrollLoop);
 
   // Ã¢â€€Ã¢â€€ startLoading: parse GLTF en background; animación arranca al terminar Ã¢â€€Ã¢â€€
   function startLoading() {
-    gltfLoader.load(TABLESET_B64,
+    gltfLoader.load('assets/models/tablewareset.glb',
       (gltf) => {
         // GLTFLoader.parse() ha terminado → main thread libre de nuevo.
         if (animReady) {
           // savedProg > 0: la escena se construye inmediatamente
           buildScene(gltf);
         } else {
-          // Primera carga: guardar GLTF y arrancar la animación de intro AHORA
-          // (el thread está libre → stroke-dashoffset puede animarse sin saltos)
+          // Primera carga: guardar GLTF para construir la escena luego
           pendingGltf = gltf;
-          if (typeof window._runIntroAnim === 'function') {
-            window._runIntroAnim();
-            window._runIntroAnim = null; // evitar doble ejecución
-          }
         }
       },
       (xhr) => {
@@ -8297,7 +8214,7 @@ requestAnimationFrame(smoothScrollLoop);
       },
       (err) => { console.error('Error cargando tablewareset:', err); }
     );
-    gltfLoader.load(WINEGLASS_B64,
+    gltfLoader.load('assets/models/sm_zinfandel_glass.glb',
       (gltf) => {
         placeWineGlass(gltf, -3.0, +2.4);
         placeWineGlass(gltf,  3.0, -2.4);
@@ -8530,13 +8447,11 @@ requestAnimationFrame(smoothScrollLoop);
         });
     }
     // Carga nuestro prisma/carta local (.glb proxy a B64)
-    if (typeof ID_CARD_B64 !== 'undefined') {
-      gltfLoader.load(ID_CARD_B64,
-        placeIdCard,
-        null,
-        (err) => { console.error('Error ID Card:', err); }
-      );
-    } else { console.warn('ID_CARD_B64 not found - skipping 3D card mesh'); }
+    gltfLoader.load('assets/models/id_card.glb',
+      placeIdCard,
+      null,
+      (err) => { console.error('Error ID Card:', err); }
+    );
   }
   
   // Ã¢â€€Ã¢â€€ INTRO CARD ANIMATION Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
@@ -8603,9 +8518,9 @@ requestAnimationFrame(smoothScrollLoop);
               }
             }
             
-            // Line 2 (con un desfase visual para que la ola baje)
+            // Line 2 (con un desfase visual para que la ola baje secuencialmente)
             for (let i = 0; i < finalStr2.length; i++) {
-              let j = i + Math.floor(finalStr1.length * 0.4); 
+              let j = i + finalStr1.length; 
               if (finalStr2[i] === ' ') {
                 html2 += ' ';
               } else if (j < Math.floor(iteration)) {
@@ -8628,21 +8543,32 @@ requestAnimationFrame(smoothScrollLoop);
               introMatrix1.innerHTML = finalStr1;
               introMatrix2.innerHTML = finalStr2;
               console.log("Matrix effect finished.");
+              
+              // 3. Transicion a escena 3D tras terminar el matrix (+ breve pausa)
+              setTimeout(() => {
+                animReady = true;
+                if (pendingGltf) buildScene(pendingGltf);
+              }, 600); // 600ms extra para leer la frase antes del giro 3D
             }
           }, 20); 
         }, 300); 
+      } else {
+        // Fallback si no hay texto matrix
+        setTimeout(() => {
+          animReady = true;
+          if (pendingGltf) buildScene(pendingGltf);
+        }, 1800);
       }
 
-      // 3. Transición a escena 3D a los 1.8s
-      setTimeout(() => {
-        animReady = true;
-        if (pendingGltf) buildScene(pendingGltf);
-      }, 1800);
     };
   })();
 
   // Start loading immediately (parse in background during animation)
   startLoading();
+  if (typeof window._runIntroAnim === 'function' && !animReady) {
+    window._runIntroAnim();
+    window._runIntroAnim = null;
+  }
 
   // Ã¢â€€Ã¢â€€ NAV HOVER Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
   const navOverlay = document.getElementById('nav-overlay');
