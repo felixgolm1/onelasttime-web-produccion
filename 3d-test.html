@@ -2828,7 +2828,35 @@ window.onerror = function(msg, url, line, col, err) {
           }
           
           const canvas = document.querySelector('canvas:not(#card-canvas)');
-          if (canvas) canvas.style.opacity = '1';
+          if (canvas) {
+            canvas.style.transition = 'none';
+            canvas.style.opacity = '1';
+            let maskObj = { p: -50 };
+            gsap.to(maskObj, {
+              p: 150,
+              duration: 1.2,
+              ease: "power2.inOut",
+              onUpdate: function() {
+                let maskStr = `linear-gradient(45deg, black ${maskObj.p}%, transparent ${maskObj.p + 50}%)`;
+                canvas.style.webkitMaskImage = maskStr;
+                canvas.style.maskImage = maskStr;
+              },
+              onComplete: function() {
+                canvas.style.webkitMaskImage = '';
+                canvas.style.maskImage = '';
+              }
+            });
+            // Hacemos aparecer la pila de cartas (mainDeck) al 50% del barrido (0.6s)
+            const mainDeck = document.getElementById('mainDeck');
+            if (mainDeck) {
+              mainDeck.style.display = 'block';
+              mainDeck.style.zIndex = '10004';
+              gsap.fromTo(mainDeck, 
+                { autoAlpha: 0, scale: 0.8, y: 30 }, 
+                { autoAlpha: 1, scale: 1, y: 0, duration: 0.6, delay: 0.6, ease: "back.out(1.5)" }
+              );
+            }
+          }
 
           // Reveal UI periférico
           gsap.to(['#nav-logo', '#nav-menu', '#cta-top-container', '#cta-bottom-container', '.scroll-indicator', '#headline', '#subheadline'], {
