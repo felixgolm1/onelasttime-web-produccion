@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="es" class="bg-black">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L6JXBL7EKB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag; // Export to window for React
+  gtag('js', new Date());
+
+  gtag('config', 'G-L6JXBL7EKB');
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sensibles - Experiencia Completa V2.7</title>
@@ -2502,7 +2513,16 @@
                 sessionStorage.setItem('forceSkipApplied', 'true'); // Only do this once per navigation
             }
             
-            const [phase, setPhase] = useState(() => {
+            useEffect(() => {
+        if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+            window.gtag('event', 'page_view', {
+                page_title: 'Fase ' + phase,
+                page_path: '/' + phase
+            });
+        }
+    }, [phase]);
+    
+    const [phase, setPhase] = useState(() => {
                 if (forceSkip) return 'format';
                 return sessionStorage.getItem('dev_phase') || 'format';
             });
