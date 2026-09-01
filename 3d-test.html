@@ -3,9 +3,11 @@
 <head>
 <script>
 window.onerror = function(msg, url, line, col, err) {
+  let msgStr = String(msg);
+  if (msgStr.toLowerCase().indexOf('script error') > -1 || parseInt(line) === 0 || msgStr.indexOf('Extension') > -1) return;
   let d = document.createElement('div');
   d.style.cssText = 'position:fixed;top:0;left:0;z-index:9999999;background:red;color:white;padding:20px;font-size:24px;width:100%;';
-  d.innerHTML = '<b>JS ERROR:</b> ' + msg + ' <br>Line: ' + line;
+  d.innerHTML = '<b>JS ERROR:</b> ' + msgStr + ' <br>Line: ' + line;
   document.body.appendChild(d);
 };
 </script>
@@ -1934,7 +1936,10 @@ window.onerror = function(msg, url, line, col, err) {
       </div>
       <div class="sc-card" id="sc-4">
         <div class="sc-num">4</div>
-        <div class="sc-desc"><b style="color: #ccff00;">Relájate y experimenta</b> una de las mejores cenas que has tenido jamás</div>
+        <div class="sc-desc">
+          <b style="color: #ccff00;">Disfruta, ábrete, escucha, ríe, llora, crece, ama...</b> 
+          en una de las mejores cenas que hayas tenido jamás
+        </div>
       </div>
       <!-- Carta central Hola [nombre] -->
       <div class="sc-card" id="sc-intro" style="background:rgba(21,21,21,1);z-index:10; backface-visibility: hidden; transform: translate(-50%, -50%) scale(1.2) rotate(-2.5deg); pointer-events: auto;">
@@ -2169,8 +2174,9 @@ window.onerror = function(msg, url, line, col, err) {
     <span style="display:block; overflow:hidden; padding-bottom:4px;"><p class="headline-sub oh-inner" style="display:block; margin:0;">En tu restaurante favorito, o en casa</p></span>
   </div>
   <!-- Logo superior izquierda -->
-  <div id="nav-logo">
-    <img src="assets/img/logo one last time.png" alt="One Last Time">
+  <div id="nav-logo" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+    <img src="assets/img/logo%20one%20last%20time.png" alt="One Last Time" style="height: 57px; width: auto; filter: brightness(0) invert(1);">
+    <img src="assets/img/by_sensibles.png" alt="by Sensibles" style="height: 28px; width: auto; filter: brightness(0) invert(1); padding-left: 20px;">
   </div>
   <!-- Menú superior derecha -->
   <nav id="nav-menu">
@@ -2205,7 +2211,7 @@ window.onerror = function(msg, url, line, col, err) {
   </div>
 
   <!-- OPCION B: Input HTML visible perfectamente sincronizado con WebGL -->
-  <div id="visible-input-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 10050; display: flex; align-items: center; justify-content: center;">
+  <div id="visible-input-overlay" style="display: none !important; position: fixed; inset: 0; pointer-events: none; z-index: 10050; align-items: center; justify-content: center;">
     <div id="visible-input-group" style="width: 380px; height: 234px; pointer-events: none; transform-style: preserve-3d; opacity: 0;">
       <!-- scaleX(-1) deshace el espejo cuando rotationY llega a -180 o -540 -->
       <div style="position: absolute; inset: 0; transform: scaleX(-1); display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;">
@@ -2846,16 +2852,7 @@ window.onerror = function(msg, url, line, col, err) {
                 canvas.style.maskImage = '';
               }
             });
-            // Hacemos aparecer la pila de cartas (mainDeck) al 50% del barrido (0.6s)
-            const mainDeck = document.getElementById('mainDeck');
-            if (mainDeck) {
-              mainDeck.style.display = 'block';
-              mainDeck.style.zIndex = '10004';
-              gsap.fromTo(mainDeck, 
-                { autoAlpha: 0, scale: 0.8, y: 30 }, 
-                { autoAlpha: 1, scale: 1, y: 0, duration: 0.6, delay: 0.6, ease: "back.out(1.5)" }
-              );
-            }
+
           }
 
           // Reveal UI periférico
@@ -2888,10 +2885,10 @@ window.onerror = function(msg, url, line, col, err) {
     const scIntroBackInner = scIntroBack.querySelector('div:last-child'); // El contenedor de los párrafos
 
     // Ã¢â€€Ã¢â€€ Diccionario de textos para los giros Ã¢â€€Ã¢â€€
-    const stepTexts = [
+                const stepTexts = [
       "4 PASOS",                                   // Inicio (Front)
-      "Hola ",                                     // 1er Giro (Back)
-      "Si las conversaciones nos unen, hagámoslas inolvidables", // 2do Giro (Front)
+      "",                                          // 1er Giro (Back) HTML overlay invisible
+      "",                                          // 2do Giro (Front)
       "4 PASOS"                                    // 3er Giro (Back)
     ];
     const sc1       = document.getElementById('sc-1');
@@ -3006,7 +3003,7 @@ window.onerror = function(msg, url, line, col, err) {
     scrollTl.call(() => {
       // Restaurar texturas originales de la carta WebGL
       if (typeof window.update3DCardTexture === 'function') {
-        window.update3DCardTexture('front'); // Vuelve al logo "One Last Time"
+        window.update3DCardTexture('front');
         window.update3DCardTexture('back', stepTexts[0]); // Vuelve a "4 PASOS"
       }
       // Asegurar que el input interactivo está oculto y sin foco
@@ -3115,14 +3112,7 @@ window.onerror = function(msg, url, line, col, err) {
         let selS = neonInput ? neonInput.selectionStart : val.length;
         let selE = neonInput ? neonInput.selectionEnd : val.length;
         if (typeof window.update3DCardTexture === 'function') {
-          window.update3DCardTexture('back', { 
-            type: 'name_input', 
-            val: val, 
-            selS: selS,
-            selE: selE,
-            cursorAlpha: cursorState.alpha, 
-            focused: isNeonFocused || val.length === 0
-          });
+          window.update3DCardTexture('back', 'CHAT');
         }
       }
     };
@@ -3171,14 +3161,7 @@ window.onerror = function(msg, url, line, col, err) {
         const currentVal = neonInput ? neonInput.value : '';
         const currentSelS = neonInput ? neonInput.selectionStart : 0;
         const currentSelE = neonInput ? neonInput.selectionEnd : 0;
-        window.update3DCardTexture('back', { 
-          type: 'name_input', 
-          val: currentVal, 
-          selS: currentSelS,
-          selE: currentSelE,
-          cursorAlpha: 0, 
-          focused: false 
-        });
+        window.update3DCardTexture('back', 'CHAT');
       }
 
       if (neonGroup) neonGroup.style.pointerEvents = 'auto';
@@ -7666,7 +7649,16 @@ requestAnimationFrame(smoothScrollLoop);
   }
 
   function makeCardFrontTex(text1 = 'CONEXIONES SIGNIFICATIVAS', text2 = 'PARA PERSONAS QUE IMPORTAN') {
+    if (text1 === 'CHAT' || (typeof text1 === 'object' && text1.type === 'name_input')) {
+        if (!chatAnimating) {
+            chatAnimating = true;
+            lastChatTime = performance.now();
+            renderChat();
+        }
+        return globalBackTex;
+    }
     const W = 760, H = 468;
+
     const c = document.createElement('canvas');
     c.width = W; c.height = H;
     const ctx = c.getContext('2d');
@@ -7738,164 +7730,188 @@ requestAnimationFrame(smoothScrollLoop);
   globalBackTex.anisotropy = 16;
 
   // Global map for dynamic texture update
-  function makeCardBackTex(data = '4 PASOS') {
+  let chatAvatar = new Image();
+chatAvatar.src = 'assets/img/lauric.jpeg';
+let chatMessages = [
+  "mejores cartas que he visto",
+  "pensaba que ya conocia a mi pareja",
+  "mejor cita que he tenido",
+  "nuestra comunicacion ha cambiado para siempre",
+  "mejores cartas que he visto",
+  "pensaba que ya conocia a mi pareja",
+  "mejor cita que he tenido",
+  "nuestra comunicacion ha cambiado para siempre",
+  "mejores cartas que he visto",
+  "pensaba que ya conocia a mi pareja",
+  "mejor cita que he tenido",
+  "nuestra comunicacion ha cambiado para siempre"
+];
+let chatScrollY = 0;
+let lastChatTime = performance.now();
+let chatAnimating = false;
+
+function drawSpeechBubble(ctx, x, y, width, height, radius, isRight) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  
+  if (isRight) {
+    ctx.lineTo(x + width, y + height - 15);
+    ctx.quadraticCurveTo(x + width, y + height, x + width + 14, y + height);
+    ctx.quadraticCurveTo(x + width + 3, y + height, x + width - 15, y + height);
+  } else {
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  }
+  
+  if (!isRight) {
+    ctx.lineTo(x + 15, y + height);
+    ctx.quadraticCurveTo(x - 3, y + height, x - 14, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - 15);
+  } else {
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  }
+  
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+}
+
+function renderChat() {
+    if (!chatAnimating) return;
+    requestAnimationFrame(renderChat);
     const W = 760, H = 468;
     const ctx = globalBackCtx;
     ctx.fillStyle = '#0d0d0d';
     ctx.fillRect(0, 0, W, H);
+    
+    let now = performance.now();
+    let dt = Math.min(now - lastChatTime, 50);
+    lastChatTime = now;
+    chatScrollY += dt * 0.04; // velocidad suave
+    
+    ctx.font = '500 24px "Inter", sans-serif';
     ctx.textBaseline = 'middle';
     
-    if (typeof data === 'object' && data.type === 'name_input') {
-      const val = data.val;
-      const cursorAlpha = data.cursorAlpha;
-      const focused = data.focused;
-      const selS = data.selS || 0;
-      const selE = data.selE || 0;
-      
-      ctx.font = '600 64px "Poppins", sans-serif';
-      
-      if (val.length === 0) {
-        // Siempre mostrar placeholder gris: "Hola tu nombre"
-        const t1 = "Hola ";
-        const t2 = "tu nombre";
-        const w1 = ctx.measureText(t1).width;
-        const w2 = ctx.measureText(t2).width;
-        const totalW = w1 + w2;
-        const startX = W / 2 - totalW / 2;
-        
-        ctx.textAlign = 'left';
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText(t1, startX, H / 2);
-        
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)'; // Gris elegante
-        ctx.fillText(t2, startX + w1, H / 2);
-        
-        // Si está en focus, dibujar el cursor justo antes de "Nombre"
-        if (focused && cursorAlpha > 0 && selS === selE) {
-          const cursorX = startX + w1;
-          ctx.fillStyle = `rgba(204, 255, 0, ${cursorAlpha})`;
-          ctx.save(); ctx.translate(cursorX, H / 2); ctx.scale(0.7, 1.0); ctx.fillText('|', 0, 0); ctx.restore();
+    const spacing = 84;
+    const totalHeight = chatMessages.length * spacing;
+    
+    chatScrollY = chatScrollY % totalHeight;
+    
+    for (let loop = 0; loop < 2; loop++) {
+        for (let i = 0; i < chatMessages.length; i++) {
+            let msg = chatMessages[i];
+            let baseY = (i * spacing) - chatScrollY + (loop * totalHeight);
+            
+            // Evitar dibujar si est fuera de pantalla
+            if (baseY < -100 || baseY > H + 100) continue;
+            
+            let isRight = (i % 2 !== 0);
+            
+            let textW = ctx.measureText(msg).width;
+            let bubbleW = textW + 48;
+            let bubbleH = 55;
+            let avatarSize = 43;
+            
+            let bubbleX = isRight ? W - bubbleW - avatarSize - 60 : 40 + avatarSize + 20;
+            let bubbleY = baseY;
+            
+            let avatarX = isRight ? W - 40 - avatarSize : 40;
+            let avatarY = baseY + 12;
+            
+            // Fondo de la burbuja estilo CTA
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            drawSpeechBubble(ctx, bubbleX, bubbleY, bubbleW, bubbleH, 27, isRight);
+            ctx.fill();
+            
+            // Glow y borde
+            let glow = ctx.createLinearGradient(bubbleX, bubbleY, bubbleX, bubbleY + bubbleH);
+            glow.addColorStop(0, 'rgba(204, 255, 0, 0.15)');
+            glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = glow;
+            ctx.fill();
+            
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(204, 255, 0, 0.45)';
+            ctx.stroke();
+            
+            // Texto estilo CTA
+            ctx.fillStyle = 'rgba(204, 255, 0, 0.95)';
+            ctx.textAlign = 'center';
+            ctx.fillText(msg, bubbleX + bubbleW/2, bubbleY + bubbleH/2);
+            
+            // Avatar (Lauric)
+            if (chatAvatar.complete && chatAvatar.naturalWidth > 0) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(avatarX + avatarSize/2, avatarY + avatarSize/2, avatarSize/2, 0, Math.PI*2);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(chatAvatar, avatarX, avatarY, avatarSize, avatarSize);
+                ctx.restore();
+            } else {
+                ctx.fillStyle = 'rgba(204,255,0,0.5)';
+                ctx.beginPath();
+                ctx.arc(avatarX + avatarSize/2, avatarY + avatarSize/2, avatarSize/2, 0, Math.PI*2);
+                ctx.fill();
+            }
         }
-      } else if (val.length > 8) {
-        // MODO MULTILINEA: Hola arriba, Nombre abajo
-        const y1 = H / 2 - 42;
-        const y2 = H / 2 + 42;
-        
-        ctx.textAlign = 'center';
-        
-        // Dibujar Selección si existe
-        if (focused && selS !== selE) {
-          ctx.save();
-          const textBefore = val.substring(0, Math.min(selS, selE));
-          const selectedText = val.substring(Math.min(selS, selE), Math.max(selS, selE));
-          const fullW = ctx.measureText(val).width;
-          const startX = (W / 2 - fullW / 2) + ctx.measureText(textBefore).width;
-          const selW = ctx.measureText(selectedText).width;
-          ctx.fillStyle = 'rgba(193, 255, 0, 0.4)';
-          ctx.fillRect(startX, y2 - 40, selW, 80);
-          ctx.restore();
-        }
-
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText("Hola", W / 2, y1);
-        ctx.fillText(val, W / 2, y2);
-        
-        if (focused && cursorAlpha > 0 && selS === selE) {
-          const textBeforeCursor = val.substring(0, selS);
-          const fullTextWidth = ctx.measureText(val).width;
-          const textBeforeWidth = ctx.measureText(textBeforeCursor).width;
-          const cursorX = (W / 2 - fullTextWidth / 2) + textBeforeWidth + 2;
-          
-          ctx.fillStyle = `rgba(193, 255, 0, ${cursorAlpha})`;
-          ctx.textAlign = 'left';
-          ctx.save(); ctx.translate(cursorX, y2); ctx.scale(0.7, 1.0); ctx.fillText('|', 0, 0); ctx.restore();
-        }
-      } else {
-        // MODO UNA LINEA
-        const baseText = "Hola " + val;
-        ctx.textAlign = 'center';
-
-        // 1. Dibujar texto base blanco
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText(baseText, W / 2, H / 2);
-        
-        // 2. Si hay selección, dibujar bloque sólido + texto negro clipeado
-        if (focused && selS !== selE) {
-          const tS = Math.min(selS, selE);
-          const tE = Math.max(selS, selE);
-          const textBefore = "Hola " + val.substring(0, tS);
-          const selectedText = val.substring(tS, tE);
-          const fullW = ctx.measureText(baseText).width;
-          const startX = (W / 2 - fullW / 2) + ctx.measureText(textBefore).width;
-          const selW = ctx.measureText(selectedText).width;
-          
-          ctx.save();
-          // Bloque verde sólido
-          ctx.fillStyle = '#c1ff00';
-          ctx.fillRect(startX, H / 2 - 40, selW, 80);
-          
-          // Clipear para dibujar el texto negro SOLO dentro del bloque verde
-          ctx.beginPath();
-          ctx.rect(startX, H / 2 - 40, selW, 80);
-          ctx.clip();
-          
-          ctx.fillStyle = '#000000';
-          ctx.fillText(baseText, W / 2, H / 2);
-          ctx.restore();
-        }
-
-        if (focused && cursorAlpha > 0 && selS === selE) {
-          const textBeforeCursor = "Hola " + val.substring(0, selS);
-          const fullTextWidth = ctx.measureText(baseText).width;
-          const textBeforeWidth = ctx.measureText(textBeforeCursor).width;
-          const cursorX = (W / 2 - fullTextWidth / 2) + textBeforeWidth + 2;
-          
-          ctx.fillStyle = '#c1ff00';
-          ctx.textAlign = 'left';
-          ctx.save(); ctx.translate(cursorX, H / 2); ctx.scale(0.7, 1.0); ctx.fillText('|', 0, 0); ctx.restore();
-        }
-      }
-    } else {
-      // String estandar (ej. "4 PASOS", "3. DISFRUTA...")
-      const text = typeof data === 'string' ? data : '';
-      ctx.fillStyle = '#ffffff';
-      ctx.textAlign = 'center';
-      ctx.font = 'bold 100px "Bebas Neue", Impact, sans-serif';
-      ctx.fillText(text, W / 2, H / 2);
     }
+    
+    globalBackTex.needsUpdate = true;
+}
+
+function makeCardBackTex(data = '4 PASOS') {
+    const W = 760, H = 468;
+    const ctx = globalBackCtx;
+    
+    if (data === '4 PASOS') {
+        chatAnimating = false; // Detener animación si estaba en marcha
+        ctx.fillStyle = '#0d0d0d';
+        ctx.fillRect(0, 0, W, H);
+        ctx.textBaseline = 'middle';
+        
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 100px "Bebas Neue", Impact, sans-serif';
+        ctx.fillText("4 PASOS", W / 2, H / 2);
+        
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(0, 1); ctx.lineTo(W, 1); ctx.stroke();
+        
+        globalBackTex.needsUpdate = true;
+        return globalBackTex;
+    }
+    
+    if (data === 'CHAT' || (typeof data === 'object' && data.type === 'name_input')) {
+        if (!chatAnimating) {
+            chatAnimating = true;
+            lastChatTime = performance.now();
+            renderChat();
+        }
+        return globalBackTex;
+    }
+    
+    chatAnimating = false; // Detener para cualquier otro texto estático
+    const text = typeof data === 'string' ? data : '';
+    ctx.fillStyle = '#0d0d0d';
+    ctx.fillRect(0, 0, W, H);
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 100px "Bebas Neue", Impact, sans-serif';
+    ctx.fillText(text, W / 2, H / 2);
+    
     ctx.strokeStyle = 'rgba(255,255,255,0.08)';
     ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(0, 1); ctx.lineTo(W, 1); ctx.stroke();
     
     globalBackTex.needsUpdate = true;
     return globalBackTex;
-  }
-
-  // Global function to update the 3D card text dynamically
-  let cachedFrontDefault = null;
-  window.update3DCardTexture = function(face, arg1, arg2) {
-    if (!globalGlbCard) return;
-    const meshName = face === 'front' ? 'cardFrontMesh' : 'cardBackMesh';
-    const targetMesh = globalGlbCard.children.find(child => child.name === meshName);
-    if (targetMesh && targetMesh.material) {
-      if (face === 'front') {
-        // Optimización: si pedimos el default y ya lo tenemos, no recrear
-        if (!arg1 && !arg2) {
-          if (!cachedFrontDefault) cachedFrontDefault = makeCardFrontTex();
-          if (targetMesh.material.map === cachedFrontDefault) return;
-          targetMesh.material.map = cachedFrontDefault;
-        } else {
-          const oldTex = targetMesh.material.map;
-          targetMesh.material.map = makeCardFrontTex(arg1, arg2);
-          // Ojo: no disparamos dispose del cachedFrontDefault
-          if (oldTex && oldTex !== cachedFrontDefault) oldTex.dispose();
-        }
-      } else {
-        targetMesh.material.map = makeCardBackTex(arg1);
-      }
-      targetMesh.material.needsUpdate = true;
-    }
-  };
+}
   // Textura de grano procedural para simular superficie de carta (bump)
   function makeCardGrainTex() {
     const sz = 256;
@@ -8062,10 +8078,25 @@ requestAnimationFrame(smoothScrollLoop);
     };
 
     // Exponemos una versión especial para el Matrix que sí fuerza el update del texto
+    
+    window.update3DCardTexture = function(side, data) {
+      if (side === 'front') {
+        const oldTex = frontMesh.material.map;
+        frontMesh.material.map = makeCardFrontTex(data);
+        if (oldTex && oldTex !== globalBackTex) oldTex.dispose();
+        frontMesh.material.needsUpdate = true;
+      } else {
+        const oldTex = backMesh.material.map;
+        backMesh.material.map = makeCardBackTex(data);
+        if (oldTex && oldTex !== globalBackTex) oldTex.dispose();
+        backMesh.material.needsUpdate = true;
+      }
+    };
+
     window._applyDesignWithMatrix = function(t1, t2) {
       const oldTex = frontMesh.material.map;
       frontMesh.material.map = makeCardFrontTex(t1, t2);
-      if (oldTex) oldTex.dispose();
+      if (oldTex && oldTex !== globalBackTex) oldTex.dispose();
       frontMesh.material.needsUpdate = true;
     };
 
@@ -11861,16 +11892,7 @@ window.chooseFinal = function(e, happy) {
 
 <div id="hover-logger" style="display:none; position:fixed; bottom:0; right:0; background:rgba(0,0,0,0.8); color:lime; padding:10px; z-index:99999999; font-family:monospace; max-width: 400px; font-size: 14px;">Waiting...</div>
 <script>
-window.addEventListener('error', function(e) {
-    let errBox = document.getElementById('js-err-box');
-    if (!errBox) {
-        errBox = document.createElement('div');
-        errBox.id = 'js-err-box';
-        errBox.style = 'position:fixed; top:0; left:0; width:100%; background:red; color:white; z-index:99999999; padding:20px; font-size:20px; font-weight:bold; pointer-events: none;';
-        document.documentElement.appendChild(errBox);
-    }
-    errBox.innerHTML += "JS ERROR: " + e.message + "<br>Line: " + e.lineno + "<br>";
-});
+
 
 document.addEventListener('mouseover', e => {
     const logger = document.getElementById('hover-logger');
