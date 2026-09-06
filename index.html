@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <script>
@@ -1178,9 +1178,9 @@ window.onerror = function(msg, url, line, col, err) {
       100% { transform: rotate(360deg); }
     }
     @keyframes bounceDown {
-      0%, 100% { transform: translateY(-10px); }
-      50% { transform: translateY(3px); }
-    }
+        0%, 100% { transform: translateY(-3px); }
+        50% { transform: translateY(3px); }
+      }
 
     #edge-glow {
       position: fixed;
@@ -1380,7 +1380,7 @@ window.onerror = function(msg, url, line, col, err) {
       letter-spacing: -0.025em;
     }
     #flip-right-text {
-      right: 8vw;
+      right: 12vw;
       font-family: 'Inter', sans-serif;
       font-size: clamp(1.0rem, 1.8vw, 1.5rem);
       font-weight: 500;
@@ -1571,14 +1571,12 @@ window.onerror = function(msg, url, line, col, err) {
         background: #ccff00;
         box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         color: #111;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: transform 0.25s ease-out;
       }
       .cta-arrow-pill svg {
         stroke: currentColor;
       }
-      .btn-blue:hover .cta-arrow-pill {
-        transform: translateY(-50%) scale(1.15);
-      }
+      .btn-blue:hover .cta-arrow-pill { transform: translateY(-50%) scale(1.15); }
 
 
 </style>
@@ -1587,6 +1585,7 @@ window.onerror = function(msg, url, line, col, err) {
     body.hide-all-cards-final-scene #card-canvas,
     body.hide-all-cards-final-scene #oryzo-deck-clone,
     body.hide-all-cards-final-scene #mainDeck,
+    body.hide-all-cards-final-scene #magazine-scene,
     body.hide-all-cards-final-scene #oryzo-deck-container,
     body.hide-all-cards-final-scene .card-on-table,
     body.hide-all-cards-final-scene .card-peeking,
@@ -1611,14 +1610,12 @@ window.onerror = function(msg, url, line, col, err) {
         background: #ccff00;
         box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         color: #111;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: transform 0.25s ease-out;
       }
       .cta-arrow-pill svg {
         stroke: currentColor;
       }
-      .btn-blue:hover .cta-arrow-pill {
-        transform: translateY(-50%) scale(1.15);
-      }
+      .btn-blue:hover .cta-arrow-pill { transform: translateY(-50%) scale(1.15); }
 
 
 </style>
@@ -1699,6 +1696,92 @@ window.onerror = function(msg, url, line, col, err) {
     });
 })();
 </script>
+
+<!-- MOBILE OPTIMIZATIONS FOR VIP OVERLAY -->
+<style>
+@media screen and (max-width: 768px) {
+  #card-morph-group, .sc-card { transform: scale(0.90); transform-origin: center center; }
+
+
+  /* Fix intro card overflow and hide desktop scrollbar */
+  #custom-scroll-track, #custom-scroll-thumb {
+    display: none !important;
+  }
+  #card-morph-group {
+    
+  }
+
+  /* Logo breathing room */
+  #vip-overlay .vip-anim-1 {
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
+    margin-bottom: 24px !important; 
+  }
+  #vip-overlay .vip-anim-1 img:first-child {
+    max-width: 88% !important; 
+  }
+  
+  /* Typography and rhythm */
+  #vip-title {
+    font-size: 20px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 24px !important;
+    min-height: auto !important;
+    padding: 0 30px !important;
+  }
+  
+  #vip-form-container {
+    min-height: auto !important;
+  }
+
+  /* Input and Button identical sizing */
+  #vip-overlay .vip-pill {
+    width: 88vw !important;
+    max-width: 320px !important;
+    height: 56px !important;
+    box-sizing: border-box !important;
+    
+  }
+  
+  #vip-code {
+    padding: 0 24px !important;
+    margin-bottom: 24px !important;
+  }
+  
+  /* Fix button internal alignment */
+  #vip-submit-btn {
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  #vip-submit-btn span {
+    padding-right: 0 !important; 
+    margin-right: 32px !important; 
+    line-height: 1 !important;
+  }
+  #vip-submit-btn .cta-arrow-pill {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    right: 8px !important;
+  }
+  
+  /* Error msg */
+  #vip-error {
+    margin-top: 16px !important;
+  }
+
+  /* Bottom Waitlist text */
+  #vip-form-container > div:last-child {
+    margin-top: 24px !important;
+  }
+  #vip-toggle-prefix, #vip-toggle-mode {
+    font-size: 15px !important;
+  }
+}
+</style>
+
 </head>
 
 
@@ -1740,9 +1823,8 @@ window.onerror = function(msg, url, line, col, err) {
           border-radius: 0;
           pointer-events: none;
         ">
-          <span style="color: #ccff00; font-weight: 600; display: block; font-size: 14px; margin-bottom: 6px;">Tú defines el objetivo y el contexto.</span>
-          ¿Romper la monotonía? ¿Celebrar un hito? ¿Comunicaros mejor? ¿Conseguir una 2Âª cita?
-          Lo que quieras. Las cartas hacen el resto
+          <span style="color: #ccff00; font-weight: 700; display: block; font-size: 14px; margin-bottom: 6px; letter-spacing: 0.03em; text-transform: uppercase;">Haz que cada cena cuente</span>
+          Reconecta despu&eacute;s de un bache, sal de la rutina o celebra un hito. Pero no lo dejes al azar.
         </div>
       </div>
       <!-- Slide 1: Secuencia crossfade divertido → sorprendente → profundo → emocional → neutro -->
@@ -1760,7 +1842,7 @@ window.onerror = function(msg, url, line, col, err) {
           font-weight: 400; line-height: 1.6; letter-spacing: 0.05em;
           text-transform: uppercase; text-align: center;
           padding: 14px 16px; border-radius: 0; pointer-events: none;">
-          <span style="color:#ccff00;font-weight:600;display:block;font-size:14px;margin-bottom:6px;">Escoge el tono que quieras</span>
+          <span style="color:#ccff00;font-weight:600;display:block;font-size:14px;margin-bottom:6px;">Escoge el tono que quieras darle</span>
           <span class="seq0-word" style="color:#ffffff;display:block;transition:opacity 0.35s ease;">¿Divertido?</span>
         </div>
       </div>
@@ -1786,7 +1868,7 @@ window.onerror = function(msg, url, line, col, err) {
                   <!-- Slide 5 (video interactivo) -->
       <div class="carousel-item" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: center center;">
         <img data-small-only="true" src="assets/img/cita 10.992.jfif" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-        <video data-large-only="true" class="envej-thumb-vid" src="assets/img/couple-aging.mp4" muted playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;border-radius:4px;"></video>
+        <video data-large-only="true" class="envej-thumb-vid" src="assets/img/embejecimiento_fast.mp4" muted playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;border-radius:4px;"></video>
       
 
       
@@ -1874,7 +1956,7 @@ window.onerror = function(msg, url, line, col, err) {
             white-space:nowrap;
             cursor:default;
             margin-top:2px;
-          ">Ver im&aacute;genes</button>
+          ">Ver de todos modos</button>
           <!-- Ancla de posicionamiento para el botón CTA real (vive en el body como fixed) -->
           <div id="sens-btn-anchor" style="height:4px;"></div>
         </div>
@@ -2016,25 +2098,34 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="flt-line"><div class="flt-oh"><span class="flt-in">CON CARTAS</span></div></div>
     <div class="flt-line"><div class="flt-oh"><span class="flt-in">CONVERSACIONALES</span></div></div>
     <div class="flt-line"><div class="flt-oh"><span class="flt-in">ULTRA-PERSONALIZADAS</span></div></div>
-    <div class="flt-line"><div class="flt-oh"><span class="flt-in">A TI</span></div></div>
+    <div class="flt-line"><div class="flt-oh"><span class="flt-in">A VOSOTRXS DOS</span></div></div>
   </div>
   <div id="flip-right-text">
-    <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">Que te conectarán</span></div></div>
-    <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">inmediatamente con quien las uses</span></div></div>
-    <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">por menos de lo que</span></div></div>
-    <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">te costará el cheesecake</span></div></div>
-  </div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">Que os unirán</span></div></div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">como nunca antes</span></div></div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">por menos de lo que</span></div></div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">cuestan dos cheesecakes</span></div></div>
+    </div>
 
   <!-- Nuevo texto gigante al estilo Oryzo -->
   <div id="made-by-humans" style="position: fixed; top: 50%; left: 50%; font-family: 'Inter', sans-serif; font-size: clamp(2.5rem, 8vw, 10rem); font-weight: 700; color: #f4f2ea; letter-spacing: -0.05em; white-space: nowrap; opacity: 1; z-index: 10001; pointer-events: none; visibility: hidden;">hecho por personas</div>
   
-  <div id="made-by-ai" style="position: fixed; top: 50%; left: 50%; font-family: 'Inter', sans-serif; font-size: clamp(2.5rem, 8vw, 10rem); font-weight: 700; color: #f4f2ea; letter-spacing: -0.05em; white-space: nowrap; opacity: 1; z-index: 10001; pointer-events: none; visibility: hidden;">
-    personalizado con 
-    <span style="color: #c1ff00; position: relative; display: inline-block;">
-      IA
-      <img src="assets/img/logo one last time verde.png" alt="One Last Time" style="position: absolute; left: 4%; top: 84%; width: 96%; height: auto; pointer-events: none;">
-    </span>
-  </div>
+                  <div id="made-by-ai" style="position: fixed; top: 50%; left: 50%; font-family: 'Inter', sans-serif; font-size: clamp(2.5rem, 8vw, 10rem); font-weight: 700; color: #f4f2ea; letter-spacing: -0.05em; white-space: nowrap; opacity: 1; z-index: 10001; pointer-events: none; visibility: hidden;">
+      <span style="position: relative; display: inline-block;">
+        <span style="position: absolute; right: 100%; top: 36%; width: 0; height: 0;">
+          <span style="position: absolute; right: 0.30em; top: 50%; transform: translateY(-50%) rotate(-90deg); display: flex; justify-content: space-between; font-size: 0.22em; font-weight: 600; letter-spacing: 0; color: #f4f2ea; opacity: 0.9; width: 3.35em; transform-origin: center right;">
+            <span>u</span><span>l</span><span>t</span><span>r</span><span>a</span>
+          </span>
+        </span>
+        personalizado con 
+      </span>
+      <span style="color: #c1ff00; position: relative; display: inline-block;">
+        IA
+        <span style="position: absolute; left: 7%; top: 82%; display: flex; justify-content: space-between; font-size: 0.13em; font-weight: 700; letter-spacing: 0; width: 92%; white-space: nowrap; color: #c1ff00;">
+          <span>M</span><span>o</span><span>d</span><span>e</span><span>l</span><span>o</span><span>&nbsp;</span><span>O</span><span>L</span><span>T</span><span>-</span><span>1</span>
+        </span>
+      </span>
+    </div>
   
   <!-- 4 pasos scatter (scroll phase 3) -->
   <div id="steps-overlay">
@@ -2051,15 +2142,14 @@ window.onerror = function(msg, url, line, col, err) {
         <div class="sc-desc">Dinos <b style="color: #ccff00;">dónde, cuando y con quien</b> quieres usarlas</div>
       </div>
       <div class="sc-card" id="sc-3">
-        <div class="sc-num">3</div>
-        <div class="sc-desc">Dinos <b style="color: #ccff00;">tu objetivo</b> y haremos matemáticamente imposible que no lo consigas</div>
-        <div style="color: #ffffff; font-size: 0.75rem; font-family: 'Inter', sans-serif; font-weight: 400; opacity: 0.7; margin-top: 1rem; line-height: 1.3;">*Todavía no hemos descubierto cómo conseguir que te paguen la cena. Pero estamos trabajando en ello.</div>
-      </div>
+          <div class="sc-num">3</div>
+          <div class="sc-desc">Danos <b style="color: #ccff00;">el contexto y tu objetivo</b> y haremos matem&aacute;ticamente imposible que no lo consigas</div>
+        </div>
       <div class="sc-card" id="sc-4">
         <div class="sc-num">4</div>
         <div class="sc-desc">
           <b style="color: #ccff00;">Disfruta, ábrete, escucha, ríe, llora, crece, ama...</b> 
-          en una de las mejores cenas que hayas tenido jamás
+          en una de las cenas m&aacute;s memorables que hayas tenido jamás
         </div>
       </div>
       <!-- Carta central Hola [nombre] -->
@@ -2067,10 +2157,7 @@ window.onerror = function(msg, url, line, col, err) {
         <h2 id="sc-title" class="title">4 PASOS</h2>
         <div id="sc-cta" style="position: relative; z-index: 10; transform: scale(0.833); width: 115%; margin: 10px -7.5% 0 -7.5%; visibility: hidden; opacity: 0;">
           <a href="reservar-mi-cena.html" class="btn btn-blue btn-full" style="padding: 0.85rem 2rem !important; height: auto;">
-            <div class="mini-marquee-container">
-              <div class="marquee-content">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; </div>
-              <div class="marquee-content" aria-hidden="true">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; </div>
-            </div>
+            <span style="position:relative; z-index:2; text-align:center; padding-right:20px;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 10px;   width: 52px; height: 32px;      ">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -2095,7 +2182,44 @@ window.onerror = function(msg, url, line, col, err) {
   </div><!-- end steps-overlay -->
 
   <!-- Recuadro de detalle GLOBAL (visible en todos los pasos) -->
-  <div id="sc-detail-global" class="sc-detail-box">
+  
+    
+    <!-- Recuadro Glassmorphism de Quien (Paso 2) -->
+    <div id="glass-who" style="position: fixed; top: 0; right: 0; height: 100vh; width: 30vw; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-left: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0; padding: 10vh 2.5vw 0 30px; opacity: 0; pointer-events: none; z-index: 10005; visibility: hidden; box-shadow: -5px 0 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center;">
+      <h3 style="color: #ccff00; font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 0.05em;">Parejas (y no parejas) que nos hemos encontrado</h3>
+      <ul style="color: rgba(255,255,255,0.9); font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 400; line-height: 1.5; padding-left: 0; margin: 0; list-style-type: none;" class="dynamic-lines-list">
+        <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi mujer con la que ya hemos compartido 40 a&ntilde;os y 2 hijxs</div></li>
+        <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi pareja de hace m&aacute;s de 7 a&ntilde;os</div></li>
+        <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">La cita de Bumble que no quiero desperdiciar</div></li>
+        <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi compi de trabajo con quien ya hace 3 meses que compartimos m&aacute;s que trabajo</div></li>
+        <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">El ligue del viaje a Bali con el que hago videollamadas cada semana</div></li>
+        <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">La que siempre me saca 2 kil&oacute;metros en el <i>run club</i></div></li>
+        <li style="display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi ex (solo para valientes... o insensatxs)</div></li>
+      </ul>
+      <hr style="border: none; border-top: 1px dashed rgba(255,255,255,0.25); margin: 40px 0;">
+      <p id="glass-who-final-text" style="color: #fff; font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; line-height: 1.3; margin: 0; text-align: left; text-transform: uppercase;">
+        &iquest;QU&Eacute; M&Aacute;S NOS QUEDA POR VER?
+      </p>
+    </div>
+
+    <!-- Recuadro Glassmorphism de Objetivos (Paso 3) -->
+    <div id="glass-objectives" style="position: fixed; top: 0; left: 0; height: 100vh; width: 30vw; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-right: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0; padding: 10vh 30px 0 2.5vw; opacity: 0; pointer-events: none; z-index: 10005; visibility: hidden; box-shadow: 5px 0 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center;">
+      <h3 style="color: #ccff00; font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.05em;">Objetivos m&aacute;s pedidos</h3>
+      <div class="dyn-text" style="color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; font-size: 0.85rem; line-height: 1.4; margin-bottom: 24px; padding-right: 10px;">Puede ser literalmente lo que quieras y con el nivel de detalle que necesites (excepto conseguir que te paguen la cena, en eso a&uacute;n estamos trabajando):</div>
+      <ul style="color: rgba(255,255,255,0.9); font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 400; line-height: 1.5; padding-left: 0; margin: 0; list-style-type: none; margin-bottom: 40px;" class="dynamic-lines-list">
+          <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Conocernos a&uacute;n m&aacute;s despu&eacute;s de 8 a&ntilde;os juntxs</div></li>
+          <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mejorar nuestra comunicaci&oacute;n, sobre todo cuando las cosas no van bien</div></li>
+          <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Celebrar nuestro 3er aniversario de pareja</div></li>
+          <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Tener una conversaci&oacute;n profunda sobre lo que ambxs queremos para nuestro futuro</div></li>
+          <li style="display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Descubrir si buscamos lo mismo y si vale la pena tener otra cita</div></li>
+        </ul>
+      <hr style="border: none; border-top: 1px dashed rgba(255,255,255,0.25); margin: 0 0 40px 0;">
+      <p id="glass-obj-final-text" style="color: #fff; font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; line-height: 1.3; margin: 0; text-align: right; text-transform: uppercase;">
+        SI NO LO CONSIGUES, ESTA EXPERIENCIA CORRE A NUESTRA CUENTA Y TE REGALAMOS OTRA
+      </p>
+    </div>
+
+    <div id="sc-detail-global" class="sc-detail-box">
     
     <!-- Texto Paso 1 -->
     <div class="sc-step-text-wrapper" id="sc-text-1" style="text-align: left;">
@@ -2297,8 +2421,8 @@ window.onerror = function(msg, url, line, col, err) {
       <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">MÁS TRANSFORMADORA</span></span>
       <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">QUE HAS TENIDO JAMÁS</span></span>
     </h1>
-    <hr class="headline-divider">
-    <span style="display:block; overflow:hidden; padding-bottom:4px;"><p class="headline-sub oh-inner" style="display:block; margin:0;">En tu restaurante favorito, o en casa</p></span>
+      <hr class="headline-divider">
+      <span style="display:block; overflow:hidden; padding-bottom:4px;"><p class="headline-sub oh-inner" style="display:block; margin:0;">En tu restaurante favorito o en casa</p></span>
   </div>
   <!-- Logo superior izquierda -->
   <div id="nav-logo" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
@@ -2316,10 +2440,7 @@ window.onerror = function(msg, url, line, col, err) {
     <!-- CTA superior derecha -->
     <div id="cta-top-container">
       <a href="reservar-mi-cena.html" class="btn btn-blue btn-full" style="padding: 0.8rem 0; font-size: 0.85rem;">
-        <div class="mini-marquee-container">
-          <div class="marquee-content">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; </div>
-          <div class="marquee-content" aria-hidden="true">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; </div>
-        </div>
+        <span style="position:relative; z-index:2; text-align:center; padding-right:20px;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 6px;   width: 38px; height: 24px;      ">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -2336,10 +2457,7 @@ window.onerror = function(msg, url, line, col, err) {
   <!-- CTA flotante inferior -->
   <div id="cta-bottom-container">
     <a href="reservar-mi-cena.html" class="btn btn-blue btn-full btn-floating" id="heroCta">
-      <div class="mini-marquee-container">
-        <div class="marquee-content">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; </div>
-        <div class="marquee-content" aria-hidden="true">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp;•&nbsp; </div>
-      </div>
+      <span style="position:relative; z-index:2; text-align:center; padding-right:20px;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 10px;   width: 52px; height: 32px;      ">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -2591,14 +2709,12 @@ window.onerror = function(msg, url, line, col, err) {
         background: #ccff00;
         box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         color: #111;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: transform 0.25s ease-out;
       }
       .cta-arrow-pill svg {
         stroke: currentColor;
       }
-      .btn-blue:hover .cta-arrow-pill {
-        transform: translateY(-50%) scale(1.15);
-      }
+      .btn-blue:hover .cta-arrow-pill { transform: translateY(-50%) scale(1.15); }
 
 
 </style>
@@ -2927,7 +3043,7 @@ window.onerror = function(msg, url, line, col, err) {
       // Mantenemos realCard en el DOM porque GSAP scrollTl lo lee para visibility swaps
 
       // Estado auxiliar para escalar la carta inicial
-      let introState = { scaleMult: 1.5 };
+      let introState = { scaleMult: window.matchMedia('(max-width: 768px)').matches ? 1.0 : 1.5 };
 
       // Helper: posiciona la 3D card para que coincida con morphGroup
       function syncCard3DToMorphGroup() {
@@ -2957,7 +3073,7 @@ window.onerror = function(msg, url, line, col, err) {
       }
 
       // Preparar estado visual 3D instantáneamente
-      gsap.set(morphGroup, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0 });
+      gsap.set(morphGroup, { x: 0, y: 0, scaleX: window.matchMedia('(max-width: 768px)').matches ? 0.90 : 1, scaleY: window.matchMedia('(max-width: 768px)').matches ? 0.90 : 1, rotation: 0 });
       syncCard3DToMorphGroup();
 
       // Forzar 1 frame de renderizado 3D AHORA MISMO, antes de hacer visible el canvas.
@@ -3110,28 +3226,110 @@ window.onerror = function(msg, url, line, col, err) {
     // Ajuste de centro vertical afinado de 34 a 37 para cuadrar al pixel la ilusión
     gsap.set(scTitle, { y: 37 });
     gsap.set(scCta,   { opacity: 0 });
+      gsap.set('#glass-who', { opacity: 0, autoAlpha: 0 });
+      gsap.set('#glass-objectives', { opacity: 0, autoAlpha: 0 });
+
     // Caracteres del título: invisible + blur + desplazados (GSAP sobreescribe el CSS)
     gsap.set(ftChars, { opacity: 0, filter: 'blur(10px)', x: -18 });
     // Ã¢â€€ Split por caracteres para el efecto Oryzo letra a letra Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
+    function wrapDynText() {
+      document.querySelectorAll('.dyn-text').forEach(container => {
+          let nodes = Array.from(container.childNodes);
+          container.innerHTML = '';
+          let spans = [];
+          
+          nodes.forEach(node => {
+              if (node.nodeType === 3) {
+                  let words = node.nodeValue.split(' ');
+                  words.forEach((w, i) => {
+                      if (w === '' && i === words.length - 1) return;
+                      let s = document.createElement('span');
+                      s.textContent = w + (i < words.length - 1 ? ' ' : '');
+                      container.appendChild(s);
+                      spans.push(s);
+                  });
+              } else {
+                  let s = document.createElement('span');
+                  s.appendChild(node.cloneNode(true));
+                  s.innerHTML += ' ';
+                  container.appendChild(s);
+                  spans.push(s);
+              }
+          });
+          
+          let lines = [];
+          let current = [];
+          let lastY = -1;
+          spans.forEach(s => {
+              let y = Math.round(s.getBoundingClientRect().top);
+              if (lastY === -1) lastY = y;
+              if (Math.abs(y - lastY) > 5) {
+                  lines.push(current);
+                  current = [];
+                  lastY = y;
+              }
+              current.push(s);
+          });
+          if (current.length) lines.push(current);
+          
+          container.innerHTML = '';
+          container.style.display = 'block';
+          lines.forEach(line => {
+              let lineWrap = document.createElement('div');
+              lineWrap.style.overflow = 'hidden';
+              let inner = document.createElement('div');
+              inner.className = 'glass-mask-line';
+              inner.style.paddingRight = '5px';
+              line.forEach(s => inner.appendChild(s));
+              lineWrap.appendChild(inner);
+              container.appendChild(lineWrap);
+          });
+      });
+    }
+    wrapDynText();
 
     function splitFltChars(selector) {
       const chars = [];
       document.querySelectorAll(selector).forEach(span => {
-        const text = span.textContent;
+        const text = span.textContent.trim();
         span.textContent = '';
-        [...text].forEach(ch => {
-          const el = document.createElement('span');
-          el.className = 'flt-ch';
-          el.style.display = 'inline-block';
-          el.textContent = ch === ' ' ? '\u00a0' : ch;
-          span.appendChild(el);
-          chars.push(el);
+        
+        const words = text.split(/\s+/);
+        words.forEach((word, wIdx) => {
+           const wordSpan = document.createElement('span');
+           wordSpan.style.whiteSpace = 'nowrap';
+           wordSpan.style.display = 'inline-block';
+           
+           [...word].forEach(ch => {
+             const el = document.createElement('span');
+             el.className = 'flt-ch';
+             el.style.display = 'inline-block';
+             el.textContent = ch;
+             wordSpan.appendChild(el);
+             chars.push(el);
+           });
+           
+           span.appendChild(wordSpan);
+           
+             if (wIdx < words.length - 1) {
+                 span.appendChild(document.createTextNode(' '));
+             }
         });
       });
       return chars;
     }
     const leftChars  = splitFltChars('.flt-in');    // texto izquierdo: slide desde arriba
     const rightChars = splitFltChars('.flt-in-up'); // texto derecho:   slide desde abajo
+      const glassWhoTitle = splitFltChars('#glass-who h3');
+      const glassWhoFinalText = splitFltChars('#glass-who-final-text');
+      const glassObjTitle = splitFltChars('#glass-objectives h3');
+      const glassObjFinalText = splitFltChars('#glass-obj-final-text');
+      gsap.set(glassWhoTitle, { opacity: 0 });
+      gsap.set(glassWhoFinalText, { opacity: 0 });
+      gsap.set(glassObjTitle, { opacity: 0 });
+      gsap.set(glassObjFinalText, { opacity: 0 });
+      gsap.set('#glass-who .glass-mask-line, #glass-objectives .glass-mask-line', { yPercent: 110 });
+      gsap.set('#glass-who .glass-bullet, #glass-objectives .glass-bullet', { opacity: 0 });
 
     // Contenedores: invisibles + desplazados (el desliz es del bloque entero)
     // yPercent:-50 = equivalente GSAP al translateY(-50%) del CSS (que GSAP sobreescribiría)
@@ -3149,11 +3347,11 @@ window.onerror = function(msg, url, line, col, err) {
     ];
     const panData = [
       { x:  '26vw', y:  '24vh', r:  16 },
-      { x: '-26vw', y:  '20vh', r:  -9 },
-      { x:  '24vw', y: '-26vh', r: -18 },
+      { x: '-34vw', y:  '20vh', r:  -9 },
+      { x:  '34vw', y: '-26vh', r: -18 },
       { x: '-26vw', y: '-24vh', r:  12 },
     ];
-    const focusZoom = window.innerWidth <= 768 ? 1.05 : 1.35;
+    const focusZoom = window.matchMedia('(max-width: 768px)').matches ? 1.05 : 1.35;
     const sIntroProxy = { opacity: 1 };
     const updateIntroOpacity = () => { if (scIntro) scIntro.style.opacity = sIntroProxy.opacity; };
 
@@ -3604,6 +3802,36 @@ window.onerror = function(msg, url, line, col, err) {
       const otherCards = focusOrder.filter(c => c !== focusedCard);
       scrollTl.to(focusedCard, { opacity: 1, duration: PAN, ease: 'power1.inOut' }, t);
       scrollTl.to(otherCards,  { opacity: 0.15, duration: PAN, ease: 'power1.inOut' }, t);
+        
+        // Animacion de la caja glass-who en el Paso 2
+          if (i === 1) {
+            scrollTl.to('#glass-who', { autoAlpha: 1, duration: 0.01, ease: 'none' }, t);
+            scrollTl.to(glassWhoTitle, { opacity: 1, duration: 0.01, stagger: 0.00069, ease: 'none' }, t + 0.01);
+            scrollTl.to(glassWhoFinalText, { opacity: 1, duration: 0.01, stagger: -0.00029, ease: 'none' }, t + 0.01);
+            scrollTl.to('#glass-who .glass-mask-line', { yPercent: 0, duration: 0.0335, stagger: 0, ease: 'power2.out' }, t + 0.01);
+            scrollTl.to('#glass-who .glass-bullet', { opacity: 1, duration: 0.015, stagger: 0, ease: 'power2.out' }, t + 0.0285);
+          } else {
+            scrollTl.to('#glass-who', { autoAlpha: 0, duration: 0.0335, ease: 'none' }, t);
+            scrollTl.to(glassWhoTitle, { opacity: 0, duration: 0.01, stagger: -0.00069, ease: 'none' }, t);
+            scrollTl.to(glassWhoFinalText, { opacity: 0, duration: 0.01, stagger: 0.00029, ease: 'none' }, t);
+            scrollTl.to('#glass-who .glass-mask-line', { yPercent: 110, duration: 0.0335, stagger: 0, ease: 'power2.out' }, t);
+            scrollTl.to('#glass-who .glass-bullet', { opacity: 0, duration: 0.015, stagger: 0, ease: 'power2.out' }, t);
+          }
+
+          // Animacion de la caja glass-objectives en el Paso 3
+          if (i === 2) {
+            scrollTl.to('#glass-objectives', { autoAlpha: 1, duration: 0.01, ease: 'none' }, t);
+            scrollTl.to(glassObjTitle, { opacity: 1, duration: 0.01, stagger: 0.00108, ease: 'none' }, t + 0.01);
+            scrollTl.to(glassObjFinalText, { opacity: 1, duration: 0.01, stagger: -0.00029, ease: 'none' }, t + 0.01);
+            scrollTl.to('#glass-objectives .glass-mask-line', { yPercent: 0, duration: 0.0327, stagger: 0, ease: 'power2.out' }, t + 0.01);
+            scrollTl.to('#glass-objectives .glass-bullet', { opacity: 1, duration: 0.015, stagger: 0, ease: 'power2.out' }, t + 0.0277);
+          } else {
+            scrollTl.to('#glass-objectives', { autoAlpha: 0, duration: 0.0327, ease: 'none' }, t);
+            scrollTl.to(glassObjTitle, { opacity: 0, duration: 0.01, stagger: -0.00108, ease: 'none' }, t);
+            scrollTl.to(glassObjFinalText, { opacity: 0, duration: 0.01, stagger: 0.00029, ease: 'none' }, t);
+            scrollTl.to('#glass-objectives .glass-mask-line', { yPercent: 110, duration: 0.0327, stagger: 0, ease: 'power2.out' }, t);
+            scrollTl.to('#glass-objectives .glass-bullet', { opacity: 0, duration: 0.015, stagger: 0, ease: 'power2.out' }, t);
+          }
       
       // Animar el texto del recuadro global correspondiente a este paso
       const stepTextData = detailStepTexts[i];
@@ -3986,48 +4214,8 @@ window.onerror = function(msg, url, line, col, err) {
         ];
         let currentCopyIdx = 0;
         window.updateEnvejCopy = function(pct) {
-          let idx = 0;
-          if (pct > 0.90) idx = 4;
-          else if (pct > 0.66) idx = 3;
-          else if (pct > 0.33) idx = 2;
-          else if (pct > 0.05) idx = 1;
-          
-          const tEl = document.getElementById('envej-copy-title');
-          const sEl = document.getElementById('envej-copy-sub');
-          const ctaEl = document.getElementById('envej-final-cta');
-
-          if (sEl) sEl.style.display = 'none';
-
-          if (pct >= 0.99) {
-             if (tEl) {
-                 tEl.style.opacity = '0';
-                 tEl.style.pointerEvents = 'none';
-             }
-             if (ctaEl) {
-                 ctaEl.style.opacity = '1';
-                 ctaEl.style.pointerEvents = 'auto';
-             }
-          } else {
-             if (ctaEl) {
-                 ctaEl.style.opacity = '0';
-                 ctaEl.style.pointerEvents = 'none';
-             }
-             if (tEl) {
-                 tEl.style.pointerEvents = 'auto';
-                 if (idx !== currentCopyIdx) {
-                   currentCopyIdx = idx;
-                   tEl.style.opacity = '0';
-                   setTimeout(() => {
-                     tEl.textContent = envejCopies[idx];
-                     tEl.style.opacity = '1';
-                   }, 400);
-                 } else {
-                   if (tEl.style.opacity === '0') tEl.style.opacity = '1';
-                 }
-             }
-          }
         };
-        window.envejSeekByRange = function(val) {
+          window.envejSeekByRange = function(val) {
           var pct = val / 9999;
           if (!window._envejVideoRef) {
             var _lt = document.querySelector('.carousel-track-large');
@@ -5502,7 +5690,8 @@ window.onerror = function(msg, url, line, col, err) {
                     width: modelW + 'px', height: modelH + 'px', transform: 'none'
                   });
                   document.body.appendChild(clone);
-                  origImg.style.visibility = 'hidden';
+                  // Mantenemos origImg visible para que cubra CIENCIA pero sea cubierto por los textos (z-index nativo 2, 3, 4)
+                  // origImg.style.visibility = 'hidden';
                 }
 
               }
@@ -5874,6 +6063,15 @@ window.onerror = function(msg, url, line, col, err) {
       const largeItems = document.querySelectorAll('.carousel-track-large .carousel-item');
       if (smallItems.length > 0 && largeItems.length > 0) {
         if (prog > 9.62) {
+          if (!window._carouselVideosPlayed) {
+            window._carouselVideosPlayed = true;
+            document.querySelectorAll('.carousel-track-small video, .carousel-track-large video').forEach(function(v) {
+              if (v.hasAttribute('autoplay') && v.paused) {
+                var p = v.play();
+                if (p && p.catch) p.catch(function(){});
+              }
+            });
+          }
           ['aging-panel-clip', 'besos-panel-clip', 'envej-panel-clip', 'final-feliz-panel', 'citas-slider-panel', 'sens-btn-clip'].forEach(id => {
             var el = document.getElementById(id);
             if (el) el.style.display = '';
@@ -6420,6 +6618,10 @@ window.onerror = function(msg, url, line, col, err) {
             }
           }
       });
+    } else {
+      requestAnimationFrame(() => {
+        if (typeof updateGlobalScenes === 'function') updateGlobalScenes();
+      });
     }
 
     // Ã¢â€€Ã¢â€€ GLOBAL SCENE ROUTER Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
@@ -6647,7 +6849,7 @@ window.onerror = function(msg, url, line, col, err) {
 
       if (Math.abs(targetProg - prog) > 0.000005 || window.isAutoScrolling) {
         if (!window.isAutoScrolling) {
-            prog += (targetProg - prog) * lerpF;
+            if (Math.abs(targetProg - prog) > 10) { prog = targetProg; } else { prog += (targetProg - prog) * lerpF; }
             if (Math.abs(targetProg - prog) <= 0.000005) prog = targetProg;
         }
         sessionStorage.setItem('dev_prog', prog);
@@ -6764,6 +6966,9 @@ window.onerror = function(msg, url, line, col, err) {
               var _hi  = Math.max(0, Math.min(100, _vis + _se));
               var _mv  = 'linear-gradient(to bottom left, black 0%, black ' + _lo + '%, transparent ' + _hi + '%)';
               var _bgOp = Math.min(1, _tPdiv / 0.15);
+              if (prog > 21.6) {
+                  _bgOp *= Math.max(0, 1.0 - (prog - 21.6) / 0.5);
+              }
               if (_bgEl)  { _bgEl.style.opacity = String(_bgOp);  _bgEl.style.webkitMaskImage = _mv;  _bgEl.style.maskImage = _mv; }
               if (_silWr) { _silWr.style.opacity = String(_bgOp); _silWr.style.webkitMaskImage = _mv; _silWr.style.maskImage = _mv; }
               if (_vigEl) { _vigEl.style.opacity = String(_bgOp); _vigEl.style.webkitMaskImage = _mv; _vigEl.style.maskImage = _mv; }
@@ -6955,7 +7160,16 @@ window.onerror = function(msg, url, line, col, err) {
                   globalGlbCard.rotation.set(0, Math.PI, totalRz, 'XYZ');
 
                   const boardScale = gsap.getProperty(scBoard, 'scaleX') || 1;
-                  globalGlbCard.scale.setScalar(lc.scale * boardScale);
+                  // Compensacion de perspectiva: al alejarse del centro, la camara 3D lo hace ver mas pequeno.
+                  // Calculamos la distancia real a la lente y escalamos proporcionalmente para mantener tamano visual 2D constante.
+                  const currentDist = Math.sqrt(
+                      Math.pow(globalGlbCard.position.x, 2) + 
+                      Math.pow(globalGlbCard.position.y, 2) + 
+                      Math.pow(DIST, 2)
+                  );
+                  const perspectiveComp = currentDist / DIST;
+                  
+                  globalGlbCard.scale.setScalar(lc.scale * boardScale * perspectiveComp);
 
               } else {
                   const scBoardScale = gsap.getProperty(scBoard, 'scaleX') || 0.66;
@@ -7974,7 +8188,7 @@ function renderChat() {
             let textW = ctx.measureText(msg).width;
             let bubbleW = textW + 48;
             let bubbleH = 55;
-            let avatarSize = 52;
+            let avatarSize = 104;
             
             let bubbleX = isRight ? W - bubbleW - avatarSize - 60 : 40 + avatarSize + 20;
             let bubbleY = baseY;
@@ -8010,7 +8224,12 @@ function renderChat() {
                 ctx.arc(avatarX + avatarSize/2, avatarY + avatarSize/2, avatarSize/2, 0, Math.PI*2);
                 ctx.closePath();
                 ctx.clip();
-                ctx.drawImage(chatAvatar, avatarX, avatarY, avatarSize, avatarSize);
+                let scale = Math.max(avatarSize / chatAvatar.naturalWidth, avatarSize / chatAvatar.naturalHeight);
+                let drawW = chatAvatar.naturalWidth * scale;
+                let drawH = chatAvatar.naturalHeight * scale;
+                let drawX = avatarX + (avatarSize - drawW) / 2;
+                let drawY = avatarY + (avatarSize - drawH) / 2;
+                ctx.drawImage(chatAvatar, drawX, drawY, drawW, drawH);
                 ctx.restore();
             } else {
                 ctx.fillStyle = 'rgba(204,255,0,0.5)';
@@ -9706,14 +9925,19 @@ function makeCardBackTex(data = '4 PASOS') {
   window._updateBrainReveal = function(tP, maskValue) {
     var canvas = document.getElementById('brain-canvas');
     if (!canvas) return;
-    if (tP <= 0) {
-      canvas.style.transition = 'none'; // hide instantaneo, sin flash
+    var p = window._brainScrollProg || 0;
+    if (tP <= 0 || p > 22.1) {
+      canvas.style.transition = 'none';
       canvas.style.opacity = '0';
       canvas.style.webkitMaskImage = '';
       canvas.style.maskImage = '';
     } else {
+      var fadeT = 1.0;
+      if (p > 21.6) {
+        fadeT = 1.0 - Math.max(0, Math.min(1, (p - 21.6) / 0.5));
+      }
       canvas.style.transition = '';
-      canvas.style.opacity = '1';
+      canvas.style.opacity = String(fadeT);
       canvas.style.webkitMaskImage = maskValue;
       canvas.style.maskImage = maskValue;
     }
@@ -10159,14 +10383,12 @@ setInterval(function() {
         background: #ccff00;
         box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         color: #111;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: transform 0.25s ease-out;
       }
       .cta-arrow-pill svg {
         stroke: currentColor;
       }
-      .btn-blue:hover .cta-arrow-pill {
-        transform: translateY(-50%) scale(1.15);
-      }
+      .btn-blue:hover .cta-arrow-pill { transform: translateY(-50%) scale(1.15); }
 
 
 </style>
@@ -10376,10 +10598,7 @@ setInterval(function() {
   </div>
 
   <a href="reservar-mi-cena.html" id="olt-final-cta" class="btn btn-blue btn-full" style="position:relative; z-index:99999; margin-top:0; opacity:0; pointer-events:none; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
-    <div class="mini-marquee-container" style="animation-duration: 50s;">
-      <div class="marquee-content">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
-      <div class="marquee-content" aria-hidden="true">RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; RESERVAR MI CENA TRANSFORMADORA AHORA &nbsp; • &nbsp; </div>
-    </div>
+    <span style="position:relative; z-index:2; text-align:center; padding-right:20px;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 14px;   width: 80px; height: 48px;      ">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -10744,9 +10963,12 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
     var p = window._brainScrollProg || 0;
 
     // Fade in/out del card y el cerebro 2D
-    var fadeT = p >= SHOW_START
-      ? clamp01((p - SHOW_START) / (SHOW_FADE - SHOW_START))
-      : 0;
+    var fadeT = 0;
+    if (p >= SHOW_START && p <= 21.6) {
+      fadeT = clamp01((p - SHOW_START) / (SHOW_FADE - SHOW_START));
+    } else if (p > 21.6) {
+      fadeT = 1.0 - clamp01((p - 21.6) / 0.5);
+    }
     if (brain) brain.style.opacity = String(fadeT);
     if (card)  card.style.opacity  = String(fadeT);
 
@@ -11427,6 +11649,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                   var magClone = document.getElementById('mag-model-clone');
                   
                   if (localP > EARLY_FADE_START) {
+                      if (magClone) magClone.style.display = 'none';
                       document.body.classList.add("hide-all-cards-final-scene");
                       if (typeof globalGlbCard !== "undefined" && globalGlbCard) { globalGlbCard.visible = false; }
                       if (typeof cards !== 'undefined' && Array.isArray(cards)) {
@@ -11479,6 +11702,8 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                       // Ponemos el fondo gris oscuro para tapar el verde del body
                       // (Se controla dinámicamente en la sección de convergencia más abajo)
                   } else {
+                      var magClone2 = document.getElementById('mag-model-clone');
+                      if (magClone2) magClone2.style.display = '';
                       document.body.classList.remove("hide-all-cards-final-scene");
                       if (typeof globalGlbCard !== "undefined" && globalGlbCard) { globalGlbCard.visible = true; }
                       if (typeof cards !== 'undefined' && Array.isArray(cards)) {
@@ -11763,7 +11988,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
     "
     onmouseover="this.style.boxShadow='0 4px 24px rgba(163,204,0,0.55)'"
     onmouseout="this.style.boxShadow='0 2px 16px rgba(163,204,0,0.35)'"
-  >Ver im&aacute;genes</button>
+  >Ver de todos modos</button>
 </div>
 
 
@@ -11812,11 +12037,18 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
   gap: 0px;
 ">
     <!-- Titulo verde superior -->
-  <div style="text-align:center; margin-bottom: 14px;">
+  <div style="text-align:center; margin-bottom: 8px;">
     <span style="color:#ccff00; font-family:'Inter','Helvetica Neue',sans-serif; font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:3px; text-transform:uppercase;">Desde la cita 1 hasta la <span style="font-size:26px; line-height:0; margin-top:-2px;">&infin;</span></span>
   </div>
-  <!-- Barra scrubber: input[range] nativo (con contador flotante) -->
-  <div style="position:relative; height:28px; display:flex; align-items:center; margin-top:6px;">
+
+  <!-- Contador estático (CITA X) -->
+  <div style="text-align:center; display:flex; justify-content:center; gap:4px; align-items:baseline; margin-bottom: 6px; pointer-events:none;">
+    <span style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase;">Cita</span>
+    <span id="envej-cita-num" style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase;">1</span>
+  </div>
+
+  <!-- Barra scrubber: input[range] nativo -->
+  <div style="position:relative; height:28px; display:flex; align-items:center; margin-top:2px;">
     <div style="position:absolute; left:0; right:0; top:50%; height:2px; transform:translateY(-50%); background:rgba(255,255,255,0.15); border-radius:2px; pointer-events:none;"></div>
     
     <input id="envej-range" type="range" min="0" max="9999" value="0" step="1" oninput="window.envejSeekByRange(this.value); document.getElementById('envej-bar-thumb').classList.add('has-interacted');" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:grab; margin:0; padding:0; z-index:10;">
@@ -11824,23 +12056,10 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
     <div id="envej-bar-thumb" style="position:absolute; top:50%; transform:translate(-50%,-50%); width:32px; height:18px; border-radius:9px; background:#ccff00; left:0%; pointer-events:none; box-shadow:0 0 8px rgba(204,255,0,0.4); display:flex; align-items:center; justify-content:space-between; padding:0 5px; box-sizing:border-box; transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;">
       <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;"><polyline points="15 18 9 12 15 6"></polyline></svg>
       <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      <!-- Contador flotante (CITA X) -->
-      <div style="position:absolute; bottom:22px; left:50%; transform:translateX(-50%); display:flex; gap:4px; align-items:baseline; white-space:nowrap; pointer-events:none;">
-        <span style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase;">Cita</span>
-        <span id="envej-cita-num" style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase;">1</span>
-      </div>
     </div>
   </div>
 
-  <!-- Copy superior (ahora debajo de la barra) -->
-  <div style="position:relative; display:flex; flex-direction:column; gap:4px; min-height: 42px; text-align:center; align-items:center; justify-content:center; margin-top:2px;">
-    <span id="envej-copy-title" style="color:#fff; font-family:'Inter','Helvetica Neue',sans-serif; font-size:12.5px; font-weight:400; line-height:1.6; letter-spacing:0.05em; text-transform:uppercase; transition:opacity 0.4s ease;">El tiempo parece infinito</span>
-    <span id="envej-copy-sub" style="display:none;"></span>
-    <button id="envej-final-cta" onclick="window.location.href='reservar-mi-cena.html'" style="position: absolute; inset: 0; margin: auto; z-index: 100000; background-color: #a3cc00; color: #111; border: none; border-radius: 100px; padding: 6px 18px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; text-align: center; line-height: 1.3; text-transform: uppercase; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; box-shadow: 0 4px 12px rgba(163,204,0,0.4); width: max-content; height: max-content; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <span style="display:block;">No te dejes nada por decir</span>
-      <span style="display:block;">Díselo en la próxima cena</span>
-    </button>
-  </div>
+
   <button id="envej-play-btn" onclick="window.envejPlayPause()" style="display:none;">&#9654;</button>
 
 
@@ -11918,6 +12137,14 @@ window.dismissSens = function(e) {
   // Ocultar botón con fade
   var btn = document.getElementById('sens-cta-btn');
   if (btn) { btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
+
+  // Ensure videos play when interacted
+  document.querySelectorAll('.carousel-track-large video, .carousel-track-small video').forEach(function(v) {
+    if (v.hasAttribute('autoplay')) {
+      var p = v.play();
+      if (p && p.catch) p.catch(function(){});
+    }
+  });
 
   // Inyectar regla CSS !important que destruye el overlay del LARGE (miniatura no se toca)
   var ss = document.getElementById('__sens_dismiss_css');
@@ -12280,10 +12507,7 @@ document.addEventListener('mouseover', e => {
                     particles.push(p);
                 }
                 
-                // Fade out particles before redirect
-                setTimeout(() => {
-                    window._forceEmbersFadeOut = true;
-                }, 2000);
+                // Fade out particles removed
                 
                 // Fade to white removed as per new logic
                 
@@ -12293,7 +12517,6 @@ document.addEventListener('mouseover', e => {
                 }, 3800);
             }
         }, true); // use capture phase
-
 
         document.addEventListener('mouseover', (e) => {
             const cta = e.target.closest('a[href*="reservar-mi-cena.html"], button[onclick*="reservar-mi-cena.html"], .hero-cta-area a, #heroCta, #olt-final-cta, .btn-blue, .btn');
@@ -12489,6 +12712,8 @@ document.addEventListener('mouseover', e => {
     }
     .vip-anim-1 { animation: vipLoad 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.3s; }
     .vip-anim-2 { animation: vipLoad 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.7s; }
+    .vip-shake { animation: shakeAnim 0.4s ease-in-out; }
+    @keyframes shakeAnim { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
 </style>
 <div id="vip-overlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; background-image: radial-gradient(ellipse at 0% 100%, rgba(204,255,0,0.36) 0%, transparent 80%), radial-gradient(ellipse at 100% 100%, rgba(204,255,0,0.18) 0%, transparent 70%); z-index:85000000; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Inter', sans-serif;">
     <div class="vip-anim-1" style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom:40px;">
@@ -12499,7 +12724,7 @@ document.addEventListener('mouseover', e => {
         <h2 id="vip-title" style="color:#fff; margin-bottom:30px; font-weight:600; text-align:center; padding: 0 20px; letter-spacing:-0.02em; font-size:24px; max-width: 600px; line-height: 1.4; transition: opacity 0.5s; min-height: 110px; display: flex; align-items: center; justify-content: center;">Introduce el c&oacute;digo de acceso para vivir la cena m&aacute;s transformadora de tu vida</h2>
         <input type="text" id="vip-code" class="vip-pill vip-input" placeholder="Código secreto">
         <button id="vip-submit-btn" onclick="checkVipCode()" class="vip-pill vip-btn">Entrar</button>
-        <p id="vip-error" style="color:#ff4444; margin-top:20px; font-size:15px; visibility:hidden; opacity:0; font-weight:500; height:22px; margin-bottom:0; transition: opacity 0.3s ease;">C&oacute;digo incorrecto. &iquest;Seguro que est&aacute;s en la lista?</p>
+        <p id="vip-error" style="color:#ff4444; margin-top:20px; font-size:15px; visibility:hidden; opacity:0; font-weight:500; height:22px; margin-bottom:0; transition: opacity 0.3s ease;">C&oacute;digo incorrecto</p>
         
         <div style="margin-top: 35px; text-align: center; z-index: 10; min-height: 60px; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
             <div id="vip-toggle-prefix" style="color: #ffffff; font-size: 17px; font-weight: 500; margin-bottom: 8px;">&iquest;No tienes el c&oacute;digo?</div>
@@ -12578,15 +12803,11 @@ function showVipError(msg, isSuccess) {
     
     if (!isSuccess) {
         input.style.borderColor = '#ff4444';
-        var shakeKeys = [
-            { transform: 'translateX(-8px)' },
-            { transform: 'translateX(8px)' },
-            { transform: 'translateX(-8px)' },
-            { transform: 'translateX(8px)' },
-            { transform: 'translateX(0)' }
-        ];
-        err.animate(shakeKeys, { duration: 400 });
-        input.animate(shakeKeys, { duration: 400, composite: 'add' });
+        err.classList.remove('vip-shake');
+        input.classList.remove('vip-shake');
+        void err.offsetWidth; // trigger reflow
+        err.classList.add('vip-shake');
+        input.classList.add('vip-shake');
     }
     
     if(window._vipErrTimeout) clearTimeout(window._vipErrTimeout);
@@ -12616,7 +12837,7 @@ function checkVipCode() {
                 body: JSON.stringify({ email: val })
             }).catch(e => console.log('Error enviando a lista de espera', e));
         } else {
-            showVipError('Por favor, introduce un email v&aacute;lido.', false);
+            showVipError('Introduce un email v&aacute;lido', false);
         }
         return;
     }
@@ -12682,13 +12903,26 @@ function checkVipCode() {
         var overlay = document.getElementById('vip-overlay');
         sessionStorage.setItem('olt_vip_unlocked', 'true');
         document.body.style.overflow = 'auto';
-        overlay.style.transition = 'opacity 0.8s ease';
-        overlay.style.opacity = '0';
-        setTimeout(function() { overlay.style.display = 'none'; }, 800);
-        clearInterval(vipEmberInterval);
-        window._ctaHoverActive = false;
+        
+        // Efecto de intensificar luces
+        if (window.triggerEmberExplosion) window.triggerEmberExplosion();
+        
+        setTimeout(function() {
+            overlay.style.transition = 'opacity 1.2s ease';
+            overlay.style.opacity = '0';
+            setTimeout(function() { 
+                overlay.style.display = 'none'; 
+                // Secuencia de carga de la landing page (letras, etc)
+                if (typeof window._runIntroAnim === 'function') {
+                    window._runIntroAnim();
+                    window._runIntroAnim = null;
+                }
+            }, 1200);
+            if (typeof vipEmberInterval !== 'undefined' && vipEmberInterval) clearInterval(vipEmberInterval);
+            window._ctaHoverActive = false;
+        }, 800);
     } else {
-        showVipError('C&oacute;digo incorrecto. &iquest;Seguro que est&aacute;s en la lista?', false);
+        showVipError('C&oacute;digo incorrecto', false);
     }
 }
 
@@ -12705,7 +12939,73 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
     }
 });
 </script>
+
+  <script>
+    // Efecto de lucecitas exclusivas SIEMPRE activas dentro de los CTAs
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.btn-blue').forEach(btn => {
+          btn.style.overflow = 'hidden';
+          btn.style.position = 'relative';
+
+          const ctaCanvas = document.createElement('canvas');
+          ctaCanvas.style.position = 'absolute';
+          ctaCanvas.style.top = '0';
+          ctaCanvas.style.left = '0';
+          ctaCanvas.style.width = '100%';
+          ctaCanvas.style.height = '100%';
+          ctaCanvas.style.pointerEvents = 'none';
+          ctaCanvas.style.zIndex = '0'; // Detras del texto
+          ctaCanvas.style.opacity = '1';
+          btn.appendChild(ctaCanvas);
+          
+          const cCtx = ctaCanvas.getContext('2d');
+          
+          let ctaParticles = [];
+          for(let i=0; i<40; i++){
+            ctaParticles.push({
+              x: Math.random(),
+              y: Math.random(),
+              s: Math.random() * 3 + 1,
+              a: Math.random() * Math.PI * 2,
+              v: (Math.random() * 0.5 + 0.2)
+            });
+          }
+          
+          function drawCtaParticles() {
+              ctaCanvas.width = btn.offsetWidth;
+              ctaCanvas.height = btn.offsetHeight;
+              cCtx.clearRect(0,0, ctaCanvas.width, ctaCanvas.height);
+              ctaParticles.forEach(p => {
+                  p.y -= p.v * 0.01;
+                  p.a += 0.05;
+                  if (p.y < 0) p.y = 1;
+                  
+                  let px = p.x * ctaCanvas.width;
+                  let py = p.y * ctaCanvas.height;
+                  let radius = p.s * 2.5;
+                  let alpha = (Math.sin(p.a) * 0.5 + 0.5) * 0.7;
+                  
+                  let grad = cCtx.createRadialGradient(px, py, 0, px, py, radius);
+                  grad.addColorStop(0, "rgba(204, 255, 0, " + alpha + ")");
+                  grad.addColorStop(0.4, "rgba(204, 255, 0, " + (alpha * 0.6) + ")");
+                  grad.addColorStop(1, "rgba(204, 255, 0, 0)");
+                  
+                  cCtx.globalAlpha = 1; // Alpha is handled by the gradient
+                  cCtx.beginPath();
+                  cCtx.arc(px, py, radius, 0, Math.PI*2);
+                  cCtx.fillStyle = grad;
+                  cCtx.fill();
+              });
+              requestAnimationFrame(drawCtaParticles);
+          }
+          drawCtaParticles();
+      });
+    });
+  </script>
+
 </html>
+
+
 
 
 
