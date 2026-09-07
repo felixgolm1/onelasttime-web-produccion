@@ -3189,7 +3189,7 @@ window.onerror = function(msg, url, line, col, err) {
       // Mantenemos realCard en el DOM porque GSAP scrollTl lo lee para visibility swaps
 
       // Estado auxiliar para escalar la carta inicial
-      let introState = { scaleMult: window.matchMedia('(max-width: 768px)').matches ? 1.333333 : 1.5 };
+      let introState = { scaleMult: window.matchMedia('(max-width: 768px)').matches ? 2.0 : 1.5 };
 
       // Helper: posiciona la 3D card para que coincida con morphGroup
       function syncCard3DToMorphGroup() {
@@ -3209,7 +3209,7 @@ window.onerror = function(msg, url, line, col, err) {
         if (globalGlbCard._baseScaleFact) {
           const _GS_SC  = 1.22;
           const _t      = Math.max(0, Math.min(1, (gSY - 1.0) / (_GS_SC - 1.0)));
-          const _scSmall = globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.75 : 0.65);
+          const _scSmall = globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.5 : 0.65);
           const _scLarge = globalGlbCard._baseScaleFact * _GS_SC * (window.matchMedia('(max-width: 768px)').matches ? (1.0/_GS_SC) : 0.90);
           // Aplicamos el multiplicador inicial (1.5 -> 1.0)
           globalGlbCard.scale.setScalar((_scSmall + _t * (_scLarge - _scSmall)) * introState.scaleMult);
@@ -7232,7 +7232,7 @@ window.onerror = function(msg, url, line, col, err) {
               if (globalGlbCard._baseScaleFact && gSY > 0) {
                   const _GS_SC  = 1.22;
                   const _t      = Math.max(0, Math.min(1, (gSY - 1.0) / (_GS_SC - 1.0)));
-                  const _scSmall = globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.75 : 0.65);
+                  const _scSmall = globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.5 : 0.65);
                   const _scLarge = globalGlbCard._baseScaleFact * _GS_SC * (window.matchMedia('(max-width: 768px)').matches ? (1.0/_GS_SC) : 0.90);
                   globalGlbCard.scale.setScalar(_scSmall + _t * (_scLarge - _scSmall));
               }
@@ -7262,7 +7262,7 @@ window.onerror = function(msg, url, line, col, err) {
                   // Funciona en cold-load porque globalGlbCard._baseScaleFact siempre está disponible
                   // tras la carga del GLB (independiente de si !inScatter ha corrido)
                   const _snapScale = (globalGlbCard._baseScaleFact > 0)
-                      ? (globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.75 : (_gSY2 * 0.90)))
+                      ? (globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.5 : (_gSY2 * 0.90)))
                       : Math.abs(globalGlbCard.scale.x);   // fallback solo si el GLB aún no ha cargado
                   smoothScrollLoop._lockedCard = {
                       rotBaseZ: +2.5 * Math.PI / 180,
@@ -10654,10 +10654,10 @@ setInterval(function() {
           <!-- Texto estático z:20 (siempre visible sobre todo) -->
           <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:20;pointer-events:none;display:flex;align-items:center;">
             <div style="padding-left:calc(50% + 1cm);text-align:left;transform:translateY(-2cm);">
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-1">De seguir</p>
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-2">sorprendiéndoos</p>
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;">incluso cuando</p>
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-3">creéis saberlo todo</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-1">De elegir descubriros</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-2">una y otra vez</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;">aunque creáis que no</p>
+              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-3">queda nada por descubrir</p>
             </div>
           </div>
         </div>
@@ -10686,8 +10686,8 @@ setInterval(function() {
           <img src="assets/img/cartas viejas.jfif" style="width:100%;height:100%;object-fit:cover;display:block;">
           <!-- Texto diagonal upper-left -> lower-right -->
           <div style="position:absolute;top:15%;left:calc(10% + 3cm);z-index:10;pointer-events:none;">
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.1rem,2.2vw,2.2rem);line-height:1.2;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;">No es una cena, es una nueva pieza</p>
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.1rem,2.2vw,2.2rem);line-height:1.2;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;">de vuestra historia</p>
+            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.1rem,2.2vw,2.2rem);line-height:1.2;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;white-space:nowrap;">No es una cena, es una nueva</p>
+            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.1rem,2.2vw,2.2rem);line-height:1.2;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;white-space:nowrap;">pieza de vuestra historia</p>
           </div>
         </div>
       </div>
