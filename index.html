@@ -1756,6 +1756,10 @@ window.onerror = function(msg, url, line, col, err) {
   .headline-sub {
     text-align: center !important;
   }
+  .headline-divider {
+    width: 75% !important;
+    margin: 0.8rem 0 !important;
+  }
 
   #subheadline {
     top: auto !important;
@@ -1767,10 +1771,14 @@ window.onerror = function(msg, url, line, col, err) {
   #cta-bottom-container {
     bottom: 6.5rem !important;
   }
+  .scroll-indicator {
+    bottom: 3.2rem !important;
+  }
   #subheadline p {
     text-align: center !important;
     margin: 0 !important;
     font-size: 1.4rem !important;
+    line-height: 1.05 !important;
   }
 
   #nav-menu > a { display: none !important; }
@@ -13263,7 +13271,7 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
   #olt-faq-card {
     position: relative;
     width: 100%;
-    max-width: 540px;
+    max-width: 456px;
     margin: 20px auto 40px;
     display: flex;
     flex-direction: column;
@@ -13281,15 +13289,15 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    padding: 0 4px;
+    margin-bottom: 22px;
+    padding: 0 2px;
   }
   .faq-top-badge {
     color: #ccff00;
     font-family: 'Inter', sans-serif;
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     font-weight: 800;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -13297,8 +13305,8 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
   }
   .faq-top-badge::before {
     content: '';
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: #ccff00;
     box-shadow: 0 0 10px #ccff00;
@@ -13308,15 +13316,15 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.18);
     color: #ffffff;
-    padding: 8px 18px;
+    padding: 7px 16px;
     border-radius: 999px;
     font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     backdrop-filter: blur(10px);
     transition: all 0.2s ease;
   }
@@ -13334,35 +13342,33 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
     flex-direction: column;
     align-items: center;
     perspective: 1200px;
-    padding-bottom: 30px;
+    padding-bottom: 26px;
   }
 
   /* PHYSICAL PLAYING CARD */
   .wallet-card {
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 264px;
     background: linear-gradient(165deg, #fdfdfc 0%, #f4f3ee 100%);
-    border-radius: 22px;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.32), 0 3px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.30), 0 3px 8px rgba(0, 0, 0, 0.13);
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-sizing: border-box;
     cursor: pointer;
     user-select: none;
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 0.35s ease, 
-                border-color 0.3s ease;
-    will-change: transform, box-shadow;
+    transition: transform 0.72s cubic-bezier(0.19, 1, 0.22, 1), 
+                box-shadow 0.35s ease;
+    will-change: transform;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 24px 28px 18px;
+    padding: 22px 24px 20px;
   }
 
   /* Physical Deck Overlap */
   .wallet-card:not(:first-child) {
-    margin-top: -268px;
+    margin-top: -198px;
   }
 
   /* Alternating organic angles */
@@ -13377,116 +13383,110 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
   .wallet-card:nth-child(9)  { --base-rot: -0.6deg; transform: rotate(var(--base-rot)); z-index: 9; }
   .wallet-card:nth-child(10) { --base-rot:  0.8deg; transform: rotate(var(--base-rot)); z-index: 10; }
 
-  /* Subtle Hover: lightly nudges up without changing z-index */
+  /* Subtle Hover */
   .wallet-card:not(.active):hover {
-    transform: translateY(-4px) rotate(var(--base-rot)) !important;
-    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.38);
+    transform: translateY(-3.5px) rotate(var(--base-rot)) !important;
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.36);
   }
 
-  /* ACTIVE CARD (Revealed when clicked) */
+  /* ACTIVE CARD */
   .wallet-card.active {
-    transform: rotate(0deg) scale(1.02) !important;
+    transform: rotate(0deg) scale(1.015) !important;
     z-index: 60 !important;
-    border-color: rgba(204, 255, 0, 0.65);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 35px rgba(204, 255, 0, 0.25);
+    border-color: rgba(0, 0, 0, 0.14);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.48);
     background: #ffffff;
   }
 
-  /* Card Header (Clean Question without icon) */
+  /* Card Header */
   .wallet-header {
-    min-height: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     flex-shrink: 0;
   }
   .wallet-card.active .wallet-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding-bottom: 10px;
+    margin-bottom: 8px;
+    height: auto;
   }
 
   .wallet-question {
     color: #121510;
     font-family: 'Inter', sans-serif;
-    font-size: clamp(0.92rem, 1.35vw, 1.05rem);
+    font-size: clamp(0.85rem, 1.25vw, 0.94rem);
     font-weight: 800;
-    line-height: 1.35;
-    letter-spacing: -0.02em;
+    line-height: 1.34;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
     margin: 0;
     text-align: left;
     width: 100%;
   }
 
-  /* Card Body (Answer - ALWAYS RENDERED, uncovered physically by sliding) */
+  /* Card Body (Answer with internal scroll) */
   .wallet-body {
     flex: 1;
     overflow-y: auto;
     opacity: 1;
-    padding: 14px 2px 10px;
-    color: #262c23;
+    max-height: 165px;
+    padding: 6px 2px 4px;
+    color: #2b3127;
     font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
-    line-height: 1.6;
+    font-size: 0.86rem;
+    line-height: 1.58;
     text-align: left;
     scrollbar-width: thin;
-    scrollbar-color: rgba(204, 255, 0, 0.4) transparent;
+    scrollbar-color: rgba(0, 0, 0, 0.22) transparent;
+  }
+  .wallet-body::-webkit-scrollbar {
+    width: 4px;
+  }
+  .wallet-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 999px;
   }
 
   .wallet-body p {
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
   }
   .wallet-body p:last-child {
     margin-bottom: 0;
   }
   .wallet-body ul, .wallet-body ol {
-    margin: 6px 0 10px 18px;
+    margin: 5px 0 8px 16px;
     padding: 0;
   }
   .wallet-body li {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
   .wallet-body strong {
     color: #0d1208;
     font-weight: 700;
   }
   .wallet-highlight {
-    color: #3b5006;
+    color: #2d3c05;
     font-weight: 700;
-    background: rgba(204, 255, 0, 0.25);
-    padding: 1px 6px;
-    border-radius: 4px;
-  }
-
-  /* Card Physical Footer */
-  .wallet-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 10px;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
-    color: #90908c;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    flex-shrink: 0;
+    background: rgba(204, 255, 0, 0.28);
+    padding: 1px 5px;
+    border-radius: 3px;
   }
 
   /* Bottom CTA Banner */
   .faq-bottom-cta {
     width: 100%;
-    margin-top: 36px;
+    margin-top: 26px;
     background: linear-gradient(180deg, rgba(20, 26, 18, 0.95) 0%, rgba(10, 14, 8, 0.98) 100%);
-    border: 1px solid rgba(204, 255, 0, 0.3);
-    border-radius: 20px;
-    padding: 20px 26px;
+    border: 1px solid rgba(204, 255, 0, 0.25);
+    border-radius: 18px;
+    padding: 18px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    gap: 14px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
   }
 </style>
@@ -13498,8 +13498,8 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
     <div class="faq-top-bar">
       <div>
         <div class="faq-top-badge">One Last Time · Baraja de Respuestas</div>
-        <h2 id="olt-faq-title" style="color:#ffffff; font-family:'Inter',sans-serif; font-size:clamp(1.15rem, 2.2vw, 1.5rem); font-weight:800; margin:6px 0 0; letter-spacing:-0.03em;">
-          Toca una carta para deslizar el mazo
+        <h2 id="olt-faq-title" style="color:#ffffff; font-family:'Inter',sans-serif; font-size:clamp(1.1rem, 2.2vw, 1.35rem); font-weight:800; margin:4px 0 0; letter-spacing:-0.02em;">
+          Preguntas frecuentes &amp; Garantía
         </h2>
       </div>
       <button type="button" class="faq-close-pill" onclick="window.closeFaqModal()">
@@ -13520,7 +13520,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
           <p><span class="wallet-highlight">Te devolvemos todo el dinero</span> y te regalamos otra experiencia diferente.</p>
           <p><strong>Sin preguntas y sin letra pequeña.</strong> Confiamos tanto en la experiencia que si no sentís que ha merecido la pena, el riesgo es 100% nuestro.</p>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 2 -->
@@ -13529,8 +13528,8 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
           <h3 class="wallet-question">¿Cuánto tiempo tardo en recibir las cartas?</h3>
         </div>
         <div class="wallet-body">
-          <p>📱 <strong>Cartas digitales:</strong> Las tienes en tu móvil en menos de <span class="wallet-highlight">10 minutos</span>.</p>
-          <p>📦 <strong>Cartas físicas:</strong></p>
+          <p><strong>Cartas digitales:</strong> Las tienes en tu móvil en menos de <span class="wallet-highlight">10 minutos</span>.</p>
+          <p><strong>Cartas físicas:</strong></p>
           <ul>
             <li><strong>Barcelona ciudad:</strong> Entrega gratis inmediata en <strong>4 horas</strong> si las necesitas hoy.</li>
             <li><strong>Resto de España peninsular:</strong> Entrega gratis en <strong>24-48 horas</strong>.</li>
@@ -13538,7 +13537,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
             <li><strong>Canarias:</strong> 3-8 días (+6€ de suplemento).</li>
           </ul>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 3 -->
@@ -13554,7 +13552,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
             <li>O te las entregamos en mano en tu <strong>casa, oficina o punto de recogida</strong>.</li>
           </ul>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 4 -->
@@ -13566,7 +13563,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
           <p>El precio si escoges <strong>cartas digitales</strong> es de <span class="wallet-highlight">8,99€</span>.</p>
           <p>El precio si escoges la edición de <strong>cartas físicas</strong> es de <span class="wallet-highlight">13,99€</span> (envío peninsular gratuito incluido).</p>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 5 -->
@@ -13578,7 +13574,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
           <p>El envío es <span class="wallet-highlight">100% GRATIS</span> en toda España peninsular.</p>
           <p>Los envíos a Baleares, Ceuta y Melilla tienen un suplemento de 3€, y los envíos a Canarias tienen un suplemento de 6€.</p>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 6 -->
@@ -13591,7 +13586,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
           <p>Aunque durante una cena íntima es el escenario perfecto, puedes pedirlas para donde y cuando queráis: desayunando en el sofá, caminando por la montaña, en un velero o en un viaje.</p>
           <p>Lo esencial es elegir un momento en el que prioricéis la conversación y estéis libres de distracciones.</p>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 7 -->
@@ -13606,7 +13600,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
             <li>Un equipo de especialistas las revisa una a una para asegurar una progresión emocional que garantice la conexión.</li>
           </ol>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 8 -->
@@ -13618,7 +13611,6 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
           <p><strong>En el que quieras.</strong></p>
           <p>Nuestro modelo OLT-1 y nuestro equipo son nativos en español, catalán, inglés, francés, italiano y cualquier idioma que elijas al configurar la reserva.</p>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 9 -->
@@ -13628,9 +13620,8 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
         </div>
         <div class="wallet-body">
           <p><strong>Sí, lo gestionamos de manera personalizada.</strong></p>
-          <p>Escríbenos directamente por WhatsApp al <strong style="color:#2a3d02;">649 67 16 50</strong> y dinos dónde las necesitas para coordinarlo contigo.</p>
+          <p>Escríbenos directamente por WhatsApp al <strong>649 67 16 50</strong> y dinos dónde las necesitas para coordinarlo contigo.</p>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
       <!-- CARD 10 -->
@@ -13641,20 +13632,18 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
         <div class="wallet-body">
           <p>Recibirás una <strong>baraja física de acabado de lujo</strong> (o tu acceso digital interactivo en smartphone) con una <strong>secuencia graduada de preguntas psicológicas</strong> diseñadas para romper la rutina y conectar de verdad como el primer día.</p>
         </div>
-        <div class="wallet-footer">One Last Time ®</div>
       </div>
 
     </div>
 
     <!-- Bottom CTA Bar -->
     <div class="faq-bottom-cta">
-      <div style="color:rgba(255,255,255,0.75); font-family:'Inter',sans-serif; font-size:0.88rem; display:flex; align-items:center; gap:8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      <div style="color:rgba(255,255,255,0.75); font-family:'Inter',sans-serif; font-size:0.82rem; display:flex; align-items:center; gap:6px;">
         <span>Garantía incondicional 100% · Devolución sin preguntas</span>
       </div>
-      <a href="reservar-mi-cena.html" style="background:#ccff00; color:#0d1208; font-family:'Inter',sans-serif; font-weight:800; font-size:0.95rem; padding:12px 28px; border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 20px rgba(204,255,0,0.35); transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 28px rgba(204,255,0,0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 20px rgba(204,255,0,0.35)';">
+      <a href="reservar-mi-cena.html" style="background:#ccff00; color:#0d1208; font-family:'Inter',sans-serif; font-weight:800; font-size:0.88rem; padding:11px 24px; border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 18px rgba(204,255,0,0.35); transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 24px rgba(204,255,0,0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 18px rgba(204,255,0,0.35)';">
         <span>TRANSFORMAR MI CENA</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <span>→</span>
       </a>
     </div>
 
@@ -13703,13 +13692,13 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
       return;
     }
 
-    var shiftAmount = 268; 
+    var shiftAmount = 198; 
 
     allCards.forEach(function(card, idx) {
       var baseRot = card.style.getPropertyValue('--base-rot') || '0deg';
       if (idx === clickedIndex) {
         card.classList.add('active');
-        card.style.transform = 'translateY(0) rotate(0deg) scale(1.02)';
+        card.style.transform = 'translateY(0) rotate(0deg) scale(1.015)';
       } else {
         card.classList.remove('active');
         if (idx < clickedIndex) {
@@ -13722,7 +13711,7 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
 
     setTimeout(function() {
       clickedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 120);
+    }, 150);
   };
 
   // Prevent wheel & touchmove from getting hijacked by the global 3D scroll
@@ -13755,6 +13744,9 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
   });
 </script>
 <!-- End OLT FAQs Modal -->
+
+
+
 
 
 
