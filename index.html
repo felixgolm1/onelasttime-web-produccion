@@ -3208,7 +3208,8 @@ window.onerror = function(msg, url, line, col, err) {
         
         if (globalGlbCard._baseScaleFact) {
           const _GS_SC  = 1.22;
-          const _t      = Math.max(0, Math.min(1, (gSY - 1.0) / (_GS_SC - 1.0)));
+          const _baseGSY = window.matchMedia('(max-width: 768px)').matches ? 0.90 : 1.0;
+            const _t = Math.max(0, Math.min(1, (gSY - _baseGSY) / (_GS_SC - _baseGSY)));
           const _scSmall = globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.5 : 0.65);
           const _scLarge = globalGlbCard._baseScaleFact * _GS_SC * (window.matchMedia('(max-width: 768px)').matches ? (1.0/_GS_SC) : 0.90);
           // Aplicamos el multiplicador inicial (1.5 -> 1.0)
@@ -6537,52 +6538,6 @@ window.onerror = function(msg, url, line, col, err) {
 
       // dragHint es ahora fijo (no sigue el ratón)
 
-    // Ã¢â€€Ã¢â€€ DRAG CAJA Ã¢â€€Ã¢â€€ (igual que index.html: arrastramos el wrapper mainDeck)
-    // Ahora mainDeck es del tamaño de la caja (como en index.html), así que
-    // arrastrarlo mueve toda la caja+cartas juntas.
-    let isBoxDragging = false;
-    let startBoxX, startBoxY, initialBoxLeft, initialBoxTop;
-
-    mainDeck.addEventListener('pointerdown', (e) => {
-      // Si pinchamos una carta que asoma, ignoramos arrastrar la caja
-      if (e.target.closest('.card-wrap')) return;
-
-      isBoxDragging = true;
-
-      // Primera vez: convertir de margin-based (CSS) a left/top explícitos
-      if (!mainDeck.dataset.dragged) {
-        mainDeck.dataset.dragged = 'true';
-        const currentLeft = mainDeck.offsetLeft;
-        const currentTop  = mainDeck.offsetTop;
-        mainDeck.style.marginLeft = '0';
-        mainDeck.style.marginTop  = '0';
-        mainDeck.style.left = currentLeft + 'px';
-        mainDeck.style.top  = currentTop  + 'px';
-      }
-
-      startBoxX = e.clientX;
-      startBoxY = e.clientY;
-      initialBoxLeft = parseFloat(mainDeck.style.left) || mainDeck.offsetLeft;
-      initialBoxTop  = parseFloat(mainDeck.style.top)  || mainDeck.offsetTop;
-
-      mainDeck.setPointerCapture(e.pointerId);
-    });
-
-    mainDeck.addEventListener('pointermove', (e) => {
-      if (!isBoxDragging) return;
-      const dx = e.clientX - startBoxX;
-      const dy = e.clientY - startBoxY;
-      mainDeck.style.left = `${initialBoxLeft + dx}px`;
-      mainDeck.style.top  = `${initialBoxTop  + dy}px`;
-    });
-
-    const endBoxDrag = (e) => {
-      isBoxDragging = false;
-      try { mainDeck.releasePointerCapture(e.pointerId); } catch (err) { }
-    };
-    mainDeck.addEventListener('pointerup', endBoxDrag);
-    window.addEventListener('pointerup', endBoxDrag);
-    window.addEventListener('pointercancel', endBoxDrag);
 
 
 
@@ -7231,7 +7186,8 @@ window.onerror = function(msg, url, line, col, err) {
               // Mismo rango que scrollTl Phase 1 â€â€ la pantalla se va poniendo negra a la vez
               if (globalGlbCard._baseScaleFact && gSY > 0) {
                   const _GS_SC  = 1.22;
-                  const _t      = Math.max(0, Math.min(1, (gSY - 1.0) / (_GS_SC - 1.0)));
+                  const _baseGSY = window.matchMedia('(max-width: 768px)').matches ? 0.90 : 1.0;
+            const _t = Math.max(0, Math.min(1, (gSY - _baseGSY) / (_GS_SC - _baseGSY)));
                   const _scSmall = globalGlbCard._baseScaleFact * (window.matchMedia('(max-width: 768px)').matches ? 0.5 : 0.65);
                   const _scLarge = globalGlbCard._baseScaleFact * _GS_SC * (window.matchMedia('(max-width: 768px)').matches ? (1.0/_GS_SC) : 0.90);
                   globalGlbCard.scale.setScalar(_scSmall + _t * (_scLarge - _scSmall));
@@ -8995,10 +8951,10 @@ function makeCardBackTex(data = '4 PASOS') {
         }
 
         tCtx.fillText(line1, 0, startY); // Línea 1 (Párrafo 1)
-        tCtx.fillText('Y aunque esperamos que este d\u00eda quede lejos, no hay duda', 0, startY + gap * 1.7); // Línea 2 (Párrafo 2)
-        tCtx.fillText('de que nunca volveremos a vivir cada preciso instante de nuevo.', 0, startY + gap * 2.7); // Línea 3 (Párrafo 2)
-        tCtx.fillText('As\u00ed que amemos a las personas que nos importan ahora, ya que no sabemos', 0, startY + gap * 4.4); // Línea 4 (Párrafo 3)
-        tCtx.fillText('cuando tendremos la \u00faltima oportunidad para hacerlo.', 0, startY + gap * 5.4); // Línea 5 (Párrafo 3)
+        tCtx.fillText('Y aunque esperamos que ese d\u00eda quede lejos, sabemos', 0, startY + gap * 1.7); // Lnea 2 (Pǭrrafo 2)
+        tCtx.fillText('que nunca volveremos a vivir este mismo instante.', 0, startY + gap * 2.7); // Lnea 3 (Pǭrrafo 2)
+        tCtx.fillText('As\u00ed que amemos a quienes nos importan hoy, porque no sabemos', 0, startY + gap * 4.4); // Lnea 4 (Pǭrrafo 3)
+        tCtx.fillText('cu\u00e1ndo ser\u00e1 la \u00faltima vez.', 0, startY + gap * 5.4); // Lnea 5 (Pǭrrafo 3)
         textTex.needsUpdate = true;
     });
     
@@ -10718,7 +10674,7 @@ setInterval(function() {
 
     <!-- P1/P2 Dynamic Price Row -->
     <div id="dynamic-pricing-row" style="position: absolute; top: 0; left: 50%; transform: translate(-50%, 30px); display:flex; align-items:center; justify-content:center; white-space:nowrap; opacity: 0; will-change: transform, opacity;">
-        <span id="dp-left" style="display:inline-block; margin-right: 5px; opacity:0; overflow:hidden; max-width:0px; vertical-align:middle;">Ahora, provocar esa misma magia solo te cuesta </span>
+        <span id="dp-left" style="display:inline-block; margin-right: 5px; opacity:0; overflow:hidden; max-width:0px; vertical-align:middle;">Ahora puedes provocar esta magia desde solo </span>
         <div style="position:relative; display:inline-block; color: #ffffff;" id="p1-counter-container">
             <span id="p1-counter" style="transition: color 0.2s ease-out; font-weight:700;">8,99€</span>
             <div id="p1-strikethrough" style="position:absolute; top:50%; left:0; width:0%; height:3px; background-color:#ccff00; transform:translateY(-50%); transition: width 0.1s linear;"></div>
@@ -10741,13 +10697,13 @@ setInterval(function() {
       <!-- Handwritten Text Overlay -->
       <div style="position: absolute; left: 52%; top: 12%; width: 42%; transform: rotate(5.5deg); font-family: 'Caveat', cursive; color: #151515; font-size: clamp(0.9rem, 1.8vw, 1.6rem); line-height: 1.15; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 75%; padding: 0 10px; box-sizing: border-box;">
           <p style="margin-bottom: 5%; font-weight: 700; font-size: 1.15em;">"Si vives cada d&iacute;a como si fuera el &uacute;ltimo, alg&uacute;n d&iacute;a estar&aacute;s en lo cierto"</p>
-          <p style="margin-bottom: 5%;">Y aunque esperamos que este d&iacute;a quede lejos, no hay duda de que nunca volveremos a vivir cada preciso instante de nuevo.</p>
-          <p style="margin-bottom: 0;">As&iacute; que amemos a las personas que nos importan ahora, ya que no sabemos cuando tendremos la &uacute;ltima oportunidad para hacerlo.</p>
+          <p style="margin-bottom: 5%;">Y aunque esperamos que ese d&iacute;a quede lejos, sabemos que nunca volveremos a vivir este mismo instante.</p>
+          <p style="margin-bottom: 0;">As&iacute; que amemos a quienes nos importan hoy, porque no sabemos cu&aacute;ndo ser&aacute; la &uacute;ltima vez.</p>
       </div>
   </div>
 </div>
   
-  <div id="olt-final-question" style="position:fixed; top:65%; left:50%; transform:translate(-50%, -50%); z-index:10000000; opacity:0; pointer-events:none; color:#ffffff; font-family:'Inter', sans-serif; font-size:clamp(1.5rem, 2.5vw, 2.1rem); font-weight:700; line-height:1.35; letter-spacing:-0.02em; text-align:center; width:90vw; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">&iquest;Esperar&aacute;s a que sea demasiado tarde?
+  <div id="olt-final-question" style="position:fixed; top:65%; left:50%; transform:translate(-50%, -50%); z-index:10000000; opacity:0; pointer-events:none; color:#ffffff; font-family:'Inter', sans-serif; font-size:clamp(1.5rem, 2.5vw, 2.1rem); font-weight:700; line-height:1.35; letter-spacing:-0.02em; text-align:center; width:90vw; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">&iquest;De verdad vas a esperar a que sea demasiado tarde?
   </div>
 
   <a href="reservar-mi-cena.html" id="olt-final-cta" class="btn btn-blue btn-full" style="position:relative; z-index:99999; margin-top:0; opacity:0; pointer-events:none; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
@@ -11668,7 +11624,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                               counterSpan.style.color = (_p1CountP === 0) ? 'rgba(255, 255, 255, 0.15)' : '#ffffff';
                               strikeLine.style.width = '0%';
                           } else if (_p1StrikeP < 1) {
-                              counterSpan.innerText = '¿No está a la venta?';
+                              counterSpan.innerText = '¿No tiene precio?';
                               counterSpan.style.color = '#ffffff';
                               strikeLine.style.width = '0%';
                           } else {
