@@ -1812,9 +1812,10 @@ window.onerror = function(msg, url, line, col, err) {
   }
   #headline h1 {
     text-align: center !important;
-    font-size: min(4.6vw, 1.55rem) !important;
+    font-size: 1.55rem !important;
   }
-  #headline h1 .oh-inner {
+  #headline h1 > span:nth-child(1) .oh-inner,
+  #headline h1 > span:nth-child(2) .oh-inner {
     white-space: nowrap !important;
   }
   .headline-sub {
@@ -3673,9 +3674,9 @@ window.onerror = function(msg, url, line, col, err) {
     // 2. Línea izquierda: se borra dinámicamente de derecha a izquierda recortándose (sin fade out)
     scrollTl.to('.headline-divider', { clipPath: 'inset(0% 100% 0% 0%)', duration: 0.045, ease: 'power2.inOut' }, 0);
     // 3. Recuadro izquierdo: pierde blur y bordes progresivamente (es lo único que se difumina)
-    scrollTl.to('.blur-bg-head', { opacity: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
+    scrollTl.to('.blur-bg-head', { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
     // 5. Texto derecha: se recorta hacia arriba (Oryzo effect)
-      scrollTl.to('#blur-bg-sub', { opacity: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
+      scrollTl.to('#blur-bg-sub', { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
       scrollTl.to('.sub-oh-inner', { y: '-150%', autoAlpha: 0, duration: 0.035, ease: 'power2.in', stagger: { each: 0.003, from: 'start' } }, 0);
 
 
@@ -3929,7 +3930,7 @@ window.onerror = function(msg, url, line, col, err) {
     }, 0.38);
 
     // Fade out suave de los contenedores
-      scrollTl.to(['#flip-left-text', '#flip-right-text'], { autoAlpha: 0, duration: 0.15, ease: 'power1.inOut' }, 0.45);
+      scrollTl.to(['#flip-left-text', '#flip-right-text'], { autoAlpha: 0, duration: 0.15, ease: 'power1.inOut' }, 0.82);
 
 
     // Ã¢â€€ Fase 3: THE THROW (acelera y se acerca al flip para no tener "scroll muerto") Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
@@ -10752,7 +10753,7 @@ setInterval(function() {
         <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;">
           <img id="slide2-pan-img" src="assets/img/pareja sofa recortado.jpg" style="position:absolute;top:0;left:0;width:200%;height:100%;object-fit:cover;object-position:left center;display:block;border-radius:0;will-change:transform;">
           <div id="slide2-copy" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;writing-mode:vertical-rl;text-align:center;">
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:3.24rem;line-height:1.15;color:#ffffff;margin:0 0.6em 0 0;text-shadow:0 2px 24px rgba(0,0,0,0.45);letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">No es suerte,</p>
+            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:3.24rem;line-height:1.15;color:#ffffff;margin:0 0.6em 0 0;text-shadow:0 2px 24px rgba(0,0,0,0.45);letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">No es suerte</p>
             <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:3.24rem;line-height:1.15;color:#ffffff;margin:0;text-shadow:0 2px 24px rgba(0,0,0,0.45);letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">Es intención</p>
           </div>
         </div>
@@ -10841,7 +10842,7 @@ setInterval(function() {
     <!-- P2 Guarantee -->
     <div id="p2-guarantee" style="position: absolute; top: 0; left: 50%; transform: translate(-50%, 110px); width: 100%; display:flex; justify-content:center; align-items:center; gap:15px; opacity: 0; will-change: opacity;">
       <div id="leaf-left" style="width:2.5em; height:2.5em; background-color:#ccff00; -webkit-mask:url('assets/img/hoja laurel izquierda blanca.png') center/contain no-repeat; mask:url('assets/img/hoja laurel izquierda blanca.png') center/contain no-repeat; opacity:0.15; transition: opacity 0.9s ease;"></div>
-      <p id="garantia-text" style="margin:0; font-family:'Inter', sans-serif; font-weight:700; color:#ccff00;">Si la experiéncia no os fascina, te la pagamos nosotrxs y te regalamos otra. Sin preguntas</p>
+      <p id="garantia-text" style="margin:0; font-family:'Inter', sans-serif; font-weight:700; color:#ccff00; max-width: 650px;">Si la experi&egrave;ncia no os fascina, te la pagamos nosotrxs y te regalamos otra. Sin preguntas</p>
       <div id="leaf-right" style="width:2.5em; height:2.5em; background-color:#ccff00; -webkit-mask:url('assets/img/hoja laurel derecha blanca.png') center/contain no-repeat; mask:url('assets/img/hoja laurel derecha blanca.png') center/contain no-repeat; opacity:0.15; transition: opacity 0.9s ease;"></div>
     </div>
   </div>
