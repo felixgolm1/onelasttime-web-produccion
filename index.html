@@ -1593,7 +1593,7 @@ window.onerror = function(msg, url, line, col, err) {
         left: 0 !important;
         width: 100% !important;
         text-align: left !important;
-        padding-left: 12vw !important;
+        padding-left: 5vw !important;
       }
       #flip-right-text {
         top: 75% !important;
@@ -1602,7 +1602,7 @@ window.onerror = function(msg, url, line, col, err) {
         width: 100% !important;
         max-width: none !important;
         text-align: right !important;
-        padding-right: 12vw !important;
+        padding-right: 5vw !important;
       }
       #flip-left-text .flt-line {
         justify-content: flex-start !important;
@@ -1843,7 +1843,8 @@ window.onerror = function(msg, url, line, col, err) {
   #subheadline {
     max-width: 95% !important;
   }
-  
+}
+
   #mobile-sidebar {
     position: fixed;
     top: 0; right: -100%;
@@ -1911,7 +1912,7 @@ window.onerror = function(msg, url, line, col, err) {
     text-transform: uppercase;
   }
 
-
+@media screen and (max-width: 768px) {
   #card-morph-group, .sc-card { transform: scale(0.90); transform-origin: center center; }
 
 
@@ -3584,8 +3585,8 @@ window.onerror = function(msg, url, line, col, err) {
 
     // Contenedores: invisibles + desplazados (el desliz es del bloque entero)
     // yPercent:-50 = equivalente GSAP al translateY(-50%) del CSS (que GSAP sobreescribiría)
-    gsap.set('#flip-left-text',  { autoAlpha: 0, yPercent: -50, x: window.matchMedia('(max-width: 768px)').matches ? -40 : 0, y: window.matchMedia('(max-width: 768px)').matches ? 0 : -40 });
-    gsap.set('#flip-right-text', { autoAlpha: 0, yPercent: -50, x: window.matchMedia('(max-width: 768px)').matches ? 40 : 0, y: window.matchMedia('(max-width: 768px)').matches ? 0 : 40 });
+    gsap.set('#flip-left-text',  { autoAlpha: 0, yPercent: -50, x: window.matchMedia('(max-width: 768px)').matches ? -20 : 0, y: window.matchMedia('(max-width: 768px)').matches ? 0 : -40 });
+    gsap.set('#flip-right-text', { autoAlpha: 0, yPercent: -50, x: window.matchMedia('(max-width: 768px)').matches ? 20 : 0, y: window.matchMedia('(max-width: 768px)').matches ? 0 : 40 });
     // Chars: solo invisibles â€â€ sin desplazamiento propio
     gsap.set(leftChars,  { opacity: 0 });
     gsap.set(rightChars, { opacity: 0 });
@@ -3843,13 +3844,13 @@ window.onerror = function(msg, url, line, col, err) {
     // el movimiento sea claramente visible durante el fade-in de los chars.
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     scrollTl.fromTo('#flip-left-text',
-      isMobile ? { x: -40, y: 0 } : { y: -40, x: 0 },
-      isMobile ? { x: 40, duration: 0.60, ease: 'none' } : { y: 40, duration: 0.60, ease: 'none' },
+      isMobile ? { x: -20, y: 0 } : { y: -40, x: 0 },
+      isMobile ? { x: 20, duration: 0.60, ease: 'none' } : { y: 40, duration: 0.60, ease: 'none' },
       0
     );
     scrollTl.fromTo('#flip-right-text',
-      isMobile ? { x: 40, y: 0 } : { y: 40, x: 0 },
-      isMobile ? { x: -40, duration: 0.60, ease: 'none' } : { y: -40, duration: 0.60, ease: 'none' },
+      isMobile ? { x: 20, y: 0 } : { y: 40, x: 0 },
+      isMobile ? { x: -20, duration: 0.60, ease: 'none' } : { y: -40, duration: 0.60, ease: 'none' },
       0
     );
 
@@ -8295,9 +8296,9 @@ requestAnimationFrame(smoothScrollLoop);
       ctx.fillText(text1, W / 2, 310);
     } else {
       // Two line mode for initial state
-      ctx.font = 'bold 28px Arial, sans-serif';
-      ctx.fillText(text1, W / 2, 290);
-      ctx.fillText(text2, W / 2, 330);
+      ctx.font = '800 27px "Inter", sans-serif';
+      ctx.fillText(text1, W / 2, 283.5);
+      ctx.fillText(text2, W / 2, 322.5);
     }
     
     const tex = new THREE.CanvasTexture(c);
