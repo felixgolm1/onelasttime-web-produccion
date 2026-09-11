@@ -3776,7 +3776,7 @@ window.onerror = function(msg, url, line, col, err) {
     // 1. Cada línea sale con escalonado: la más baja primero y más rápida (efecto Oryzo cascade)
     //    stagger from:'end' → la última .oh-inner (más abajo) empieza en t=0, cada línea superior espera 0.02 más.
     //    duration 0.10 + 3Ã—0.02 = 0.16 → encaja exacto con la duración de Fase 1.
-    scrollTl.to('.oh-inner:not(.headline-sub)', { y: '150%', autoAlpha: 0, duration: 0.039, ease: 'power2.in', stagger: { each: 0.003, from: 'end' } }, 0);
+    scrollTl.to('.oh-inner:not(.headline-sub)', { y: '-150%', autoAlpha: 0, duration: 0.039, ease: 'power2.in', stagger: { each: 0.003, from: 'start' } }, 0);
     scrollTl.to('.headline-sub', { y: '150%', duration: 0.045, ease: 'power2.inOut' }, 0);
     // 2. Línea izquierda: se borra dinámicamente de derecha a izquierda recortándose (sin fade out)
     scrollTl.to('.headline-divider', { clipPath: 'inset(0% 100% 0% 0%)', duration: 0.045, ease: 'power2.inOut' }, 0);
@@ -3784,7 +3784,7 @@ window.onerror = function(msg, url, line, col, err) {
     scrollTl.to('.blur-bg-head', { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
     // 5. Texto derecha: se recorta hacia arriba (Oryzo effect)
       scrollTl.to('#blur-bg-sub', { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
-      scrollTl.to('.sub-oh-inner', { y: '-150%', autoAlpha: 0, duration: 0.035, ease: 'power2.in', stagger: { each: 0.003, from: 'start' } }, 0);
+      scrollTl.to('.sub-oh-inner', { y: '150%', autoAlpha: 0, duration: 0.035, ease: 'power2.in', stagger: { each: 0.003, from: 'end' } }, 0);
 
 
     // Ã¢â€€ Fase 2: LOS 3 FLIPS CONTINUOS (0→Ã¢Ë†â€™540Â°) Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
@@ -8751,7 +8751,7 @@ function makeCardBackTex(data = '4 PASOS') {
     shape.lineTo(-w2, -h2 + R);
     shape.quadraticCurveTo(-w2, -h2, -w2 + R, -h2);
 
-    // Extruir SOLO para conseguir los cantos redondeados â€â€ faces frontal/trasera
+    // Extruir SOLO para conseguir los cantos redondeados â€ â€  faces frontal/trasera
     // del extrude las OCULTAMOS con el overlay de canvas.
     const bodyGeo = new THREE.ExtrudeGeometry(shape, {
       depth: D,
@@ -8760,15 +8760,13 @@ function makeCardBackTex(data = '4 PASOS') {
     bodyGeo.translate(0, 0, -D / 2);
 
     const bodyMesh = new THREE.Mesh(bodyGeo, edgeMat);
-    bodyMesh.renderOrder = 0;
 
     // 3. Pivot
     const pivot = new THREE.Group();
-    pivot.add(bodyMesh);
 
     const halfT = D / 2;
 
-    // Ã¢â€€Ã¢â€€Ã¢â€€ Helper: crea una ShapeGeometry REDONDEADA con UVs de 0→1 Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
+    // Ã¢â€ €Ã¢â€ €Ã¢â€ € Helper: crea una ShapeGeometry REDONDEADA con UVs de 0→1 Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €
     // La geometría ya tiene la forma exacta del canto → no hace falta clipCardShape
     // ni alphaTest → las esquinas son físicamente inexistentes (sin polígonos).
     function makeRoundedFaceGeo(flipU = false) {
