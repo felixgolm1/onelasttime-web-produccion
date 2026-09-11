@@ -1611,21 +1611,25 @@ window.onerror = function(msg, url, line, col, err) {
         justify-content: flex-end !important;
       }
 
-      /* Combinar lineas visualmente sin tocar HTML */
-      #flip-left-text .flt-line:nth-child(1),
-      #flip-left-text .flt-line:nth-child(2) {
+      /* Transformar wrappers en inline para que fluyan como parrafo natural */
+      #flip-right-text .flt-line,
+      #flip-right-text .flt-oh {
+        display: inline !important;
+      }
+      #flip-right-text .flt-in-up {
         display: inline-block !important;
-        margin-right: 1.5vw;
       }
 
-      #flip-right-text .flt-line {
-        display: inline-block !important;
-        margin-left: 1.5vw;
+      /* Lo mismo para las dos primeras lineas del texto izquierdo */
+      #flip-left-text .flt-line:nth-child(1),
+      #flip-left-text .flt-line:nth-child(2),
+      #flip-left-text .flt-line:nth-child(1) .flt-oh,
+      #flip-left-text .flt-line:nth-child(2) .flt-oh {
+        display: inline !important;
       }
-      /* Forzar salto de linea despues de la 2da linea para que sean exactamente 2 lineas */
-      #flip-right-text .flt-line:nth-child(2)::after {
-        content: "\A";
-        white-space: pre;
+      #flip-left-text .flt-line:nth-child(1) .flt-in,
+      #flip-left-text .flt-line:nth-child(2) .flt-in {
+        display: inline-block !important;
       }
     }
 </style>
@@ -2633,60 +2637,10 @@ window.onerror = function(msg, url, line, col, err) {
         <div class="blur-bg-head"></div>
         <h1 style="position:relative; z-index:1; margin:0;">
           <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">CONVIERTE "UNA CENA MÁS"</span></span>
-          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block; white-space: nowrap;">CON TU PAREJA <span style="font-size: 0.6em; color: #ffffff; vertical-align: middle;">(O <span id="h1-dynamic-text" style="color: #ffffff;">NO PAREJA</span>)</span></span></span>
+          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block; white-space: nowrap;">CON TU PAREJA <span style="font-size: 0.6em; color: #ffffff; vertical-align: middle;">(O CITA ESPECIAL)</span></span></span>
           <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">EN UN HITO DE VUESTRA HISTORIA</span></span>
         </h1>
       </div>
-    
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const dynamicSpan = document.getElementById("h1-dynamic-text");
-        if (!dynamicSpan) return;
-        
-        const words = [
-          "NO PAREJA",
-          "CASI PAREJA",
-          "PERSONA ESPECIAL",
-          "CRUSH",
-          "CITA ESPECIAL",
-          "...YA SABES",
-          "ESE ALGUIEN"
-        ];
-        let currentWordIndex = 1;
-        const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#*+^~!';
-
-        function scrambleWord(newWord) {
-          let iteration = 0;
-          const maxIterations = 14;
-          
-          const interval = setInterval(() => {
-            let scrambledHTML = newWord.split("").map((char, index) => {
-              if (char === " ") return " ";
-              if (index < (iteration / maxIterations) * newWord.length) {
-                // Resolved letter -> inherited color (white)
-                return `<span style="color: inherit;">${newWord[index]}</span>`;
-              }
-              // Random matrix letter -> green
-              const randomGlyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-              return `<span style="color: #CCFF00;">${randomGlyph}</span>`;
-            }).join("");
-            
-            dynamicSpan.innerHTML = scrambledHTML;
-            
-            iteration++;
-            if (iteration > maxIterations) {
-              clearInterval(interval);
-              dynamicSpan.textContent = newWord;
-            }
-          }, 45); // 45ms * 14 = ~630ms animation duration
-        }
-
-        setInterval(() => {
-          scrambleWord(words[currentWordIndex]);
-          currentWordIndex = (currentWordIndex + 1) % words.length;
-        }, 3500); // 3.5s loop
-      });
-    </script>
     </div>
   <!-- Logo superior izquierda -->
   <style>
@@ -2709,7 +2663,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div id="nav-progress-line" style="position: absolute; bottom: -10px; height: 14px; background: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 20\' preserveAspectRatio=\'none\'%3E%3Cfilter id=\'ink\' x=\'-10%25\' y=\'-50%25\' width=\'120%25\' height=\'200%25\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.5\' numOctaves=\'3\' result=\'n\'/%3E%3CfeDisplacementMap in=\'SourceGraphic\' in2=\'n\' scale=\'2.5\' xChannelSelector=\'R\' yChannelSelector=\'G\'/%3E%3C/filter%3E%3Cpath filter=\'url(%23ink)\' d=\'M 1,8 Q 30,9 60,11 T 98,13 C 100,13 100,17 98,17 Q 60,14 30,14 T 1,13 C -1,13 -1,8 1,8 Z\' fill=\'rgba(255,255,255,0.95)\'/%3E%3C/svg%3E') no-repeat left center; background-size: 100% 100%; pointer-events: none; clip-path: inset(0 100% 0 0); will-change: clip-path;"></div>
     
     <!-- CTA superior derecha -->
-    <div id="cta-top-container">
+    <div id="cta-top-container" style="opacity: 0;">
       <a href="reservar-mi-cena.html" class="btn btn-blue btn-full" style="padding: 0.8rem 0; font-size: 0.85rem;">
         <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-22px); display: inline-block;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 6px;   width: 38px; height: 24px;      ">
@@ -2726,7 +2680,7 @@ window.onerror = function(msg, url, line, col, err) {
   <div id="nav-overlay"></div>
 
   <!-- CTA flotante inferior -->
-  <div id="cta-bottom-container">
+  <div id="cta-bottom-container" style="opacity: 0;">
     <a href="reservar-mi-cena.html" class="btn btn-blue btn-full btn-floating" id="heroCta">
       <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-22px); display: inline-block;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 10px;   width: 52px; height: 32px;      ">
@@ -2753,7 +2707,7 @@ window.onerror = function(msg, url, line, col, err) {
   </div>
 
   <!-- Scroll indicator separado: z-index bajo para quedar detras de las cartas -->
-  <div class="scroll-indicator">
+  <div class="scroll-indicator" style="opacity: 0;">
     <div class="oryzo-scroll-icon">
       <svg class="ring" viewBox="0 0 50 50" fill="none">
         <circle cx="25" cy="25" r="23" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="4 6" stroke-linecap="round"></circle>
