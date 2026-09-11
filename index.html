@@ -1594,6 +1594,8 @@ window.onerror = function(msg, url, line, col, err) {
         width: 100% !important;
         text-align: left !important;
         padding-left: 5vw !important;
+        white-space: nowrap !important;
+        font-size: min(4.5vw, 1.35rem) !important;
       }
       #flip-right-text {
         top: 75% !important;
@@ -1603,33 +1605,28 @@ window.onerror = function(msg, url, line, col, err) {
         max-width: none !important;
         text-align: right !important;
         padding-right: 5vw !important;
-      }
-      #flip-left-text .flt-line {
-        justify-content: flex-start !important;
-      }
-      #flip-right-text .flt-line {
-        justify-content: flex-end !important;
+        white-space: nowrap !important;
+        font-size: min(3.5vw, 1.35rem) !important;
       }
 
-      /* Transformar wrappers en inline para que fluyan como parrafo natural */
-      #flip-right-text .flt-line,
-      #flip-right-text .flt-oh {
+      /* Reset to inline to flow them naturally without wrapping */
+      #flip-left-text .flt-line, #flip-left-text .flt-oh,
+      #flip-right-text .flt-line, #flip-right-text .flt-oh {
         display: inline !important;
       }
-      #flip-right-text .flt-in-up {
+
+      /* Preserve GSAP transform capabilities */
+      #flip-left-text .flt-in, #flip-right-text .flt-in-up {
         display: inline-block !important;
       }
 
-      /* Lo mismo para las dos primeras lineas del texto izquierdo */
-      #flip-left-text .flt-line:nth-child(1),
-      #flip-left-text .flt-line:nth-child(2),
-      #flip-left-text .flt-line:nth-child(1) .flt-oh,
-      #flip-left-text .flt-line:nth-child(2) .flt-oh {
-        display: inline !important;
-      }
-      #flip-left-text .flt-line:nth-child(1) .flt-in,
-      #flip-left-text .flt-line:nth-child(2) .flt-in {
-        display: inline-block !important;
+      /* Force line breaks using block pseudo-elements */
+      #flip-left-text .flt-line:nth-child(3)::before,
+      #flip-left-text .flt-line:nth-child(4)::before,
+      #flip-left-text .flt-line:nth-child(5)::before,
+      #flip-right-text .flt-line:nth-child(3)::before {
+        content: '';
+        display: block;
       }
     }
 </style>
@@ -8690,10 +8687,17 @@ function makeCardBackTex(data = '4 PASOS') {
 
     const applyDesign = () => {
       document.fonts.ready.then(() => {
+        const oldFront = frontMesh.material.map;
+        const oldBack = backMesh.material.map;
+        
         frontMesh.material = new THREE.MeshBasicMaterial({
           map: makeCardFrontTex(), side: THREE.FrontSide, depthTest: false });
         backMesh.material  = new THREE.MeshBasicMaterial({
           map: makeCardBackTex(),  side: THREE.FrontSide, depthTest: false });
+          
+        if (oldFront) oldFront.dispose();
+        if (oldBack) oldBack.dispose();
+        
         frontMesh.material.needsUpdate = true;
         backMesh.material.needsUpdate  = true;
       });
@@ -8722,12 +8726,8 @@ function makeCardBackTex(data = '4 PASOS') {
       frontMesh.material.needsUpdate = true;
     };
 
-    // Llamar síncronamente (fuentes del sistema como fallback)
-    // y de nuevo cuando Poppins/Bebas Neue estén listas
+    // Llamar cuando las fuentes estén cargadas
     applyDesign();
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(applyDesign);
-    }
     // Re-trigger si el logo carga después de las fuentes
     if (!OLT_LOGO.complete || OLT_LOGO.naturalWidth === 0) {
       OLT_LOGO.onload  = applyDesign;
