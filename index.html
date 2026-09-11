@@ -651,11 +651,11 @@ window.onerror = function(msg, url, line, col, err) {
       --head-blur: 10px;
       --head-alpha: 0;
       position: fixed;
-      left: 5%;
+      left: 3%;
       top: 50%;
       transform: translateY(-50%) translateZ(1000px);
       z-index: 100000;
-      max-width: 40vw;
+      max-width: 45vw;
       opacity: 1;
       padding: 1.6rem 2rem;
     }
@@ -1586,6 +1586,25 @@ window.onerror = function(msg, url, line, col, err) {
       .btn-blue:hover .cta-arrow-pill { transform: translateY(-50%) scale(1.15); }
 
 
+
+    @media (max-width: 768px) {
+      #flip-left-text {
+        top: 20% !important;
+        left: 0 !important;
+        width: 100% !important;
+        text-align: center;
+      }
+      #flip-right-text {
+        top: 75% !important;
+        right: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        text-align: center;
+      }
+      #flip-left-text .flt-line, #flip-right-text .flt-line {
+        justify-content: center !important;
+      }
+    }
 </style>
 
   <style>
@@ -2582,24 +2601,18 @@ window.onerror = function(msg, url, line, col, err) {
   <!-- Subheadline derecha -->
   <div id="subheadline">
       <div id="blur-bg-sub"></div>
-    <span style="display:block; padding-bottom:4px;"><p class="sub-oh-inner" style="display:block; margin:0;">Convierte una cena más</p></span>
-    <span style="display:block; padding-bottom:4px;"><p class="sub-oh-inner" style="display:block; margin:0;">en un hito inolvidable de</p></span>
-    <span style="display:block; padding-bottom:4px;"><p class="sub-oh-inner" style="display:block; margin:0;">vuestra historia.</p></span>
+    <span style="display:block; padding-bottom:4px;"><p class="sub-oh-inner" style="display:block; margin:0;">En tu restaurante favorito,</p></span>
+    <span style="display:block; padding-bottom:4px;"><p class="sub-oh-inner" style="display:block; margin:0;">en casa o donde quieras</p></span>
   </div>
   <!-- Headline izquierda -->
   <div id="headline">
       <div style="position:relative; width:100%;">
         <div class="blur-bg-head"></div>
         <h1 style="position:relative; z-index:1; margin:0;">
-          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">EXPERIMENTA UNA CENA</span></span>
-          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">TRANSFORMADORA CON</span></span>
-          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">TU PAREJA O <span id="h1-dynamic-text" style="color: rgba(255,255,255,0.7); font-style: italic;">NO PAREJA</span></span></span>
+          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">CONVIERTE "UNA CENA MÁS"</span></span>
+          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block; white-space: nowrap;">CON TU PAREJA <span style="font-size: 0.6em; color: #ffffff; vertical-align: middle;">(O <span id="h1-dynamic-text" style="color: #ffffff;">NO PAREJA</span>)</span></span></span>
+          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block;">EN UN HITO DE VUESTRA HISTORIA</span></span>
         </h1>
-      </div>
-      <hr class="headline-divider" style="position:relative; z-index:2;">
-      <div style="position:relative; width:100%;">
-        <div class="blur-bg-head" style="top: -1rem; bottom: -1rem;"></div>
-        <span style="display:block; overflow:hidden; padding-bottom:4px; position:relative; z-index:1;"><p class="headline-sub oh-inner" style="display:block; margin:0;">En tu restaurante favorito o en casa</p></span>
       </div>
     
     <script>
@@ -2634,16 +2647,11 @@ window.onerror = function(msg, url, line, col, err) {
             }).join("");
             
             dynamicSpan.textContent = scrambled;
-            // Matrix glitch color during animation
-            dynamicSpan.style.color = 'rgba('+(180+Math.random()*40|0)+','+(230+Math.random()*25|0)+',0,0.95)';
-            dynamicSpan.style.textShadow = '0 0 8px rgba(180,255,0,0.8)';
             
             iteration++;
             if (iteration > maxIterations) {
               clearInterval(interval);
               dynamicSpan.textContent = newWord;
-              dynamicSpan.style.color = originalColor;
-              dynamicSpan.style.textShadow = 'none';
             }
           }, 45); // 45ms * 14 = ~630ms animation duration
         }
@@ -3560,8 +3568,8 @@ window.onerror = function(msg, url, line, col, err) {
 
     // Contenedores: invisibles + desplazados (el desliz es del bloque entero)
     // yPercent:-50 = equivalente GSAP al translateY(-50%) del CSS (que GSAP sobreescribiría)
-    gsap.set('#flip-left-text',  { autoAlpha: 0, yPercent: -50, y: -40 });
-    gsap.set('#flip-right-text', { autoAlpha: 0, yPercent: -50, y:  40 });
+    gsap.set('#flip-left-text',  { autoAlpha: 0, yPercent: -50, x: -40 });
+    gsap.set('#flip-right-text', { autoAlpha: 0, yPercent: -50, x:  40 });
     // Chars: solo invisibles â€â€ sin desplazamiento propio
     gsap.set(leftChars,  { opacity: 0 });
     gsap.set(rightChars, { opacity: 0 });
@@ -3818,13 +3826,13 @@ window.onerror = function(msg, url, line, col, err) {
     // Ã¢â€€ Desplazamiento Y: arranca desde t=0, desplazamiento amplio (160px) para que
     // el movimiento sea claramente visible durante el fade-in de los chars.
     scrollTl.fromTo('#flip-left-text',
-      { y: -40 },
-      { y: 40, duration: 0.60, ease: 'none' },
+      { x: -40 },
+      { x: 40, duration: 0.60, ease: 'none' },
       0
     );
     scrollTl.fromTo('#flip-right-text',
-      { y: 40 },
-      { y: -40, duration: 0.60, ease: 'none' },
+      { x: 40 },
+      { x: -40, duration: 0.60, ease: 'none' },
       0
     );
 
@@ -9198,8 +9206,10 @@ function makeCardBackTex(data = '4 PASOS') {
   // Start loading immediately (parse in background during animation)
   startLoading();
   if (typeof window._runIntroAnim === 'function' && !animReady) {
-    window._runIntroAnim();
-    window._runIntroAnim = null;
+    if (sessionStorage.getItem('olt_vip_unlocked') === 'true') {
+      window._runIntroAnim();
+      window._runIntroAnim = null;
+    }
   }
 
   // Ã¢â€€Ã¢â€€ NAV HOVER Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
