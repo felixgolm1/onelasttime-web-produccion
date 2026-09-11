@@ -2282,14 +2282,17 @@ window.onerror = function(msg, url, line, col, err) {
 
   <!-- Textos flanqueadores estilo Oryzo: izq desde arriba, der desde abajo -->
   <div id="flip-left-text">
-    <div class="flt-line"><div class="flt-oh"><span class="flt-in">UNA EXPERIENCIA CON CARTAS</span></div></div>
+    <div class="flt-line"><div class="flt-oh"><span class="flt-in">UNA EXPERIENCIA</span></div></div>
+    <div class="flt-line"><div class="flt-oh"><span class="flt-in">CON CARTAS</span></div></div>
     <div class="flt-line"><div class="flt-oh"><span class="flt-in">CONVERSACIONALES</span></div></div>
     <div class="flt-line"><div class="flt-oh"><span class="flt-in">ULTRA-PERSONALIZADAS</span></div></div>
     <div class="flt-line"><div class="flt-oh"><span class="flt-in">A VOSOTRXS DOS</span></div></div>
   </div>
   <div id="flip-right-text">
-      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">Que os unirán como nunca antes</span></div></div>
-      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">por menos de lo que cuestan dos cheesecakes</span></div></div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">Que os unirán</span></div></div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">como nunca antes</span></div></div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">por menos de lo que</span></div></div>
+      <div class="flt-line"><div class="flt-oh"><span class="flt-in-up">cuestan dos cheesecakes</span></div></div>
     </div>
 
   <!-- Nuevo texto gigante al estilo Oryzo -->
@@ -2634,6 +2637,8 @@ window.onerror = function(msg, url, line, col, err) {
           const maxIterations = 14;
           const originalColor = dynamicSpan.style.color;
           
+          dynamicSpan.style.color = '#CCFF00';
+
           const interval = setInterval(() => {
             let scrambled = newWord.split("").map((char, index) => {
               if (char === " ") return " ";
@@ -2649,6 +2654,7 @@ window.onerror = function(msg, url, line, col, err) {
             if (iteration > maxIterations) {
               clearInterval(interval);
               dynamicSpan.textContent = newWord;
+              dynamicSpan.style.color = originalColor;
             }
           }, 45); // 45ms * 14 = ~630ms animation duration
         }
@@ -3337,43 +3343,40 @@ window.onerror = function(msg, url, line, col, err) {
         onUpdate: syncCard3DToMorphGroup
       });
 
+      // Revelar escena de fondo INMEDIATAMENTE para que la carta se vea volando SOBRE la mesa
+      if (loaderEl) {
+        loaderEl.style.transition = 'opacity 1.4s ease';
+        loaderEl.style.opacity       = '0';
+        loaderEl.style.pointerEvents = 'none';
+        setTimeout(() => { loaderEl.style.display = 'none'; }, 1500);
+      }
+      
+      const canvas = document.querySelector('canvas:not(#card-canvas)');
+      if (canvas) {
+        canvas.style.transition = 'none';
+        canvas.style.opacity = '1';
+        let maskObj = { p: -50 };
+        gsap.to(maskObj, {
+          p: 150,
+          duration: 1.8, // Sincronizado con la caida de la carta
+          ease: "power2.inOut",
+          onUpdate: function() {
+            let maskStr = `linear-gradient(45deg, black ${maskObj.p}%, transparent ${maskObj.p + 50}%)`;
+            canvas.style.webkitMaskImage = maskStr;
+            canvas.style.maskImage = maskStr;
+          },
+          onComplete: function() {
+            canvas.style.webkitMaskImage = '';
+            canvas.style.maskImage = '';
+          }
+        });
+      }
+
       gsap.to(morphGroup, {
         rotation: -3,
         duration: 1.8,
         ease: 'power2.out',
         onComplete: () => {
-          // Revelar escena de fondo
-          if (loaderEl) {
-            loaderEl.style.transition = 'opacity 1.4s ease';
-            loaderEl.style.opacity       = '0';
-            loaderEl.style.pointerEvents = 'none';
-            setTimeout(() => { loaderEl.style.display = 'none'; }, 1500);
-          }
-          
-          const canvas = document.querySelector('canvas:not(#card-canvas)');
-          if (canvas) {
-            canvas.style.transition = 'none';
-            canvas.style.opacity = '1';
-            let maskObj = { p: -50 };
-            gsap.to(maskObj, {
-              p: 150,
-              duration: 1.2,
-              ease: "power2.inOut",
-              onUpdate: function() {
-                let maskStr = `linear-gradient(45deg, black ${maskObj.p}%, transparent ${maskObj.p + 50}%)`;
-                canvas.style.webkitMaskImage = maskStr;
-                canvas.style.maskImage = maskStr;
-              },
-              onComplete: function() {
-                canvas.style.webkitMaskImage = '';
-                canvas.style.maskImage = '';
-              }
-            });
-
-          }
-
-          
-
           introMorphGroup = morphGroup;
           setupScrollAnim();
         }
