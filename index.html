@@ -3347,11 +3347,13 @@ window.onerror = function(msg, url, line, col, err) {
       // 1. Ocultar la UI explícitamente para que no se vea mientras la carta cae
       gsap.set(['#nav-menu', '#cta-top-container', '.blur-bg-head', '.oh-inner', '#blur-bg-sub', '.sub-oh-inner', '#cta-bottom-container', '.scroll-indicator', '.flt-in', '.flt-in-up'], { opacity: 0 });
         gsap.set('#nav-logo', { 
-          opacity: 0,
-          xPercent: window._cIsMobile ? -50 : 0,
-          left: window._cIsMobile ? '50%' : '2rem',
-          top: window._cIsMobile ? '3.2rem' : '1.5rem'
-        });
+            opacity: 0,
+            xPercent: 0,
+            left: window._cIsMobile ? '5%' : '2rem',
+            top: window._cIsMobile ? '1.2rem' : '1.5rem',
+            scale: window._cIsMobile ? 0.6 : 0.5,
+            transformOrigin: 'top left'
+          });
 
       // 2. Volar y encoger: de 1.5x a 1.0x, rotando -3 grados
       gsap.to(introState, {
@@ -3367,7 +3369,8 @@ window.onerror = function(msg, url, line, col, err) {
           if (!wrap) {
               wrap = document.createElement('div');
               wrap.id = 'dealer-pile-wrap';
-              wrap.style.cssText = 'position:fixed; top:50%; left:50%; transform: translate(-50%, -50%); width:380px; height:234px; z-index:10002; pointer-events:none; perspective:1200px; transform-style:preserve-3d;';
+              // Compensamos el pivot point asimetrico del modelo 3D con un valor intermedio
+              wrap.style.cssText = 'position:fixed; top:50%; left:50%; transform: translate(calc(-50% - 21px), calc(-50% - 19px)); width:380px; height:234px; z-index:10002; pointer-events:none; perspective:1200px; transform-style:preserve-3d;';
               
               let scale = window._cIsMobile ? 0.5 : 0.65;
               let cardsHtml = '';
@@ -3391,14 +3394,14 @@ window.onerror = function(msg, url, line, col, err) {
               
               let cards = wrap.querySelectorAll('.dealer-card');
               
-              // Composicion manual super sutil para que no esten demasiado separadas
+              // Distribucion homogeneamente desorganizada: asomando por todas partes con rotaciones
               const scatterOffsets = [
-                  { x: -5, y: -4, r: -1.5 },
-                  { x:  4, y:  4, r:  1.5 },
-                  { x: -3, y:  5, r: -0.5 },
-                  { x:  5, y: -3, r:  1.0 },
-                  { x: -6, y:  1, r: -2.0 },
-                  { x:  3, y:  6, r:  0.5 }
+                  { x: -8,  y: -8, r: -4 },  // Arriba-Izquierda
+                  { x:  8,  y: -6, r:  5 },  // Arriba-Derecha
+                  { x: -10, y:  8, r:  3 },  // Abajo-Izquierda
+                  { x:  10, y: 10, r: -5 },  // Abajo-Derecha
+                  { x: -12, y:  2, r: -2 },  // Centro-Izquierda
+                  { x:  12, y: -2, r:  4 }   // Centro-Derecha
               ];
 
               cards.forEach((c, idx) => {
@@ -3762,7 +3765,6 @@ window.onerror = function(msg, url, line, col, err) {
     // Overlay: 0→100% â€â€ power3.inOut: lento al inicio, se dispara, y suaviza al llegar al negro total
     scrollTl.to(scOverlay, { opacity: 1, duration: 0.08, ease: 'power3.inOut' }, 0);
     // Logo se hace más pequeño al hacer scroll hacia adelante
-    scrollTl.to('#nav-logo', { scale: window._cIsMobile ? 0.6 : 0.5, top: window._cIsMobile ? '1.2rem' : '1.5rem', left: window._cIsMobile ? '5%' : '2rem', xPercent: 0, transformOrigin: 'top left', ease: 'power1.inOut', duration: 0.08 }, 0);
     
     // Los recuadros de texto desaparecen con efectos hiper-específicos (Oryzo style)
     // 1. Cada línea sale con escalonado: la más baja primero y más rápida (efecto Oryzo cascade)
@@ -7383,23 +7385,10 @@ window.onerror = function(msg, url, line, col, err) {
           const mainDeckEl = document.getElementById('mainDeck');
           const dealerPile = document.getElementById('dealer-pile-wrap');
           
-          // Ocultar la baraja secundaria reduciendo su escala suavemente (como si se quedara en la mesa)
+          // Ocultar la baraja secundaria cuando la carta 3D la tape completamente
           if (dealerPile) {
-              if (prog > 0.001) {
-                  let s = Math.max(0.7, 1 - (prog / 0.06) * 0.3); // baja de 1.0 a 0.7 en prog 0.06
-                  dealerPile.style.transform = `translate(-50%, -50%) scale(${s})`;
-                  
-                  // Para evitar conflictos con la animacion inicial de GSAP si hacen scroll muy rapido
-                  if (prog > 0.01) {
-                      let dCards = dealerPile.querySelectorAll('.dealer-card');
-                      dCards.forEach(c => gsap.killTweensOf(c));
-                  }
-                  
-                  dealerPile.style.visibility = prog > 0.06 ? 'hidden' : 'visible';
-              } else {
-                  dealerPile.style.transform = `translate(-50%, -50%) scale(1)`;
-                  dealerPile.style.visibility = 'visible';
-              }
+              // La carta 3D se hace grande y las tapa. Una vez tapadas (prog > 0.05) las ocultamos.
+              dealerPile.style.visibility = prog > 0.05 ? 'hidden' : 'visible';
           }
 
           if (mainDeckEl && mainDeckEl.style.display === 'block') {
@@ -14204,6 +14193,7 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
 
 
 </html>
+
 
 
 
