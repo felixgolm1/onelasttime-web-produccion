@@ -664,8 +664,8 @@ window.onerror = function(msg, url, line, col, err) {
       top: -1.5rem; bottom: -1.5rem; left: -1.5rem; right: -1.5rem;
       z-index: -1;
       pointer-events: none;
-      transform: translate3d(0,0,0) rotate(0.001deg);
-      -webkit-transform: translate3d(0,0,0) rotate(0.001deg);
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       background: rgba(0, 0, 0, 0.05);
@@ -749,8 +749,8 @@ window.onerror = function(msg, url, line, col, err) {
       top: -3rem; bottom: -3rem; left: -3rem; right: -3rem;
       z-index: -1;
       pointer-events: none;
-      transform: translate3d(0,0,0) rotate(0.001deg);
-      -webkit-transform: translate3d(0,0,0) rotate(0.001deg);
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       background: rgba(0, 0, 0, 0.05);
@@ -2381,7 +2381,7 @@ window.onerror = function(msg, url, line, col, err) {
         <h2 id="sc-title" class="title">4 PASOS</h2>
         <div id="sc-cta" style="position: relative; z-index: 10; transform: scale(0.833); width: 115%; margin: 10px -7.5% 0 -7.5%; visibility: hidden; opacity: 0;">
           <a href="reservar-mi-cena.html" class="btn btn-blue btn-full" style="padding: 0.85rem 2rem !important; height: auto;">
-            <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-14px); display: inline-block;">TRANSFORMAR MI CENA</span>
+            <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-18px); display: inline-block;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 10px;   width: 52px; height: 32px;      ">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -2674,7 +2674,7 @@ window.onerror = function(msg, url, line, col, err) {
     <!-- CTA superior derecha -->
     <div id="cta-top-container" style="opacity: 0;">
       <a href="reservar-mi-cena.html" class="btn btn-blue btn-full" style="padding: 0.8rem 0; font-size: 0.85rem;">
-        <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-14px); display: inline-block;">TRANSFORMAR MI CENA</span>
+        <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-18px); display: inline-block;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 6px;   width: 38px; height: 24px;      ">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -2691,7 +2691,7 @@ window.onerror = function(msg, url, line, col, err) {
   <!-- CTA flotante inferior -->
   <div id="cta-bottom-container" style="opacity: 0;">
     <a href="reservar-mi-cena.html" class="btn btn-blue btn-full btn-floating" id="heroCta">
-      <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-14px); display: inline-block;">TRANSFORMAR MI CENA</span>
+      <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-18px); display: inline-block;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 10px;   width: 52px; height: 32px;      ">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -3387,7 +3387,14 @@ window.onerror = function(msg, url, line, col, err) {
 
           // Footer & Hero UI fade in
           gsap.to(['#headline', '#subheadline', '#cta-bottom-container', '.scroll-indicator'], {
-            opacity: 1, duration: 1.2, delay: 0.4, stagger: 0.1, clearProps: 'opacity'
+            opacity: 1, duration: 1.2, delay: 0.4, stagger: 0.1, clearProps: 'opacity',
+            onComplete: () => {
+              // Hack radical para forzar a Chrome a repintar el backdrop-filter tras la animación
+              const bg1 = document.querySelector('.blur-bg-head');
+              const bg2 = document.querySelector('#blur-bg-sub');
+              if (bg1) { bg1.style.display = 'none'; bg1.offsetHeight; bg1.style.display = ''; }
+              if (bg2) { bg2.style.display = 'none'; bg2.offsetHeight; bg2.style.display = ''; }
+            }
           });
 
           // Textos laterales fade in (Flanqueadores)
@@ -10868,7 +10875,7 @@ setInterval(function() {
 
 
   <a href="reservar-mi-cena.html" id="olt-final-cta" class="btn btn-blue btn-full" style="position:relative; z-index:99999; margin-top:0; opacity:0; pointer-events:none; text-decoration:none; padding: 1.8rem 0 !important; height: auto; width:70vw; max-width:900px; box-sizing:border-box; font-size: 1.875rem !important;">
-    <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-14px); display: inline-block;">TRANSFORMAR MI CENA</span>
+    <span style="position:relative; z-index:2; text-align:center; padding-right:20px; transform: translateX(-18px); display: inline-block;">TRANSFORMAR MI CENA</span>
         <div class="cta-arrow-pill" style="right: 14px;   width: 80px; height: 48px;      ">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
