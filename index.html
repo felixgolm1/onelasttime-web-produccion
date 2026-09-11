@@ -3348,10 +3348,10 @@ window.onerror = function(msg, url, line, col, err) {
       gsap.set(['#nav-menu', '#cta-top-container', '.blur-bg-head', '.oh-inner', '#blur-bg-sub', '.sub-oh-inner', '#cta-bottom-container', '.scroll-indicator', '.flt-in', '.flt-in-up'], { opacity: 0 });
         gsap.set('#nav-logo', { 
             opacity: 0,
-            xPercent: 0,
-            left: window._cIsMobile ? '5%' : '2rem',
-            top: window._cIsMobile ? '1.2rem' : '1.5rem',
-            scale: window._cIsMobile ? 0.6 : 0.5,
+            xPercent: window._cIsMobile ? 0 : -50,
+            left: window._cIsMobile ? '5%' : '50%',
+            top: window._cIsMobile ? '1.2rem' : '3.2rem',
+            scale: 1.0,
             transformOrigin: 'top left'
           });
 
@@ -3369,8 +3369,9 @@ window.onerror = function(msg, url, line, col, err) {
           if (!wrap) {
               wrap = document.createElement('div');
               wrap.id = 'dealer-pile-wrap';
-              // Compensamos el pivot point asimetrico del modelo 3D con un valor intermedio
-              wrap.style.cssText = 'position:fixed; top:50%; left:50%; transform: translate(calc(-50% - 21px), calc(-50% - 19px)); width:380px; height:234px; z-index:10002; pointer-events:none; perspective:1200px; transform-style:preserve-3d;';
+              // El centro 3D es perfectamente el centro de la pantalla (porque la cámara mira a 0,0,0).
+              // No hace falta offset base, solo sincronizar el parallax dinámico
+              wrap.style.cssText = 'position:fixed; top:50%; left:50%; transform: translate(-50%, -50%); width:380px; height:234px; z-index:10002; pointer-events:none; perspective:1200px; transform-style:preserve-3d;';
               
               let scale = window._cIsMobile ? 0.5 : 0.65;
               let cardsHtml = '';
@@ -3764,6 +3765,7 @@ window.onerror = function(msg, url, line, col, err) {
     }, 0);
     // Overlay: 0→100% â€â€ power3.inOut: lento al inicio, se dispara, y suaviza al llegar al negro total
     scrollTl.to(scOverlay, { opacity: 1, duration: 0.08, ease: 'power3.inOut' }, 0);
+      scrollTl.to('#nav-logo', { scale: 1.0, top: window._cIsMobile ? '1.2rem' : '3.2rem', left: window._cIsMobile ? '5%' : '50%', xPercent: window._cIsMobile ? 0 : -50, transformOrigin: 'top left', ease: 'power1.inOut', duration: 0.08 }, 0);
     // Logo se hace más pequeño al hacer scroll hacia adelante
     
     // Los recuadros de texto desaparecen con efectos hiper-específicos (Oryzo style)
@@ -9628,15 +9630,23 @@ function makeCardBackTex(data = '4 PASOS') {
     camera.position.y = currentCamY - mouseNY * PY * parallaxStr;
     camera.position.z = currentCamZ;
 
-    // Sincronizar el mazo de cartas HTML con el efecto parallax de la cámara 3D para evitar que se deslicen
+    // Sincronizar el mazo de cartas HTML usando la proyección real de Three.js (infalible)
     const dealerPile = document.getElementById('dealer-pile-wrap');
-    if (dealerPile && dealerPile.style.visibility !== 'hidden') {
-        // La cámara 3D se mueve, por lo que el objeto parece moverse en dirección contraria en 2D
-        // Calculamos la traslación equivalente en píxeles. 
-        // Ajustado empiricamente para que el mazo inferior se mantenga perfectamente "pegado" al mazo 3D.
-        const pShiftX = -(mouseNX * PX * parallaxStr) * 41; 
-        const pShiftY =  (mouseNY * PY * parallaxStr) * 41; 
-        dealerPile.style.transform = `translate(calc(-50% - 21px + ${pShiftX}px), calc(-50% - 19px + ${pShiftY}px))`;
+    if (dealerPile && dealerPile.style.visibility !== 'hidden' && typeof morphGroup !== 'undefined' && camera) {
+        // Obtenemos la posición 3D real de la carta y la proyectamos a 2D en la pantalla
+        const pos3D = new THREE.Vector3();
+        morphGroup.getWorldPosition(pos3D);
+        pos3D.project(camera);
+        
+        // Convertimos las coordenadas normalizadas (-1 a 1) a píxeles exactos de la pantalla
+        // Y aplicamos una corrección estática (-22px en X, -18px en Y) porque la malla geométrica 
+        // de la carta 3D no está perfectamente centrada en su propio origen 0,0,0
+        const screenX = (pos3D.x * 0.5 + 0.5) * window.innerWidth - 22;
+        const screenY = -(pos3D.y * 0.5 - 0.5) * window.innerHeight - 18;
+        
+        dealerPile.style.left = screenX + 'px';
+        dealerPile.style.top = screenY + 'px';
+        dealerPile.style.transform = `translate(-50%, -50%)`;
     }
 
     // Mover las luces junto con la cámara para que los reflejos especulares no se escapen de la geometría
@@ -14205,6 +14215,7 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
 
 
 </html>
+
 
 
 
