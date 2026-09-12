@@ -2029,7 +2029,7 @@ window.onerror = function(msg, url, line, col, err) {
   <style>
     @media (max-width: 768px) {
       #flip-title {
-        top: calc(12vh + 4.8rem) !important;
+        top: calc(12vh + 2.4rem) !important;
       }
       .ft-c {
         font-size: 2.9rem !important;
@@ -3445,14 +3445,14 @@ window.onerror = function(msg, url, line, col, err) {
               
               let cards = wrap.querySelectorAll('.dealer-card');
               
-              // Baraja apilada pero desorganizada realista (pequeños desajustes aleatorios, no una estrella perfecta)
+              // Baraja apilada: escalonada hacia abajo-izquierda para que todas se asomen y se vea la intercalación
               const scatterOffsets = [
-                  { x: -3, y:  2, r: -3 }, // 0: left
-                  { x:  4, y: -2, r:  2 }, // 1: right
-                  { x: -1, y: -4, r: -1 }, // 2: left
-                  { x:  2, y:  3, r:  4 }, // 3: right
-                  { x: -4, y:  0, r:  1 }, // 4: left
-                  { x:  3, y:  1, r: -2 }  // 5: right
+                  { x: -3,  y:  2, r: -2 }, // 0: Blanca
+                  { x: -5,  y:  5, r:  1 }, // 1: Negra
+                  { x: -8,  y:  8, r: -1 }, // 2: Blanca
+                  { x: -11, y: 11, r:  3 }, // 3: Negra
+                  { x: -14, y: 14, r:  0 }, // 4: Blanca
+                  { x: -17, y: 17, r: -2 }  // 5: Negra
               ];
 
               cards.forEach((c, idx) => {
