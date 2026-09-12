@@ -1,19 +1,53 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+
     <script>
     window.safePlay = function(v) {
       if (!v || v.paused === false || v._isPlayPending) return;
+      if (v._lastPlayFail && (Date.now() - v._lastPlayFail < 1000)) return;
       try {
         var p = v.play();
         if (p !== undefined && typeof p.catch === 'function') {
           v._isPlayPending = true;
-          p.then(function() { v._isPlayPending = false; }).catch(function(e){ v._isPlayPending = false; });
+          p.then(function() { v._isPlayPending = false; v._lastPlayFail = 0; }).catch(function(e){ 
+            v._isPlayPending = false; 
+            v._lastPlayFail = Date.now(); 
+          });
         }
       } catch (e) {
         v._isPlayPending = false;
+        v._lastPlayFail = Date.now();
       }
     };
+    
+    window._visibleVideos = new Set();
+    document.addEventListener("DOMContentLoaded", function() {
+      if ('IntersectionObserver' in window) {
+        var videoObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              window._visibleVideos.add(entry.target);
+              window.safePlay(entry.target);
+            } else {
+              window._visibleVideos.delete(entry.target);
+              if (entry.target.paused === false) {
+                entry.target.pause();
+              }
+            }
+          });
+        }, { threshold: 0.0 });
+        
+        setInterval(function() {
+          document.querySelectorAll('video[autoplay]').forEach(function(v) {
+            if (!v._isObservedByIO) {
+              v._isObservedByIO = true;
+              videoObserver.observe(v);
+            }
+          });
+        }, 1000);
+      }
+    });
     </script>
 
 <script>
@@ -3994,15 +4028,15 @@ window.onerror = function(msg, url, line, col, err) {
     // 1. Cada línea sale con escalonado: la más baja primero y más rápida (efecto Oryzo cascade)
     //    stagger from:'end' → la última .oh-inner (más abajo) empieza en t=0, cada línea superior espera 0.02 más.
     //    duration 0.10 + 3Ã—0.02 = 0.16 → encaja exacto con la duración de Fase 1.
-    scrollTl.to('.oh-inner:not(.headline-sub)', { y: '-150%', autoAlpha: 0, duration: 0.039, ease: 'power2.in', stagger: { each: 0.003, from: 'start' } }, 0);
+    scrollTl.fromTo('.oh-inner:not(.headline-sub)', { y: '0%', autoAlpha: 1 }, { y: '-150%', autoAlpha: 0, duration: 0.039, ease: 'power2.in', stagger: { each: 0.003, from: 'start' }, immediateRender: false }, 0);
     scrollTl.to('.headline-sub', { y: '150%', duration: 0.045, ease: 'power2.inOut' }, 0);
     // 2. Línea izquierda: se borra dinámicamente de derecha a izquierda recortándose (sin fade out)
     scrollTl.to('.headline-divider', { clipPath: 'inset(0% 100% 0% 0%)', duration: 0.045, ease: 'power2.inOut' }, 0);
     // 3. Recuadro izquierdo: pierde blur y bordes progresivamente (es lo único que se difumina)
-    scrollTl.to('.blur-bg-head', { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
+    scrollTl.fromTo('.blur-bg-head', { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut', immediateRender: false }, 0);
     // 5. Texto derecha: se recorta hacia arriba (Oryzo effect)
-      scrollTl.to('#blur-bg-sub', { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut' }, 0);
-      scrollTl.to('.sub-oh-inner', { y: '150%', autoAlpha: 0, duration: 0.035, ease: 'power2.in', stagger: { each: 0.003, from: 'end' } }, 0);
+      scrollTl.fromTo('#blur-bg-sub', { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.045, ease: 'power2.inOut', immediateRender: false }, 0);
+      scrollTl.fromTo('.sub-oh-inner', { y: '0%', autoAlpha: 1 }, { y: '150%', autoAlpha: 0, duration: 0.035, ease: 'power2.in', stagger: { each: 0.003, from: 'end' }, immediateRender: false }, 0);
 
 
     // Ã¢â€€ Fase 2: LOS 3 FLIPS CONTINUOS (0→Ã¢Ë†â€™540Â°) Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
@@ -6702,15 +6736,9 @@ window.onerror = function(msg, url, line, col, err) {
       const largeItems = document.querySelectorAll('.carousel-track-large .carousel-item');
       if (smallItems.length > 0 && largeItems.length > 0) {
         if (prog > 9.62) {
-          // Re-evaluar reproducción continuamente por si el navegador pausa videos out-of-viewport (ahorro de batería)
-          document.querySelectorAll('.carousel-track-small video, .carousel-track-large video').forEach(function(v) {
-              if (v.hasAttribute('autoplay') && v.paused && !v._isPlayPending) {
-                var p = v.play();
-                if (p !== undefined && p.catch) {
-                  v._isPlayPending = true;
-                  p.then(function() { v._isPlayPending = false; }).catch(function(){ v._isPlayPending = false; });
-                }
-              }
+            // Re-evaluar reproducción continuamente pero protegido por throttle de 1s
+            document.querySelectorAll('.carousel-track video, .carousel-track-small video, .carousel-track-large video').forEach(function(v) {
+              if (v.hasAttribute('autoplay')) window.safePlay(v);
             });
             
             ['aging-panel-clip', 'besos-panel-clip', 'envej-panel-clip', 'final-feliz-panel', 'citas-slider-panel', 'sens-btn-clip'].forEach(id => {
@@ -8009,11 +8037,7 @@ requestAnimationFrame(smoothScrollLoop);
             const slide0Video = document.querySelector('.carousel-item video');
             if (slide0Video) {
               slide0Video.currentTime = 0;
-              if (!slide0Video._isPlayPending) {
-                slide0Video._isPlayPending = true;
-                let p = slide0Video.play();
-                if (p && p.catch) p.then(() => slide0Video._isPlayPending = false).catch(() => slide0Video._isPlayPending = false);
-              }
+              window.safePlay(slide0Video);
             }
           }
       }
@@ -12794,22 +12818,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
      Controlado desde la lógica JS del carousel (currIndex) -->
 <script>
 // Ã¢â€€Ã¢â€€ SENS OVERLAY CONTROL Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
-// Inyectamos un <style> en el <head>
-    <script>
-    window.safePlay = function(v) {
-      if (!v || v.paused === false || v._isPlayPending) return;
-      try {
-        var p = v.play();
-        if (p !== undefined && typeof p.catch === 'function') {
-          v._isPlayPending = true;
-          p.then(function() { v._isPlayPending = false; }).catch(function(e){ v._isPlayPending = false; });
-        }
-      } catch (e) {
-        v._isPlayPending = false;
-      }
-    };
-    </script>
- con !important.
+// Inyectamos un <style> en el <head> con !important.
 // Las reglas de hoja de estilo con !important ganan sobre CUALQUIER inline style,
 // incluyendo el backdrop-filter que Chrome composita en GPU.
 (function() {
@@ -12822,14 +12831,14 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
   
   // Add global interaction listener to ensure autoplay videos start in Safari
     window.addEventListener('pointerdown', function() {
-    document.querySelectorAll('video').forEach(function(v) {
-      if (v.hasAttribute('autoplay') && v.paused && !v._isPlayPending) {
-        v.muted = true;
-        v._isPlayPending = true;
-        var p = v.play();
-        if (p && p.catch) p.then(() => v._isPlayPending = false).catch(() => v._isPlayPending = false);
-      }
-    });
+    if (window._visibleVideos) {
+      window._visibleVideos.forEach(function(v) {
+        if (v.hasAttribute('autoplay')) {
+          v.muted = true;
+          window.safePlay(v);
+        }
+      });
+    }
   }, { once: false, passive: true });
 
 window.dismissSens = function(e) {
@@ -12844,11 +12853,7 @@ window.dismissSens = function(e) {
   // Ensure videos play when interacted
   document.querySelectorAll('video').forEach(function(v) {
     if ((v.src && v.src.indexOf('besos') !== -1) || v.hasAttribute('autoplay')) {
-      if (v.paused && !v._isPlayPending) {
-        v._isPlayPending = true;
-        var p = v.play();
-        if (p && p.catch) p.then(() => v._isPlayPending = false).catch(() => v._isPlayPending = false);
-      }
+      window.safePlay(v);
     }
   });
 
@@ -14537,6 +14542,14 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
 
 
 </html>
+
+
+
+
+
+
+
+
 
 
 
