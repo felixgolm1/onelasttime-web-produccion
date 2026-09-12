@@ -2038,7 +2038,7 @@ window.onerror = function(msg, url, line, col, err) {
       @media (max-width: 768px) {
         #glass-who, #glass-objectives {
           top: auto !important;
-          bottom: calc(3% + 5.2rem + 60px) !important;
+          bottom: calc(3% + 5.2rem + 40px) !important;
           height: 38vh !important;
           width: 90vw !important;
           left: 5vw !important;
@@ -3777,8 +3777,8 @@ window.onerror = function(msg, url, line, col, err) {
     ];
     const panData = [
       { x: isM ? '31.2vw'  : '26vw',  y: isM ? '28.8vh' : '24vh', r:  16 },
-      { x: isM ? '-40.8vw' : '-34vw', y: isM ? '8vh'    : '20vh', r:  -9 },
-      { x:  '34vw', y: isM ? '-44vh' : '-34vh', r: -18 },
+      { x: isM ? '-31.2vw' : '-34vw', y: isM ? '4vh'    : '20vh', r:  -9 },
+      { x: isM ? '24vw'    : '34vw',  y: isM ? '-46vh'  : '-34vh', r: -18 },
       { x: '-26vw', y: '-24vh', r:  12 },
     ];
     const focusZoom = window._cIsMobile ? 1.05 : 1.35;
@@ -8810,10 +8810,10 @@ function makeCardBackTex(data = '4 PASOS') {
 
     const bodyMesh = new THREE.Mesh(bodyGeo, edgeMat);
 
-    // 3. Pivot
-    const pivot = new THREE.Group();
-
-    const halfT = D / 2;
+      // 3. Pivot
+      const pivot = new THREE.Group();
+  
+      const halfT = 0; // Eliminamos la distancia entre caras para que no asomen por detrás al rotar
 
     // Ã¢â€ €Ã¢â€ €Ã¢â€ € Helper: crea una ShapeGeometry REDONDEADA con UVs de 0→1 Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €Ã¢â€ €
     // La geometría ya tiene la forma exacta del canto → no hace falta clipCardShape
