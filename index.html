@@ -1253,9 +1253,8 @@ window.onerror = function(msg, url, line, col, err) {
 
     #steps-overlay {
 
-      position: fixed; inset: 0;
-
-      pointer-events: none; z-index: 10002; opacity: 0;
+      position: fixed; inset: 0; height: 100dvh;
+        pointer-events: none; z-index: 10002; opacity: 0;
 
     }
 
@@ -3635,7 +3634,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 @media screen and (max-width: 768px) {
   .sc-board, .box-3d-wrapper, #made-by-humans, #made-by-ai { top: 45dvh !important; }
-  #card-morph-group { top: -5vh; }
+  #card-morph-group { top: -5dvh; }
   #magazine-scene, #camera-flash-container { top: 45dvh; }
 
 
@@ -3976,7 +3975,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 @media screen and (max-width: 768px) {
   .sc-board, .box-3d-wrapper, #made-by-humans, #made-by-ai { top: 45dvh !important; }
-  #card-morph-group { top: -5vh; }
+  #card-morph-group { top: -5dvh; }
   #magazine-scene, #camera-flash-container { top: 45dvh; }
 
   #card-morph-group, .sc-card { transform: scale(0.90); transform-origin: center center; }
@@ -6009,9 +6008,8 @@ window.onerror = function(msg, url, line, col, err) {
 
       position: fixed;
 
-      inset: 0;
-
-      pointer-events: none;
+      inset: 0; height: 100dvh;
+        pointer-events: none;
 
       z-index: 10;
 
@@ -6107,9 +6105,8 @@ window.onerror = function(msg, url, line, col, err) {
 
       position: fixed;
 
-      inset: 0;
-
-      pointer-events: none;
+      inset: 0; height: 100dvh;
+        pointer-events: none;
 
       z-index: 10006; /* Encima de las cartas (10005) y 3D (10004), pero debajo del menu (10010) y CTAs (10008) */
 
@@ -9246,7 +9243,7 @@ window.onerror = function(msg, url, line, col, err) {
 
     // Lo subimos verticalmente (yPercent: -95) y encendemos su opacidad en posición inicial
 
-    scrollTl.set('#made-by-humans', { autoAlpha: 1, yPercent: window._cIsMobile ? -50 : -95, y: window._cIsMobile ? '-23vh' : 0, x: '92vw' }, t2 - 0.08);
+    scrollTl.set('#made-by-humans', { autoAlpha: 1, yPercent: window._cIsMobile ? -50 : -95, y: window._cIsMobile ? '-23dvh' : 0, x: '92vw' }, t2 - 0.08);
 
     scrollTl.to('#made-by-humans', {
 
@@ -9276,7 +9273,7 @@ window.onerror = function(msg, url, line, col, err) {
 
     let tAiStart = t2 - 0.08; // Mismo arranque que "hecho por personas" ? prog ~1.47
 
-    scrollTl.set('#made-by-ai', { autoAlpha: 1, yPercent: window._cIsMobile ? -50 : -5, y: window._cIsMobile ? '23vh' : 0, x: '-92vw' }, tAiStart);
+    scrollTl.set('#made-by-ai', { autoAlpha: 1, yPercent: window._cIsMobile ? -50 : -5, y: window._cIsMobile ? '23dvh' : 0, x: '-92vw' }, tAiStart);
 
     scrollTl.to('#made-by-ai', { x: '0vw', duration: (tSwap - tAiStart), ease: 'power2.inOut' }, tAiStart);
 
@@ -10302,7 +10299,7 @@ window.onerror = function(msg, url, line, col, err) {
          // Ocultar el CTA durante la seccin de la revista y el cerebro trmico (localP aprox 7.0 a 14.0)
          // Para usar localP de forma segura, podemos usar prog (sabiendo que prog = localP en rangos bajos, y luego hay un offset)
          // Usaremos prog > 13.0 y prog < 20.0
-         if (prog >= 15.7 && prog < 18.5) {
+         if (prog >= 16.1 && prog < 18.5) {
              bottomCta.style.opacity = '0';
              bottomCta.style.pointerEvents = 'none';
          } else {
@@ -29079,6 +29076,10 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
 
 
 </html>
+
+
+
+
 
 
 
