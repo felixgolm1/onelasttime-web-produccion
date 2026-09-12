@@ -551,10 +551,8 @@ window.onerror = function(msg, url, line, col, err) {
     /* Ã¢â Revista Scene Ã¢â */
 
     #magazine-scene, #camera-flash-container {
-
-      position: fixed;
-
-      top: 50%; left: 50%;
+        position: fixed;
+        top: calc(50% - 2.5vh); left: 50%;
 
       transform: translate(-50%, -50%) scale(0.85); /* Ajustado para maximizar el espacio libre */
 
@@ -12478,9 +12476,9 @@ window.onerror = function(msg, url, line, col, err) {
 
             // Al estar rotado 90deg, la X del span corresponde a la Y del padre, y viceversa.
 
-            // Crece 4 veces más rápido que la altura de la caja para que acabe ocupando mucho más espacio.
+            // Crece 2.5 veces más rápido que la altura de la caja para que acabe ocupando mucho más espacio.
 
-            let uniformScale = 1 + ((boxScaleY - 1) * 4); 
+            let uniformScale = 1 + ((boxScaleY - 1) * 2.5); 
 
             faceLeftSpan.style.transform = `rotate(90deg) scaleX(${uniformScale/boxScaleY}) scaleY(${uniformScale/boxScaleX})`;
 
@@ -29077,6 +29075,8 @@ document.getElementById('vip-code').addEventListener('keypress', function(e) {
 
 
 </html>
+
+
 
 
 
