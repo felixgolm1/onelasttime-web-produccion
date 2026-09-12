@@ -7490,6 +7490,7 @@ window.onerror = function(msg, url, line, col, err) {
 
           // Footer & Hero UI fade in (animamos blur y textos por separado para que el blur funcione en Chrome durante el fade in)
 
+          if (prog < 0.2) {
           gsap.to(['.blur-bg-head', '#blur-bg-sub'], {
 
             opacity: 1, duration: 1.2, delay: 0.4, clearProps: 'opacity',
@@ -7509,26 +7510,26 @@ window.onerror = function(msg, url, line, col, err) {
             }
 
           });
+          }
 
-          gsap.to(['.oh-inner', '.sub-oh-inner', '#cta-bottom-container', '.scroll-indicator'], {
-              opacity: 1, duration: 1.2, delay: 0.4, stagger: 0.05
-            });
+          if (prog < 0.2) {
+              gsap.to(['.oh-inner', '.sub-oh-inner', '#cta-bottom-container', '.scroll-indicator'], {
+                opacity: 1, duration: 1.2, delay: 0.4, stagger: 0.05
+              });
+            }
 
 
 
           // Textos laterales fade in (Flanqueadores)
 
-          gsap.to('.flt-in', {
-
-            y: '0%', opacity: 1, duration: 1.0, ease: 'power3.out', stagger: 0.05, delay: 0.6
-
-          });
-
-          gsap.to('.flt-in-up', {
-
-            y: '0%', opacity: 1, duration: 1.0, ease: 'power3.out', stagger: 0.05, delay: 0.8
-
-          });
+          if (prog < 0.2) {
+            gsap.to('.flt-in', {
+              y: '0%', opacity: 1, duration: 1.0, ease: 'power3.out', stagger: 0.05, delay: 0.6
+            });
+            gsap.to('.flt-in-up', {
+              y: '0%', opacity: 1, duration: 1.0, ease: 'power3.out', stagger: 0.05, delay: 0.8
+            });
+          }
 
 
 
@@ -10298,7 +10299,6 @@ window.onerror = function(msg, url, line, col, err) {
             bottomCta.classList.remove('smoke-out');
             if (prog >= 38.45) {
                 let pOffset = prog - 38.45;
-                // Move exactly with the scroll (1 prog = approx 100vh)
                 let yMove = pOffset * 100; 
                 
                 gsap.set(bottomCta, {
@@ -10319,30 +10319,9 @@ window.onerror = function(msg, url, line, col, err) {
                 });
                 bottomCta.style.pointerEvents = 'auto';
             }
-        } else {
-               if (bottomCta.classList.contains('smoke-out')) {
-                   bottomCta.classList.remove('smoke-out');
-                   gsap.to(bottomCta, {
-                       xPercent: -50, x: 0,
-                       y: 0,
-                       scaleX: 1, scaleY: 1,
-                       skewX: 0, rotation: 0,
-                       opacity: 1,
-                       filter: 'blur(0px)',
-                       duration: 0.35,
-                       ease: 'power2.out',
-                       overwrite: true
-                   });
-                   bottomCta.style.pointerEvents = 'auto';
-               } else if (!bottomCta.style.opacity || bottomCta.style.opacity === '0') {
-                   bottomCta.style.opacity = '1';
-                   bottomCta.style.pointerEvents = 'auto';
-               }
-           }
+        }
 
-
-
-      // Animación de los paneles de reseña (Solo Fade In/Out)
+        // Animación de los paneles de reseña (Solo Fade In/Out)
 
       // Animación de los paneles de reseña (AHORA ORYZO SLIDE UP)
 
