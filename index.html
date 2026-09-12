@@ -4089,7 +4089,7 @@ window.onerror = function(msg, url, line, col, err) {
     }, 0.82);
 
     // El CTA original desaparece justo antes del scatter
-    scrollTl.to('#heroCta', { autoAlpha: 0, scale: 0.95, transformOrigin: '50% 50%', duration: 0.06, ease: 'power2.inOut' }, 0.84);
+    if (!window._cIsMobile) scrollTl.to('#heroCta', { autoAlpha: 0, scale: 0.95, transformOrigin: '50% 50%', duration: 0.06, ease: 'power2.inOut' }, 0.84);
 
     // La carta central desaparece MIENTRAS hace el último grado del giro
     scrollTl.to(mg, { opacity: 0, duration: 0.03 }, 0.85);
@@ -4358,7 +4358,7 @@ window.onerror = function(msg, url, line, col, err) {
     }, t2);
 
     // Ã¢â€€ CTA: fade in suave del botón cuando las cartas terminan de recogerse Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
-    scrollTl.to('#heroCta', { autoAlpha: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.20, ease: 'power2.out' }, t2 + 0.075);
+    if (!window._cIsMobile) scrollTl.to('#heroCta', { autoAlpha: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.20, ease: 'power2.out' }, t2 + 0.075);
 
     // Ã¢â€€ Fase 10: 2 Flips y cambianzo (1.33) Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
     let t3 = t2 + 0.15;
@@ -9671,6 +9671,22 @@ function makeCardBackTex(data = '4 PASOS') {
                   currentLookY - mouseNY * 0.05 * parallaxStr,
                   currentLookZ);
     camera.updateMatrixWorld();
+
+    // --- Sincronizar el mazo de cartas HTML con la MESA (efecto parallax real) ---
+    // Proyectamos el centro de la mesa (0,0,0) usando la cámara principal CON parallax.
+    // Así, el mazo HTML se mueve por la pantalla exactamente igual que los platos.
+    const dealerPile = document.getElementById('dealer-pile-wrap');
+    if (dealerPile && dealerPile.style.visibility !== 'hidden' && camera) {
+        const tableCenter = new THREE.Vector3(0, 0, 0);
+        tableCenter.project(camera);
+        
+        // Convertimos a píxeles y aplicamos el offset estático del diseño de la carta
+        const screenX = (tableCenter.x * 0.5 + 0.5) * window.innerWidth - 22;
+        const screenY = -(tableCenter.y * 0.5 - 0.5) * window.innerHeight - 18;
+        
+        dealerPile.style.left = screenX + 'px';
+        dealerPile.style.top = screenY + 'px';
+    }
     // cardCam2 siempre en el origen â€ â€  carta congelada en viewport
 
     renderer.render(scene, camera);
