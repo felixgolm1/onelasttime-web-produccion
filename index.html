@@ -3633,9 +3633,8 @@ window.onerror = function(msg, url, line, col, err) {
 <style>
 
 @media screen and (max-width: 768px) {
-  .sc-board { top: 50vh; }
-  #made-by-humans, #made-by-ai { top: 46vh; }
-  .box-3d-wrapper { top: 46vh !important; }
+  .sc-board, #made-by-humans, #made-by-ai { top: 50vh; }
+  .box-3d-wrapper { top: 50vh !important; }
   
   #card-morph-group { top: 0; }
   #magazine-scene, #camera-flash-container { top: 50vh; }
@@ -3977,9 +3976,8 @@ window.onerror = function(msg, url, line, col, err) {
 
 
 @media screen and (max-width: 768px) {
-  .sc-board { top: 50vh; }
-  #made-by-humans, #made-by-ai { top: 46vh; }
-  .box-3d-wrapper { top: 46vh !important; }
+  .sc-board, #made-by-humans, #made-by-ai { top: 50vh; }
+  .box-3d-wrapper { top: 50vh !important; }
   
   #card-morph-group { top: 0; }
   #magazine-scene, #camera-flash-container { top: 50vh; }
@@ -8950,7 +8948,7 @@ window.onerror = function(msg, url, line, col, err) {
           if (i === 2) {
 
             scrollTl.to('#glass-objectives', { autoAlpha: 1, duration: 0.01, ease: 'none' }, glassT);
-            if (window._cIsMobile) { scrollTl.fromTo('#glass-objectives', { y: '0vh' }, { y: '-42vh', duration: 0.035, ease: 'power2.out' }, glassT); }
+              if (window._cIsMobile) { scrollTl.fromTo('#glass-objectives', { y: '0vh' }, { y: '-42vh', duration: 0.035, ease: 'power2.out' }, glassT); }
 
             scrollTl.to(glassObjTitle, { opacity: 1, duration: 0.01, stagger: 0.00108, ease: 'none' }, glassT + 0.01);
 
@@ -12344,15 +12342,7 @@ bottomCta.style.pointerEvents = 'auto';
         
         
         if (window._cIsMobile) {
-            let targetVH = 50;
-            if (prog <= 0.90) {
-                targetVH = 50;
-            } else if (prog <= 1.42) {
-                targetVH = mapRange(prog, 0.90, 1.42, 50, 46);
-            } else {
-                targetVH = 46;
-            }
-            scBoard.style.setProperty('top', targetVH + 'vh', 'important');
+            scBoard.style.setProperty('top', '50vh', 'important');
             scBoard.style.marginTop = '0px';
         } else {
             let yPx = boardY * (window._ch / 100);
@@ -15563,7 +15553,7 @@ bottomCta.style.pointerEvents = 'auto';
                     let tP = 0;
                     if (prog >= 13.62) tP = Math.max(0, Math.min(1, (prog - 13.62) / 1.0));
                     
-                    const baseCY = window._cIsMobile ? (window._ch * 0.46) : (window._ch * 0.455);
+                    const baseCY = window._cIsMobile ? (window._ch * 0.5) : (window._ch * 0.455);
                     const baseNdcY = -(baseCY / window._ch) * 2 + 1;
                     const startY = baseNdcY * vH / 2;
                     
