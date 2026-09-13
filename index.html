@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="es">
 
@@ -8873,21 +8873,24 @@ window.onerror = function(msg, url, line, col, err) {
 
     let t = 0.92;
 
-    // sCards[i] corresponds to which card is the FOCUS of each panData step
+// Inyectar un wrapper dinámico para no entrar en conflicto con el smoothScrollLoop en Y
+const boardEl = document.getElementById('sc-board');
+const pWrap = document.createElement('div');
+pWrap.id = 'sc-pan-wrapper';
+pWrap.style.cssText = 'width:0; height:0; position:absolute; top:0; left:0;';
+while(boardEl.firstChild) pWrap.appendChild(boardEl.firstChild);
+boardEl.appendChild(pWrap);
 
-    // panData[0] ? sc1 focused, panData[1] ? sc2, panData[2] ? sc3, panData[3] ? sc4
+// sCards[i] corresponds to which card is the FOCUS of each panData step
+// panData[0] -> sc1 focused, panData[1] -> sc2, panData[2] -> sc3, panData[3] -> sc4
+const focusOrder = [sc1, sc2, sc3, sc4];
 
-    const focusOrder = [sc1, sc2, sc3, sc4];
-
-    panData.forEach(({ x, y, r }, i) => {
-
-      scrollTl.to(scBoard, { x, rotation: r, scale: focusZoom,
-
-        duration: PAN, ease: 'power1.inOut' }, t);
-
-      scrollTl.to(sIntroProxy, { opacity: 0.25, duration: PAN,
-
-        ease: 'power1.inOut', onUpdate: updateIntroOpacity }, t);
+panData.forEach(({ x, y, r }, i) => {
+    scrollTl.to(pWrap, { x, y, rotation: r, scale: focusZoom,
+                        duration: PAN, ease: 'power1.inOut' }, t);
+    
+    scrollTl.to(sIntroProxy, { opacity: 0.25, duration: PAN, 
+                              ease: 'power1.inOut', onUpdate: updateIntroOpacity }, t);
 
       // Apagar todas las cartas menos la que está en foco
 
@@ -9132,9 +9135,8 @@ window.onerror = function(msg, url, line, col, err) {
 
 
 
-    scrollTl.to(scBoard, { x: 0, rotation: 0, scale: 1,
-
-      duration: gatherDur, ease: 'power2.inOut' }, gatherStart);
+    scrollTl.to('#sc-pan-wrapper', { x: 0, y: 0, rotation: 0, scale: 1,
+        duration: gatherDur, ease: 'power2.inOut' }, gatherStart);
 
     scrollTl.to(sIntroProxy, { opacity: 1, duration: gatherDur,
 
@@ -15375,13 +15377,27 @@ bottomCta.style.pointerEvents = 'auto';
 
           // (si mainDeck es visible, el crossfade ya gestiona opacity y visible arriba)
 
-          if (!mainDeckEl || mainDeckEl.style.display !== 'block') {
-
-              cardCanvasEl.style.opacity = '1';
-
-              globalGlbCard.visible      = true;
-
-          }
+              if (!mainDeckEl || mainDeckEl.style.display !== 'block') {
+                  cardCanvasEl.style.transition = 'none';
+                  let targetOp = 1;
+                  if (typeof sIntroProxy !== 'undefined' && typeof inScatter !== 'undefined' && inScatter) {
+                      cardCanvasEl.style.opacity = String(sIntroProxy.opacity);
+                      targetOp = sIntroProxy.opacity;
+                  } else {
+                      cardCanvasEl.style.opacity = '1';
+                      targetOp = 1;
+                  }
+                  globalGlbCard.visible = true;
+                  
+                  if (globalGlbCard) {
+                      globalGlbCard.traverse((child) => {
+                          if (child.isMesh && child.material) {
+                              child.material.transparent = true;
+                              child.material.opacity = targetOp;
+                          }
+                      });
+                  }
+              }
 
 
 
@@ -15429,9 +15445,20 @@ bottomCta.style.pointerEvents = 'auto';
 
               const gSY   = gsap.getProperty(mgEl, 'scaleY') || 1;
 
+              let driftY = 0;
+              if (typeof prog !== 'undefined') {
+                  if (prog > 0.60 && prog < 0.88) {
+                      let phase1Prog = (prog - 0.60) / 0.28;
+                      let ease = phase1Prog < 0.5 ? 2 * phase1Prog * phase1Prog : 1 - Math.pow(-2 * phase1Prog + 2, 2) / 2;
+                      driftY = ease * (-window._ch * 0.045);
+                  } else if (prog >= 0.88) {
+                      driftY = -window._ch * 0.045;
+                  }
+              }
+
               const screenCX = document.documentElement.clientWidth / 2 + gx;
 
-              const screenCY = window._ch / 2 + gy;
+              const screenCY = window._ch / 2 + gy + driftY;
 
               const ndcX  =  (screenCX / window._cw)  * 2 - 1;
 
