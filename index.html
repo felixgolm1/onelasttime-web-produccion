@@ -3633,8 +3633,9 @@ window.onerror = function(msg, url, line, col, err) {
 <style>
 
 @media screen and (max-width: 768px) {
-  .sc-board, #made-by-humans, #made-by-ai { top: 50vh; }
-  .box-3d-wrapper { top: 50vh !important; }
+  .sc-board { top: 50vh; }
+  #made-by-humans, #made-by-ai { top: 46vh; }
+  .box-3d-wrapper { top: 46vh !important; }
   
   #card-morph-group { top: 0; }
   #magazine-scene, #camera-flash-container { top: 50vh; }
@@ -3976,8 +3977,9 @@ window.onerror = function(msg, url, line, col, err) {
 
 
 @media screen and (max-width: 768px) {
-  .sc-board, #made-by-humans, #made-by-ai { top: 50vh; }
-  .box-3d-wrapper { top: 50vh !important; }
+  .sc-board { top: 50vh; }
+  #made-by-humans, #made-by-ai { top: 46vh; }
+  .box-3d-wrapper { top: 46vh !important; }
   
   #card-morph-group { top: 0; }
   #magazine-scene, #camera-flash-container { top: 50vh; }
@@ -8423,7 +8425,7 @@ window.onerror = function(msg, url, line, col, err) {
 
     scrollTl.to(ftChars, {
 
-      opacity: 1, filter: 'blur(0px)', x: 0,
+      opacity: 1, clearProps: 'filter', x: 0,
 
       duration: 0.06, stagger: 0.008, ease: 'power2.out'
 
@@ -10297,32 +10299,31 @@ window.onerror = function(msg, url, line, col, err) {
 
       // Controlar la visibilidad del CTA inferior
         const bottomCta = document.getElementById('cta-bottom-container');
-var _sInd = document.querySelector('.scroll-indicator');
 if (bottomCta) {
 bottomCta.classList.remove('smoke-out');
 if (prog >= 38.60) {
 let pOffset = prog - 38.60;
-let yMove = pOffset * 30; 
+let yMove = pOffset * 30;
+// Fade out CTA to 0 by prog = 39.86 (which is pOffset = 1.26)
+let ctaOp = Math.max(0, 1 - (pOffset / 1.26)); 
                 
                 gsap.set(bottomCta, {
-                    xPercent: -50, x: 0,
-                    y: -yMove + 'vh',
-                    opacity: 1,
-                    scaleX: 1, scaleY: 1, skewX: 0, rotation: 0, filter: 'blur(0px)',
+xPercent: -50, x: 0,
+y: -yMove + 'vh',
+opacity: ctaOp,
+                    scaleX: 1, scaleY: 1, skewX: 0, rotation: 0, clearProps: 'filter',
                     overwrite: true
                 });
-                bottomCta.style.pointerEvents = 'auto';
-if (_sInd) { gsap.set(_sInd, { y: -yMove + 'vh', opacity: 1 }); }
+                bottomCta.style.pointerEvents = ctaOp > 0 ? 'auto' : 'none';
 } else {
 gsap.set(bottomCta, {
 xPercent: -50, x: 0,
 y: 0,
 opacity: 1,
-scaleX: 1, scaleY: 1, skewX: 0, rotation: 0, filter: 'blur(0px)',
+scaleX: 1, scaleY: 1, skewX: 0, rotation: 0, clearProps: 'filter',
 overwrite: true
 });
 bottomCta.style.pointerEvents = 'auto';
-if (_sInd) { gsap.set(_sInd, { y: 0, opacity: 1 }); }
 }
 }
 
@@ -12342,7 +12343,17 @@ if (_sInd) { gsap.set(_sInd, { y: 0, opacity: 1 }); }
         
         
         if (window._cIsMobile) {
-            scBoard.style.setProperty('top', '50vh', 'important');
+            let targetVH = 50;
+            if (prog <= 0.40) {
+                targetVH = mapRange(prog, 0, 0.40, 50, 32);
+            } else if (prog <= 0.90) {
+                targetVH = 32;
+            } else if (prog <= 1.42) {
+                targetVH = mapRange(prog, 0.90, 1.42, 32, 46);
+            } else {
+                targetVH = 46;
+            }
+            scBoard.style.setProperty('top', targetVH + 'vh', 'important');
             scBoard.style.marginTop = '0px';
         } else {
             let yPx = boardY * (window._ch / 100);
@@ -15553,7 +15564,7 @@ if (_sInd) { gsap.set(_sInd, { y: 0, opacity: 1 }); }
                     let tP = 0;
                     if (prog >= 13.62) tP = Math.max(0, Math.min(1, (prog - 13.62) / 1.0));
                     
-                    const baseCY = window._cIsMobile ? (window._ch * 0.5) : (window._ch * 0.455);
+                    const baseCY = window._cIsMobile ? (window._ch * 0.46) : (window._ch * 0.455);
                     const baseNdcY = -(baseCY / window._ch) * 2 + 1;
                     const startY = baseNdcY * vH / 2;
                     
@@ -24870,7 +24881,13 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
 
                   
 
-                  /* scroll-indicator movido arriba */
+                  var sInd = document.querySelector('.scroll-indicator');
+if (sInd) {
+    // Restaurar transform y fade out original
+    gsap.set(sInd, { y: 0 });
+    var scrollIndP = Math.max(0, Math.min(1, (localP - 39.0) / 1.4));
+    sInd.style.opacity = (1 - scrollIndP).toFixed(3);
+}
 
                   
 
