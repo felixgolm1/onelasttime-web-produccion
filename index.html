@@ -24968,18 +24968,16 @@ if (sInd) {
         legalL.style.pointerEvents = scrollIndP > 0.5 ? 'auto' : 'none';
     }
     
-    // Staggered Animation (Randomized)
-    var allStg = document.querySelectorAll('[class*="stg-line-"]');
-    allStg.forEach(function(el) {
-        if (!el.dataset.stgOffset) {
-            el.dataset.stgOffset = Math.random() * 0.4;
-        }
-        var offset = parseFloat(el.dataset.stgOffset);
-        var progress = (scrollIndP - offset) / 0.6;
+    // Staggered Animation
+    [1, 2, 3].forEach(function(lineNum) {
+        var els = document.querySelectorAll('.stg-line-' + lineNum);
+        var progress = (scrollIndP - (lineNum - 1) * 0.15) / 0.7; 
         progress = Math.max(0, Math.min(1, progress));
         var y = 150 * (1 - progress);
-        el.style.opacity = progress.toFixed(3);
-        el.style.transform = 'translateY(' + y + 'px)';
+        els.forEach(function(el) {
+            el.style.opacity = progress.toFixed(3);
+            el.style.transform = 'translateY(' + y + 'px)';
+        });
     });
 }
 
@@ -25217,10 +25215,12 @@ if (sInd) {
                   }
                   
                   // Reset stagger lines
-                  var allStg = document.querySelectorAll('[class*="stg-line-"]');
-                  allStg.forEach(function(el) {
-                      el.style.opacity = '0';
-                      el.style.transform = 'translateY(150px)';
+                  [1, 2, 3].forEach(function(lineNum) {
+                      var els = document.querySelectorAll('.stg-line-' + lineNum);
+                      els.forEach(function(el) {
+                          el.style.opacity = '0';
+                          el.style.transform = 'translateY(150px)';
+                      });
                   });
 
               }
