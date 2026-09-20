@@ -5828,7 +5828,7 @@ window.onerror = function(msg, url, line, col, err) {
 
           <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block; opacity: 0;">CONVIERTE "UNA CENA MÁS"</span></span>
 
-          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block; white-space: nowrap; opacity: 0;">CON TU PAREJA <span style="font-size: 0.6em; color: #ffffff; vertical-align: middle;">(O CITA ESPECIAL)</span></span></span>
+          <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block; white-space: nowrap; opacity: 0;">CON TU PAREJA (O NO...)</span></span>
 
           <span style="display:block; overflow:hidden; padding-bottom:4px;"><span class="oh-inner" style="display:block; opacity: 0;">EN UN HITO DE VUESTRA</span></span>
 
@@ -5856,13 +5856,13 @@ window.onerror = function(msg, url, line, col, err) {
 
   <div id="mobile-menu-pill" style="display: none; position: fixed; z-index: 10000016; transition: all 0.3s ease;"><span id="menu-dot" style="display:inline-block; width:4px; height:4px; background-color:currentColor; border-radius:50%; margin-right:6px;"></span><span id="menu-text">MENU</span></div>
 
-  <div id="nav-logo" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; opacity: 0;">
+  <a id="nav-logo" href="#" onclick="if(window.jumpToProg){window.jumpToProg(0);}else{window.scrollTo({top:0, behavior:'smooth'});} return false;" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; opacity: 0; text-decoration: none; z-index: 1000000;">
 
-    <img src="assets/img/logo%20one%20last%20time.png" alt="One Last Time" style="height: 57px; width: auto; filter: brightness(0) invert(1);">
+    <img src="assets/img/logo%20one%20last%20time.png" alt="One Last Time" style="height: 68px; width: auto; filter: brightness(0) invert(1);">
 
-    <img src="assets/img/by_sensibles.png" alt="by Sensibles" style="height: 28px; width: auto; filter: brightness(0) invert(1); padding-left: 0px;">
+    <img src="assets/img/by_sensibles.png" alt="by Sensibles" style="height: 34px; width: auto; filter: brightness(0) invert(1); padding-left: 0px; transform: translateZ(0);">
 
-  </div>
+  </a>
 
   <!-- Meng superior derecha -->
 
@@ -14840,25 +14840,15 @@ bottomCta.style.pointerEvents = 'auto';
          } else if (visibleProg <= sections[0].startP) {
 
              targetX = sections[0].startX;
-
          } else {
-
              for (let i = 0; i < sections.length; i++) {
-
                 if (visibleProg >= sections[i].startP && visibleProg <= sections[i].endP) {
-
-                   let fraction = (visibleProg - sections[i].startP) / (sections[i].endP - sections[i].startP);
-
-                   // Animación creativa: la barra crece proporcionalmente al ancho exacto de la palabra activa.
-
-                   targetX = sections[i].startX + fraction * (sections[i].endX - sections[i].startX);
-
+                   // En lugar de crecer proporcionalmente a lo largo de toda la seccion (lo que hacia que al pinchar se viera corta),
+                   // saltamos directamente a cubrir toda la palabra activa. El lerp de abajo se encargara de animarlo suavemente.
+                   targetX = sections[i].endX;
                    break;
-
                 }
-
              }
-
          }
 
          
@@ -15992,9 +15982,9 @@ requestAnimationFrame(smoothScrollLoop);
         divisor = divisor * 2.0;
       }
 
-      // Ajuste pedido: de 34.01 a 40.16 (prog), hacer el scroll aún más rápido (fricción / 3.0)
+      // Ajuste pedido: de 34.01 a 40.16 (prog), hacer el scroll un 50% más lento (fricción / 0.75)
       if (targetProg >= 34.01 && targetProg <= 40.16) {
-        divisor = divisor / 3.0;
+        divisor = divisor / 0.75;
       }
 
       
@@ -16256,9 +16246,9 @@ requestAnimationFrame(smoothScrollLoop);
 
       }
 
-      // Ajuste pedido: de 34.01 a 40.16 (prog), hacer el scroll aún más rápido (fricción / 3.0)
+      // Ajuste pedido: de 34.01 a 40.16 (prog), hacer el scroll un 50% más lento (fricción / 0.75)
       if (targetProg >= 34.01 && targetProg <= 40.16) {
-        divisorT = divisorT / 3.0;
+        divisorT = divisorT / 0.75;
       }
       
 
@@ -17659,7 +17649,7 @@ function renderChat() {
 
     
 
-    const spacing = 92;
+    const spacing = 125;
 
     const totalHeight = chatData.length * spacing;
 
@@ -17690,11 +17680,31 @@ function renderChat() {
 
             
 
-            let textW = ctx.measureText(msg).width;
+            let words = msg.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let w = 1; w < words.length; w++) {
+                let testLine = currentLine + " " + words[w];
+                if (ctx.measureText(testLine).width < 450) {
+                    currentLine = testLine;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[w];
+                }
+            }
+            lines.push(currentLine);
+
+            let maxLineW = 0;
+            lines.forEach(l => {
+                let w = ctx.measureText(l).width;
+                if (w > maxLineW) maxLineW = w;
+            });
+
+            let textW = maxLineW;
 
             let bubbleW = textW + 48;
 
-            let bubbleH = 55;
+            let bubbleH = 55 + (lines.length - 1) * 32;
 
             let avatarSize = 104;
 
@@ -17750,7 +17760,10 @@ function renderChat() {
 
             ctx.textAlign = 'center';
 
-            ctx.fillText(msg, bubbleX + bubbleW/2, bubbleY + bubbleH/2);
+            let textStartY = bubbleY + bubbleH/2 - ((lines.length - 1) * 32) / 2;
+            for (let l = 0; l < lines.length; l++) {
+                ctx.fillText(lines[l], bubbleX + bubbleW/2, textStartY + l * 32);
+            }
 
             
 
@@ -19448,7 +19461,8 @@ function makeCardBackTex(data = '4 PASOS') {
 
 
 
-    link.addEventListener('mouseenter', () => {
+    const trigger = link.closest('a') || link;
+          trigger.addEventListener('mouseenter', () => {
 
       allR1.forEach(item => {
 
@@ -19472,7 +19486,7 @@ function makeCardBackTex(data = '4 PASOS') {
 
 
 
-    link.addEventListener('mouseleave', () => {
+    trigger.addEventListener('mouseleave', () => {
 
       allR1.forEach(item => {
 
@@ -20008,7 +20022,7 @@ function makeCardBackTex(data = '4 PASOS') {
 
   <!-- Debug: Mostrar scroll prog -->
 
-  <div id="debug-scroll-prog" style="display: block; position: fixed; bottom: 20px; left: 20px; color: #00ff00; font-family: monospace; font-size: 24px; font-weight: bold; z-index: 99999999; pointer-events: none; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;">0.00</div>
+  <div id="debug-scroll-prog" style="display: none; position: fixed; bottom: 20px; left: 20px; color: #00ff00; font-family: monospace; font-size: 24px; font-weight: bold; z-index: 99999999; pointer-events: none; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;">0.00</div>
 
   <!-- MAGAZINE BREAKOUT OVERLAY â€â€ body-level para evitar problemas con transforms del carrusel -->
 
@@ -22587,17 +22601,103 @@ setInterval(function() {
 
   <!-- FAQ Trigger Link / Pill -->
 
-  <div id="olt-faq-trigger" style="position:fixed; top:79%; left:50%; transform:translate(-50%, -50%); z-index:10000000; opacity:0; pointer-events:none; transition: opacity 0.3s ease; text-align:center; width:90vw;">
 
-    <button type="button" onclick="window.openFaqModal(event)" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.85); padding: 9px 22px; border-radius: 999px; font-family: 'Inter', sans-serif; font-size: clamp(0.85rem, 1.2vw, 0.95rem); font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 9px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.25s ease;" onmouseover="this.style.borderColor='#ccff00'; this.style.color='#ffffff'; this.style.background='rgba(255,255,255,0.12)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.18)'; this.style.color='rgba(255,255,255,0.85)'; this.style.background='rgba(255,255,255,0.06)';">
 
-      <span><strong style='color:#fff; font-weight:600;'>Preguntas frecuentes</strong></span>
-
-    </button>
-
+  <div id="olt-contact-card" style="position: fixed; bottom: 48px; left: 260px; right: 0; transform: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 32px; z-index: 999999; opacity: 1; pointer-events: none; font-family: 'Inter', sans-serif; letter-spacing: 1px; font-size: 13px; font-weight: 600; text-transform: uppercase;">
+    
+    <div style="display: flex; flex-direction: column; justify-content: center; position: relative;">
+      <div class="stg-line-1" style="position: absolute; right: 0; top: 0; bottom: 0; width: 1px; background-color: rgba(255,255,255,0.2); opacity:0; transform:translateY(150px);"></div>
+      <div style="color: #ffffff; font-size: 13px; font-weight: 600; margin: 0; text-transform: uppercase; text-align: right; line-height: 1.5; padding-right: 20px; width: max-content;">
+        <div class="stg-line-1" style="opacity:0; transform:translateY(150px);">Dudas, sugerencias, saludos</div>
+        <div class="stg-line-2" style="opacity:0; transform:translateY(150px);">o intentos de soborno. Estamos</div>
+        <div class="stg-line-3" style="opacity:0; transform:translateY(150px);">a un mensaje de distancia</div>
+      </div>
+    </div>
+    <div id="olt-faq-trigger" class="stg-line-2" style="opacity:0; transform:translateY(150px); display: flex; align-items: center; flex-shrink: 0;">
+      <button type="button" onclick="window.openFaqModal(event)" style="white-space: nowrap; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.85); padding: 9px 22px; border-radius: 999px; font-family: 'Inter', sans-serif; font-size: clamp(0.85rem, 1.2vw, 0.95rem); font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 9px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.25s ease;" onmouseover="this.style.borderColor='#ccff00'; this.style.color='#ffffff'; this.style.background='rgba(255,255,255,0.12)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.18)'; this.style.color='rgba(255,255,255,0.85)'; this.style.background='rgba(255,255,255,0.06)';">
+        <span><strong style='color:#fff; font-weight:600;'>Preguntas frecuentes</strong></span>
+      </button>
+    </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <span class="stg-line-1" style="opacity:0; transform:translateY(150px); color: rgba(255,255,255,0.65); font-size: 11.5px; font-weight: 500; letter-spacing: 1px;">Email</span>
+        <a class="stg-line-2" href="mailto:hola@sensibles.co" style="opacity:0; transform:translateY(150px); color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; outline: none;">
+          <span class="hover-text-fx" data-text="hola@sensibles.co">hola@sensibles.co</span>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <span class="stg-line-1" style="opacity:0; transform:translateY(150px); color: rgba(255,255,255,0.65); font-size: 11.5px; font-weight: 500; letter-spacing: 1px;">WhatsApp</span>
+        <a class="stg-line-2" href="https://wa.me/34649671650" target="_blank" style="opacity:0; transform:translateY(150px); color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; outline: none;">
+          <span class="hover-text-fx" data-text="+34 649671650">+34 649671650</span>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <span class="stg-line-1" style="opacity:0; transform:translateY(150px); color: rgba(255,255,255,0.65); font-size: 11.5px; font-weight: 500; letter-spacing: 1px;">Instagram</span>
+        <a class="stg-line-2" href="https://www.instagram.com/sensibles.co/" target="_blank" style="opacity:0; transform:translateY(150px); color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; outline: none;">
+          <span class="hover-text-fx" data-text="@sensibles.co">@sensibles.co</span>
+        </a>
+      </div>
   </div>
 
+  <div id="olt-legal-links" style="position: fixed; bottom: 30px; left: 40px; display: flex; flex-direction: column; gap: 12px; z-index: 999999; opacity: 1; pointer-events: none; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+<a href="garantia.html" target="_blank" class="hover-text-fx stg-line-1" data-text="Garantía de Devolución" style="opacity:0; transform:translateY(150px); color: #ffffff; text-decoration: none; display: inline-flex; outline: none;">Garantía de Devolución</a>
+    <a href="terminos.html" target="_blank" class="hover-text-fx stg-line-2" data-text="Términos & Condiciones" style="opacity:0; transform:translateY(150px); color: #ffffff; text-decoration: none; display: inline-flex; outline: none;">Términos & Condiciones</a>
+    <a href="privacidad.html" target="_blank" class="hover-text-fx stg-line-3" data-text="Política de Privacidad" style="opacity:0; transform:translateY(150px); color: #ffffff; text-decoration: none; display: inline-flex; outline: none;">Política de Privacidad</a>
+  </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.hover-text-fx').forEach(link => {
+          const text = link.getAttribute('data-text');
+          const lines = text.split('|');
+          const allR1 = [], allR2 = [];
+          link.innerHTML = '';
+          if (lines.length > 1) {
+            link.style.flexDirection = 'column';
+            link.style.alignItems = 'center';
+            link.style.gap = '0.3em';
+            link.style.textAlign = 'center';
+          }
+          lines.forEach((lineText) => {
+            const chars = lineText.split('');
+            const lineLen = chars.length;
+            const makeRow = (dest) => {
+              const row = document.createElement('div');
+              row.className = 'nav-row';
+              chars.forEach((ch, i) => {
+                const s = document.createElement('span');
+                s.className = 'nav-ch';
+                s.textContent = ch === ' ' ? '\u00a0' : ch;
+                row.appendChild(s);
+                dest.push({ el: s, delay: (lineLen - 1 - i) * 10 });
+              });
+              return row;
+            };
+            const word = document.createElement('div');
+            word.className = 'nav-word';
+            word.appendChild(makeRow(allR1));
+            word.appendChild(makeRow(allR2));
+            const clip = document.createElement('div');
+            clip.className = 'nav-clip';
+            clip.style.height = '1.2em';
+            clip.appendChild(word);
+            link.appendChild(clip);
+          });
+          const origColor = link.style.color;
+          link.style.transition = 'color 0.3s ease';
+          const trigger = link.closest('a') || link;
+          trigger.addEventListener('mouseenter', () => {
+            link.style.color = '#ccff00';
+            allR1.forEach(item => { item.el.style.transitionDelay = `${item.delay}ms`; item.el.style.transform = 'translateY(-1.2em)'; });
+            allR2.forEach(item => { item.el.style.transitionDelay = `${item.delay}ms`; item.el.style.transform = 'translateY(-1.2em)'; });
+          });
+          trigger.addEventListener('mouseleave', () => {
+            link.style.color = origColor;
+            allR1.forEach(item => { item.el.style.transitionDelay = `${item.delay}ms`; item.el.style.transform = ''; });
+            allR2.forEach(item => { item.el.style.transitionDelay = `${item.delay}ms`; item.el.style.transform = ''; });
+          });
+        });
+    });
+  </script>
 
 
 
@@ -24903,8 +25003,32 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
 if (sInd) {
     // Restaurar transform y fade out original
     gsap.set(sInd, { y: 0 });
-    var scrollIndP = Math.max(0, Math.min(1, (localP - 39.0) / 1.4));
+    var scrollIndP = Math.max(0, Math.min(1, (localP - 38.3) / 2.1));
     sInd.style.opacity = (1 - scrollIndP).toFixed(3);
+    
+    // Animacion para la carta de contacto
+    var cCard = document.getElementById('olt-contact-card');
+    if (cCard) {
+        cCard.style.pointerEvents = scrollIndP > 0.5 ? 'auto' : 'none';
+    }
+    
+    // Animacion enlaces legales
+    var legalL = document.getElementById('olt-legal-links');
+    if (legalL) {
+        legalL.style.pointerEvents = scrollIndP > 0.5 ? 'auto' : 'none';
+    }
+    
+    // Staggered Animation
+    [1, 2, 3].forEach(function(lineNum) {
+        var els = document.querySelectorAll('.stg-line-' + lineNum);
+        var progress = (scrollIndP - (lineNum - 1) * 0.15) / 0.7; 
+        progress = Math.max(0, Math.min(1, progress));
+        var y = 150 * (1 - progress);
+        els.forEach(function(el) {
+            el.style.opacity = progress.toFixed(3);
+            el.style.transform = 'translateY(' + y + 'px)';
+        });
+    });
 }
 
                   
@@ -25112,26 +25236,42 @@ if (sInd) {
                   if (_oltPhase1R) _oltPhase1R.style.opacity = '0';
 
                   var _oltPhase2R = document.getElementById('olt-phase-2');
-
                   if (_oltPhase2R) _oltPhase2R.style.opacity = '0';
 
                   var _oltCtaR = document.getElementById('olt-final-cta');
-
                   if (_oltCtaR) {
-
                       _oltCtaR.style.transform = 'translateY(100vh) translate(var(--mx, 0px), var(--my, 0px))';
-
                       _oltCtaR.style.opacity = '0';
-
                       _oltCtaR.style.pointerEvents = 'none';
-
                   }
+                  
+                  var _fakeBgR = document.getElementById('fake-bg-fade');
+                  if (_fakeBgR) _fakeBgR.style.opacity = '0';
 
                   // Restaurar el scroll indicator al salir de la fase final
-
                   var _scrollIndR = document.querySelector('.scroll-indicator');
 
                   if (_scrollIndR) _scrollIndR.style.opacity = '1';
+                  
+                  var _cCardR = document.getElementById('olt-contact-card');
+                  
+                  if (_cCardR) {
+                      _cCardR.style.pointerEvents = 'none';
+                  }
+
+                  var _legalLR = document.getElementById('olt-legal-links');
+                  if (_legalLR) {
+                      _legalLR.style.pointerEvents = 'none';
+                  }
+                  
+                  // Reset stagger lines
+                  [1, 2, 3].forEach(function(lineNum) {
+                      var els = document.querySelectorAll('.stg-line-' + lineNum);
+                      els.forEach(function(el) {
+                          el.style.opacity = '0';
+                          el.style.transform = 'translateY(150px)';
+                      });
+                  });
 
               }
 
