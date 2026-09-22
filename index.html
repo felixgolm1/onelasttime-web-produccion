@@ -9122,7 +9122,7 @@ panData.forEach(({ x, y, r }, i) => {
 
     const mainDeck = document.getElementById('mainDeck');
 
-    const maxProg = 61.5;
+    const maxProg = 65.5;
 
     let prog = parseFloat(sessionStorage.getItem('dev_prog')) || 0;
 
@@ -23973,6 +23973,13 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
          // --- REPLICA EXACTA DE TESTIMONIOS CON localP = p - 21.5 ---
 
          let localP = p - 21.1;
+         if (localP > 25.5) {
+             if (localP <= 31.5) {
+                 localP = 25.5 + (localP - 25.5) * 0.5; // Stretches 3.0 units of animation across 6.0 scroll units
+             } else {
+                 localP = localP - 3.0; // Restores timeline continuity for the rest of the web
+             }
+         }
 
          // Cache card refs: una vez movidas a endCardTable, querySelector devuelve null â€â€ necesitamos la referencia persistente
 
