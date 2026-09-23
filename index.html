@@ -24851,6 +24851,18 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
                               var leafOp = 0.15 + 0.85 * guaranteeOp;
                               leafLeft.style.opacity = leafOp.toFixed(2);
                               leafRight.style.opacity = leafOp.toFixed(2);
+                              
+                              // Fisicas de scroll: los laureles florecen (bloom) y respiran (breath) dinamicamente
+                              var baseBloom = guaranteeOp; // 0 to 1
+                              var breathAngle = Math.sin(localP_raw * Math.PI * 2.5);
+                              var breathScale = Math.sin(localP_raw * Math.PI * 3.5);
+                              
+                              var rotLeft = -(baseBloom * 18) + (breathAngle * 6 * baseBloom);
+                              var rotRight = (baseBloom * 18) - (breathAngle * 6 * baseBloom);
+                              var scaleAmt = 0.8 + (baseBloom * 0.3) + (breathScale * 0.05 * baseBloom);
+                              
+                              leafLeft.style.transform = `rotate(${rotLeft}deg) scale(${scaleAmt})`;
+                              leafRight.style.transform = `rotate(${rotRight}deg) scale(${scaleAmt})`;
                           }
                       }
 
