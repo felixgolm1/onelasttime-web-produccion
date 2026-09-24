@@ -8857,7 +8857,7 @@ window.onerror = function(msg, url, line, col, err) {
 const boardEl = document.getElementById('sc-board');
 const pWrap = document.createElement('div');
 pWrap.id = 'sc-pan-wrapper';
-pWrap.style.cssText = 'width:0; height:0; position:absolute; top:0; left:0;';
+pWrap.style.cssText = 'width:0; height:0; position:absolute; top:0; left:0; display:none; overflow:hidden; opacity:0;';
 while(boardEl.firstChild) pWrap.appendChild(boardEl.firstChild);
 boardEl.appendChild(pWrap);
 
@@ -27306,6 +27306,22 @@ document.addEventListener('mouseover', e => {
     .vip-btn:hover .cta-arrow-pill {
         transform: translateY(-50%) scale(1.15);
     }
+
+
+  /* MODO MOVIL AISLADO: FIX LINEA BLANCA SUPERIOR */
+  @media (max-width: 768px) {
+      html, body {
+          overflow-x: hidden !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100vw !important;
+      }
+  }
+
+
+  canvas, img, a {
+      outline: none !important;
+  }
 
 </style>
 
