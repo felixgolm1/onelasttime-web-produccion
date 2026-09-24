@@ -3708,8 +3708,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 
   #headline {
-
-    top: 20% !important;
+    top: 25% !important;
 
     left: 0 !important;
 
@@ -3764,8 +3763,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 
   #subheadline {
-
-    top: auto !important;
+    top: 50% !important;
 
     bottom: 26% !important;
 
@@ -8857,7 +8855,7 @@ window.onerror = function(msg, url, line, col, err) {
 const boardEl = document.getElementById('sc-board');
 const pWrap = document.createElement('div');
 pWrap.id = 'sc-pan-wrapper';
-pWrap.style.cssText = 'width:0; height:0; position:absolute; top:0; left:0;';
+pWrap.style.cssText = 'width:0; height:0; position:absolute; top:0; left:0; clip-path: inset(100%); pointer-events: none;';
 while(boardEl.firstChild) pWrap.appendChild(boardEl.firstChild);
 boardEl.appendChild(pWrap);
 
@@ -27328,6 +27326,21 @@ document.addEventListener('mouseover', e => {
       /* Fuerza a que el contenedor 3D no se desborde visualmente por arriba */
       #css-container {
           overflow: hidden !important;
+      }
+  }
+
+
+  /* MODO MOVIL AISLADO: FIXES HEADER Y LINEA */
+  @media (max-width: 768px) {
+      body, html {
+          overflow-x: hidden !important;
+          background-color: #000 !important;
+      }
+      #cta-bottom-container {
+          bottom: 25px !important;
+      }
+      canvas, img, a, div {
+          outline: none !important;
       }
   }
 
