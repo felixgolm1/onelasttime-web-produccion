@@ -27219,6 +27219,17 @@ document.addEventListener('mouseover', e => {
 
     }
 
+    .vip-input:-webkit-autofill,
+    .vip-input:-webkit-autofill:hover, 
+    .vip-input:-webkit-autofill:focus, 
+    .vip-input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px #111 inset !important;
+        -webkit-text-fill-color: #ccff00 !important;
+        box-shadow: 0 0 0 1000px #111 inset !important;
+        caret-color: #ccff00 !important;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
     .vip-btn {
 
         text-transform: uppercase;
@@ -27275,6 +27286,47 @@ document.addEventListener('mouseover', e => {
 
     @keyframes shakeAnim { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
 
+    .cta-arrow-pill {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        background: #111;
+        color: #ccff00;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        transition: transform 0.25s ease-out;
+    }
+    .cta-arrow-pill svg {
+        stroke: currentColor;
+    }
+    .vip-btn:hover .cta-arrow-pill {
+        transform: translateY(-50%) scale(1.15);
+    }
+
+
+  /* MODO MOVIL AISLADO: VIP OVERLAY */
+  @media (max-width: 768px) {
+      #vip-overlay {
+          justify-content: flex-start !important;
+          padding-top: 12vh !important;
+      }
+      #vip-overlay .vip-anim-1 {
+          margin-bottom: 30px !important;
+      }
+      #vip-title {
+          font-size: 18px !important;
+          margin-bottom: 25px !important;
+          min-height: auto !important;
+      }
+      #vip-form-container {
+          min-height: auto !important;
+      }
+  }
+
 </style>
 
 <div id="vip-overlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; background-image: radial-gradient(ellipse at 0% 100%, rgba(204,255,0,0.36) 0%, transparent 80%), radial-gradient(ellipse at 100% 100%, rgba(204,255,0,0.18) 0%, transparent 70%); z-index:85000000; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Inter', sans-serif;">
@@ -27289,11 +27341,19 @@ document.addEventListener('mouseover', e => {
 
     <div id="vip-form-container" class="vip-anim-2" style="display:flex; flex-direction:column; align-items:center; transition: all 0.5s ease; min-height: 380px;">
 
-        <h2 id="vip-title" style="color:#fff; margin-bottom:30px; font-weight:600; text-align:center; padding: 0 20px; letter-spacing:-0.02em; font-size:24px; max-width: 600px; line-height: 1.4; transition: opacity 0.5s; min-height: 110px; display: flex; align-items: center; justify-content: center;">Introduce el c&oacute;digo de acceso para vivir la cena m&aacute;s transformadora de tu vida</h2>
+        <h2 id="vip-title" style="color:#fff; margin-bottom:30px; font-weight:600; text-align:center; padding: 0 20px; letter-spacing:-0.02em; font-size:24px; max-width: 600px; line-height: 1.4; transition: opacity 0.5s; min-height: 110px; display: flex; align-items: center; justify-content: center;">Introduce el c&oacute;digo de acceso para convertir una cena m&aacute;s con tu pareja (o no...) en un hito de vuestra historia</h2>
 
-        <input type="text" id="vip-code" class="vip-pill vip-input" placeholder="Código secreto">
+        <input type="text" id="vip-code" class="vip-pill vip-input" placeholder="Código secreto" autocomplete="off" spellcheck="false">
 
-        <button id="vip-submit-btn" onclick="checkVipCode()" class="vip-pill vip-btn">Entrar</button>
+        <button id="vip-submit-btn" onclick="checkVipCode()" class="vip-pill vip-btn" style="padding: 1.2rem 2rem !important; height: auto; width: 300px; box-sizing: border-box; font-family: 'Inter', sans-serif; font-size: 1.125rem; font-weight: 700; position: relative; border: none; cursor: pointer;">
+            <span style="position:relative; z-index:2; text-align:center; padding-right:40px;">ENTRAR</span>
+            <div class="cta-arrow-pill" style="right: 12px; width: 50px; height: 32px; background: #111; color: #ccff00;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </button>
 
         <p id="vip-error" style="color:#ff4444; margin-top:20px; font-size:15px; visibility:hidden; opacity:0; font-weight:500; height:22px; margin-bottom:0; transition: opacity 0.3s ease;">C&oacute;digo incorrecto</p>
 
@@ -27389,7 +27449,7 @@ function toggleVipMode(e) {
 
             input.type = 'email';
 
-            btn.innerHTML = 'APUNTARME';
+            btn.innerHTML = '<span style="position:relative; z-index:2; text-align:center; padding-right:40px;">APUNTARME</span><div class="cta-arrow-pill" style="right: 12px; width: 50px; height: 32px; background: #111; color: #ccff00;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>';
 
             toggle.innerHTML = 'Ya tengo el c&oacute;digo';
 
@@ -27397,7 +27457,7 @@ function toggleVipMode(e) {
 
         } else {
 
-            title.innerHTML = 'Introduce el c&oacute;digo de acceso para vivir la cena m&aacute;s transformadora de tu vida';
+            title.innerHTML = 'Introduce el c&oacute;digo de acceso para convertir una cena m&aacute;s con tu pareja (o no...) en un hito de vuestra historia';
 
             input.placeholder = 'Código secreto';
 
@@ -27405,7 +27465,7 @@ function toggleVipMode(e) {
 
             input.type = 'text';
 
-            btn.innerHTML = 'Entrar';
+            btn.innerHTML = '<span style="position:relative; z-index:2; text-align:center; padding-right:40px;">ENTRAR</span><div class="cta-arrow-pill" style="right: 12px; width: 50px; height: 32px; background: #111; color: #ccff00;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>';
 
             toggle.innerHTML = 'Ap&uacute;ntate a la lista de espera';
 
