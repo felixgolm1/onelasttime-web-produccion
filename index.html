@@ -1631,7 +1631,7 @@ window.onerror = function(msg, url, line, col, err) {
   /* DEFINITIVE CLIP-PATH FIX PARA TODOS LOS ELEMENTOS FIXED */
   @media (max-width: 768px) {
       /* Matamos flashes directamente */
-      #mobile-top-progress, #camera-flash, #transition-flash, #fake-bg-fade, #premium-bg { 
+      #mobile-top-progress, #camera-flash, #transition-flash, #fake-bg-fade { 
           display: none !important; 
           opacity: 0 !important; 
       }
@@ -2040,6 +2040,9 @@ window.onerror = function(msg, url, line, col, err) {
           border: 1px solid rgba(255,255,255,0.25) !important;
           border-radius: 0 !important;
           overflow-y: auto !important;
+            transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1), width 1.2s cubic-bezier(0.16, 1, 0.3, 1), left 1.2s cubic-bezier(0.16, 1, 0.3, 1), bottom 1.2s cubic-bezier(0.16, 1, 0.3, 1), padding-top 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            pointer-events: auto !important;
+            z-index: 10000050 !important;
           pointer-events: auto !important;
           justify-content: flex-start !important;
           box-shadow: 0 -10px 30px rgba(0,0,0,0.3) !important;
@@ -2068,8 +2071,11 @@ window.onerror = function(msg, url, line, col, err) {
           margin-top: -15px;
           position: relative;
           z-index: 10;
+            pointer-events: auto !important;
         }
         .mobile-see-more-btn { pointer-events: auto !important;
+            z-index: 10000050 !important;
+            position: relative;
           background: rgba(255,255,255,0.08);
           border: 1px solid rgba(255,255,255,0.2);
           color: #fff;
@@ -2109,35 +2115,69 @@ window.onerror = function(msg, url, line, col, err) {
           pointer-events: none;
           transition: opacity 0.3s ease;
         }
-        .glass-modal-mode {
-          position: fixed !important;
-          top: 7.5vh !important;
-          bottom: auto !important;
-          height: 85vh !important;
-          width: 90vw !important;
-          left: 5vw !important;
-          border-radius: 20px !important;
-          z-index: 9999999 !important;
-          background: rgba(20, 20, 20, 0.75) !important;
-          backdrop-filter: blur(30px) !important;
-          -webkit-backdrop-filter: blur(30px) !important;
-          border: 1px solid rgba(255,255,255,0.3) !important;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.6) !important;
-          padding-top: 4rem !important;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        #glass-who.glass-modal-mode, #glass-objectives.glass-modal-mode {
+              opacity: 1 !important;
+              visibility: visible !important;
+              transform: none !important;
+              
+            position: fixed !important;
+            top: auto !important;
+                bottom: calc(3% + 5.2rem) !important;
+                height: calc(100vh - 19px - 3% - 5.2rem) !important;
+                width: calc(100vw - 38px) !important;
+                left: 19px !important;
+                right: auto !important;
+              z-index: 10000060 !important;
+              border-radius: 0 !important;
+              background: rgba(255, 255, 255, 0.05) !important;
+              backdrop-filter: blur(16px) !important;
+              -webkit-backdrop-filter: blur(16px) !important;
+              border: 1px solid rgba(255,255,255,0.25) !important;
+              box-shadow: none !important;
+              padding-top: 15px !important;
+              justify-content: flex-start !important;
+              transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1), width 1.2s cubic-bezier(0.16, 1, 0.3, 1), left 1.2s cubic-bezier(0.16, 1, 0.3, 1), bottom 1.2s cubic-bezier(0.16, 1, 0.3, 1), padding-top 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
-        .glass-modal-mode .glass-close-btn {
+        #glass-who.glass-modal-mode .flt-ch, #glass-objectives.glass-modal-mode .flt-ch {
+            opacity: 1 !important;
+          }
+          #glass-who.glass-modal-mode .glass-mask-line, #glass-objectives.glass-modal-mode .glass-mask-line {
+            transform: none !important;
+          }
+          #glass-who.glass-modal-mode .glass-bullet, #glass-objectives.glass-modal-mode .glass-bullet {
+            opacity: 1 !important;
+          }
+          .glass-modal-mode .glass-close-btn {
           opacity: 1;
           pointer-events: auto;
         }
         .glass-modal-mode .mobile-expandable-content {
-          max-height: 1000px !important;
-          -webkit-mask-image: none !important;
-          mask-image: none !important;
+          max-height: 60vh !important;
+          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black 90%, transparent 100%) !important;
+              mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black 90%, transparent 100%) !important;
+              padding-top: 16px !important;
           overflow-y: auto !important;
           padding-bottom: 30px;
+            margin-right: -20px;
+            padding-right: 20px;
+          }
+          .glass-modal-mode .mobile-expandable-content::-webkit-scrollbar {
+            width: 4px;
+            background: transparent;
+          }
+          .glass-modal-mode .mobile-expandable-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+          }
+          .glass-modal-mode .mobile-expandable-content::-webkit-scrollbar-track {
+            background: transparent;
         }
-        /* Ocultar el HR original para que no estorbe si hay scroll */
+        #glass-who.glass-modal-mode.glass-hiding, #glass-objectives.glass-modal-mode.glass-hiding {
+            opacity: 0 !important;
+            transition: opacity 1s ease !important;
+            pointer-events: none !important;
+          }
+          /* Ocultar el HR original para que no estorbe si hay scroll */
         .glass-modal-mode hr {
           display: block;
         }
@@ -2151,17 +2191,42 @@ window.onerror = function(msg, url, line, col, err) {
       }
     </style>
     <script>
-      function toggleGlassModal(glassId) {
+      function _blockGlassScroll(e) {
+        if (this.classList.contains('glass-modal-mode')) {
+          e.stopPropagation();
+        }
+      }
+      setTimeout(function() {
+        var w = document.getElementById('glass-who');
+        var o = document.getElementById('glass-objectives');
+        if(w) { w.addEventListener('touchmove', _blockGlassScroll, {passive: false}); w.addEventListener('wheel', _blockGlassScroll, {passive: false}); }
+        if(o) { o.addEventListener('touchmove', _blockGlassScroll, {passive: false}); o.addEventListener('wheel', _blockGlassScroll, {passive: false}); }
+      }, 1000);
+
+      window.toggleGlassModal = function toggleGlassModal(glassId) {
         const glassEl = document.getElementById(glassId);
         if (!glassEl) return;
         if (glassEl.classList.contains('glass-modal-mode')) {
           glassEl.classList.remove('glass-modal-mode');
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            document.body.style.overscrollBehavior = '';
         } else {
           glassEl.classList.add('glass-modal-mode');
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overscrollBehavior = 'none';
         }
       }
     </script>
-  </head>
+  <style>
+    @media (max-width: 768px) {
+      .sc-desc {
+        font-size: 0.864rem !important;
+      }
+    }
+  </style>
+</head>
 <body>
   <!-- Mobile Top Progress Bar (Oryzo style) -->
   <div id="mobile-top-progress" style="display: none; position: fixed; top: 0; left: 0; height: 3px; background: #ccff00; box-shadow: 0 0 10px #ccff00; z-index: 10000020; width: 0%; transition: width 0.1s linear;"></div><script>
@@ -2544,12 +2609,12 @@ window.onerror = function(msg, url, line, col, err) {
   <!-- Recuadro de detalle GLOBAL (visible en todos los pasos) -->
     <!-- Recuadro Glassmorphism de Quien (Paso 2) -->
     <div id="glass-who" style="position: fixed; top: 0; right: 0; height: 100vh; width: 30vw; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-left: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0; padding: 10vh 2.5vw 0 30px; opacity: 0; pointer-events: none; z-index: 10005; visibility: hidden; box-shadow: -5px 0 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center;">
-      <button class="glass-close-btn" onclick="toggleGlassModal('glass-who')" ontouchend="toggleGlassModal('glass-who'); event.preventDefault();"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-<h3 style="color: #ccff00; font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 0.05em;">Parejas (y no parejas) que nos hemos encontrado</h3>
+      <button class="glass-close-btn" onclick="toggleGlassModal('glass-who')" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+<h3 style="color: #ccff00; font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 16px; margin-top: 0; padding-right: 40px; letter-spacing: 0.05em;">Parejas (y no parejas) que nos hemos encontrado</h3>
       <div class="mobile-expandable-content">
 <ul style="color: rgba(255,255,255,0.9); font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 400; line-height: 1.5; padding-left: 0; margin: 0; list-style-type: none;" class="dynamic-lines-list">
-        <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi mujer con la que ya hemos compartido 40 a&ntilde;os y 2 hijxs</div></li>
         <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi pareja de hace m&aacute;s de 7 a&ntilde;os</div></li>
+          <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi mujer con la que ya hemos compartido 40 a&ntilde;os y 2 hijxs</div></li>
         <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">La cita de Bumble que no quiero desperdiciar</div></li>
         <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Mi compi de trabajo con quien ya hace 3 meses que compartimos m&aacute;s que trabajo</div></li>
         <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">El ligue del viaje a Bali con el que hago videollamadas cada semana</div></li>
@@ -2562,18 +2627,18 @@ window.onerror = function(msg, url, line, col, err) {
       </p>
 </div>
 <div class="mobile-see-more-container">
-  <button class="mobile-see-more-btn" onclick="toggleGlassModal('glass-who')" ontouchend="toggleGlassModal('glass-who'); event.preventDefault();">
-    <span class="btn-text-more">Ver m&aacute;s ejemplos</span>
-    <span class="btn-text-less" style="display:none;">Ver menos ejemplos</span>
-    <svg style="display:inline-block; vertical-align:middle; margin-left:4px; transition: transform 0.3s;" class="btn-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  <button class="mobile-see-more-btn" onclick="toggleGlassModal('glass-who')" >
+    <span class="btn-text-more">Ver ejemplos</span>
+    <span class="btn-text-less" style="display:none;">Cerrar</span>
+    
   </button>
 </div>
     </div>
     <!-- Recuadro Glassmorphism de Objetivos (Paso 3) -->
     <div id="glass-objectives" style="position: fixed; top: 0; left: 0; height: 100vh; width: 30vw; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-right: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0; padding: 10vh 30px 0 2.5vw; opacity: 0; pointer-events: none; z-index: 10005; visibility: hidden; box-shadow: 5px 0 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center;">
-      <button class="glass-close-btn" onclick="toggleGlassModal('glass-objectives')" ontouchend="toggleGlassModal('glass-objectives'); event.preventDefault();"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-<h3 style="color: #ccff00; font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.05em;">Objetivos m&aacute;s pedidos</h3>
-      <div class="dyn-text" style="color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; font-size: 0.85rem; line-height: 1.4; margin-bottom: 24px; padding-right: 10px;">Puede ser literalmente lo que quieras con el nivel de precisi&oacute;n que necesites (excepto conseguir que te paguen la cena, en eso a&uacute;n estamos trabajando).</div>
+      <button class="glass-close-btn" onclick="toggleGlassModal('glass-objectives')" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+<h3 style="color: #ccff00; font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; margin-top: 0; padding-right: 40px; letter-spacing: 0.05em;">Objetivos m&aacute;s pedidos</h3>
+      <div class="dyn-text" style="color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; font-size: 0.85rem; line-height: 1.4; margin-bottom: 16px; padding-right: 10px;">Puede ser literalmente lo que quieras con el nivel de precisi&oacute;n que necesites (excepto conseguir que te paguen la cena, en eso a&uacute;n estamos trabajando).</div>
       <div class="mobile-expandable-content">
 <ul style="color: rgba(255,255,255,0.9); font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 400; line-height: 1.5; padding-left: 0; margin: 0; list-style-type: none; margin-bottom: 40px;" class="dynamic-lines-list">
           <li style="margin-bottom: 16px; display: flex;"><div style="overflow: hidden; flex-shrink: 0; width: 20px;"><div class="glass-bullet" style="color: #ccff00;">&#8226;</div></div><div class="dyn-text">Conocernos a&uacute;n m&aacute;s despu&eacute;s de 8 a&ntilde;os juntxs</div></li>
@@ -2588,10 +2653,10 @@ window.onerror = function(msg, url, line, col, err) {
       </p>
 </div>
 <div class="mobile-see-more-container">
-  <button class="mobile-see-more-btn" onclick="toggleGlassModal('glass-objectives')" ontouchend="toggleGlassModal('glass-objectives'); event.preventDefault();">
-    <span class="btn-text-more">Ver m&aacute;s ejemplos</span>
-    <span class="btn-text-less" style="display:none;">Ver menos ejemplos</span>
-    <svg style="display:inline-block; vertical-align:middle; margin-left:4px; transition: transform 0.3s;" class="btn-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  <button class="mobile-see-more-btn" onclick="toggleGlassModal('glass-objectives')" >
+    <span class="btn-text-more">Ver ejemplos</span>
+    <span class="btn-text-less" style="display:none;">Cerrar</span>
+    
   </button>
 </div>
     </div>
@@ -3635,6 +3700,7 @@ window._pristineMainDeckClone = mdSetup ? mdSetup.cloneNode(true) : null;
     gsap.set(scCta,   { opacity: 0 });
       gsap.set('#glass-who', { opacity: 0, autoAlpha: 0 });
       gsap.set('#glass-objectives', { opacity: 0, autoAlpha: 0 });
+      gsap.set('#glass-who .mobile-see-more-container, #glass-objectives .mobile-see-more-container', { opacity: 0 });
     // Caracteres del título: invisible + blur + desplazados (GSAP sobreescribe el CSS)
     gsap.set(ftChars, { opacity: 0, filter: 'blur(10px)', x: -18 });
     // Ã¢â€€ Split por caracteres para el efecto Oryzo letra a letra Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€Ã¢â€€
@@ -3737,17 +3803,17 @@ window._pristineMainDeckClone = mdSetup ? mdSetup.cloneNode(true) : null;
     gsap.set(rightChars, { opacity: 0 });
     const isM = window._cIsMobile;
     const sData = [
-      { el: sc1, x: isM ? '-31.2vw' : '-26vw', y: isM ? '-28.8vh' : '-24vh', r: -16 },
-      { el: sc2, x: isM ? '31.2vw'  : '26vw',  y: isM ? '-24vh'   : '-20vh', r:   9 },
-      { el: sc3, x: '-24vw', y:  '26vh', r:  18 },
-      { el: sc4, x:  '26vw', y:  '24vh', r: -12 },
-    ];
+          { el: sc1, x: isM ? '-38.5vw' : '-26vw', y: isM ? '-36.4vh' : '-24vh', r: -16 },
+          { el: sc2, x: isM ? '35.2vw'  : '26vw',  y: isM ? '-32vh'   : '-20vh', r:   9 },
+          { el: sc3, x: isM ? '-28vw' : '-24vw', y: isM ? '27.6vh' : '26vh', r:  18 },
+          { el: sc4, x: isM ? '36vw' : '26vw', y: isM ? '28vh' : '24vh', r: -12 },
+        ];
     const panData = [
-      { x: isM ? '31.2vw'  : '26vw',  y: isM ? '28.8vh' : '38vh', r:  16 },
-      { x: isM ? '-31.2vw' : '-34vw', y: isM ? '4vh'    : '20vh', r:  -9 },
-      { x: isM ? '9vw'     : '34vw',  y: isM ? '-54vh'  : '-42vh', r: -18 },
-      { x: '-26vw', y: isM ? '-24vh' : '-36vh', r:  12 },
-    ];
+          { x: isM ? '23vw'  : '26vw',  y: isM ? '24.5vh' : '38vh', r:  16 },
+          { x: isM ? '-35.2vw' : '-34vw', y: isM ? '12vh'    : '20vh', r:  -9 },
+          { x: isM ? '13vw'     : '34vw',  y: isM ? '-58vh'  : '-42vh', r: -18 },
+          { x: isM ? '-30vw' : '-26vw', y: isM ? '-28vh' : '-36vh', r:  12 },
+        ];
     const focusZoom = window._cIsMobile ? 1.13 : 1.35;
     const sIntroProxy = { opacity: 1 };
     const updateIntroOpacity = () => { if (scIntro) scIntro.style.opacity = sIntroProxy.opacity; };
@@ -4167,6 +4233,7 @@ panData.forEach(({ x, y, r }, i) => {
             scrollTl.to('#glass-who', { autoAlpha: 1, duration: 0.01, ease: 'none' }, glassT);
             scrollTl.to(glassWhoTitle, { opacity: 1, duration: 0.01, stagger: 0.00069, ease: 'none' }, glassT + 0.01);
             scrollTl.to(glassWhoFinalText, { opacity: 1, duration: 0.01, stagger: -0.00029, ease: 'none' }, glassT + 0.01);
+              scrollTl.to('#glass-who .mobile-see-more-container', { opacity: 1, duration: 0.01, ease: 'none' }, glassT + 0.01);
             scrollTl.to('#glass-who .glass-mask-line', { yPercent: 0, duration: 0.0335, stagger: 0, ease: 'power2.out' }, glassT + 0.01);
             scrollTl.to('#glass-who .glass-bullet', { opacity: 1, duration: 0.015, stagger: 0, ease: 'power2.out' }, glassT + 0.0285);
           } else {
@@ -4175,15 +4242,17 @@ panData.forEach(({ x, y, r }, i) => {
             scrollTl.to('#glass-who', { autoAlpha: 0, duration: 0.0335, ease: 'none' }, glassWhoHideT);
             scrollTl.to(glassWhoTitle, { opacity: 0, duration: 0.01, stagger: -0.00069, ease: 'none' }, glassWhoHideT);
             scrollTl.to(glassWhoFinalText, { opacity: 0, duration: 0.01, stagger: 0.00029, ease: 'none' }, glassWhoHideT);
+              scrollTl.to('#glass-who .mobile-see-more-container', { opacity: 0, duration: 0.01, ease: 'none' }, glassWhoHideT);
             scrollTl.to('#glass-who .glass-mask-line', { yPercent: 110, duration: 0.0335, stagger: 0, ease: 'power2.out' }, glassWhoHideT);
             scrollTl.to('#glass-who .glass-bullet', { opacity: 0, duration: 0.015, stagger: 0, ease: 'power2.out' }, glassWhoHideT);
           }
           // Animacion de la caja glass-objectives en el Paso 3
           if (i === 2) {
             scrollTl.to('#glass-objectives', { autoAlpha: 1, duration: 0.01, ease: 'none' }, glassT);
-              if (window._cIsMobile) { scrollTl.fromTo('#glass-objectives', { y: '0vh' }, { y: '-42vh', duration: 0.035, ease: 'power2.out' }, glassT); }
+              // if (window._cIsMobile) { scrollTl.fromTo('#glass-objectives', { y: '0vh' }, { y: '-42vh', duration: 0.035, ease: 'power2.out' }, glassT); }
             scrollTl.to(glassObjTitle, { opacity: 1, duration: 0.01, stagger: 0.00108, ease: 'none' }, glassT + 0.01);
             scrollTl.to(glassObjFinalText, { opacity: 1, duration: 0.01, stagger: -0.00029, ease: 'none' }, glassT + 0.01);
+              scrollTl.to('#glass-objectives .mobile-see-more-container', { opacity: 1, duration: 0.01, ease: 'none' }, glassT + 0.01);
             scrollTl.to('#glass-objectives .glass-mask-line', { yPercent: 0, duration: 0.0327, stagger: 0, ease: 'power2.out' }, glassT + 0.01);
             scrollTl.to('#glass-objectives .glass-bullet', { opacity: 1, duration: 0.015, stagger: 0, ease: 'power2.out' }, glassT + 0.0277);
           } else {
@@ -4192,6 +4261,7 @@ panData.forEach(({ x, y, r }, i) => {
             scrollTl.to('#glass-objectives', { autoAlpha: 0, duration: 0.0327, ease: 'none' }, glassObjHideT);
             scrollTl.to(glassObjTitle, { opacity: 0, duration: 0.01, stagger: -0.00108, ease: 'none' }, glassObjHideT);
             scrollTl.to(glassObjFinalText, { opacity: 0, duration: 0.01, stagger: 0.00029, ease: 'none' }, glassObjHideT);
+              scrollTl.to('#glass-objectives .mobile-see-more-container', { opacity: 0, duration: 0.01, ease: 'none' }, glassObjHideT);
             scrollTl.to('#glass-objectives .glass-mask-line', { yPercent: 110, duration: 0.0327, stagger: 0, ease: 'power2.out' }, glassObjHideT);
             scrollTl.to('#glass-objectives .glass-bullet', { opacity: 0, duration: 0.015, stagger: 0, ease: 'power2.out' }, glassObjHideT);
           }
@@ -12304,6 +12374,8 @@ document.addEventListener('mouseover', e => {
                 e.stopPropagation();
                 if (explosionActive) return;
                 explosionActive = true;
+                  const w = document.getElementById('glass-who'); if(w) w.classList.add('glass-hiding');
+                  const o = document.getElementById('glass-objectives'); if(o) o.classList.add('glass-hiding');
                 window._ctaHoverActive = true; // force opacity to 1
                 // Show overlays
                 document.getElementById('premium-bg').style.opacity = '1';
