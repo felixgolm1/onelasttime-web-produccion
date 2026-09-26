@@ -2343,7 +2343,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 #mag-ciencia h1 { font-size: 6.1rem !important; }
   #oryzo-text-right { text-align: right !important; position: relative !important; left: -67px !important; }
   #oryzo-text-right-gradient { text-align: right !important; width: 100% !important; transform-origin: right center !important; margin-right: 0 !important; }
-  @media (max-width: 768px) { #oryzo-deck-container { margin-top: -6.5vh !important; } }
+  @media (max-width: 768px) { #oryzo-deck-container { margin-top: 61.5vh !important; } #conecta-transition-text { top: 15vh !important; }  }
 
   #global-brain-label, .nsl p:first-child { font-size: 0.72rem !important; }
   .nsl h3 { font-size: 1.2rem !important; }
@@ -4479,7 +4479,7 @@ panData.forEach(({ x, y, r }, i) => {
     // 🔸 Fase 10: 2 Flips y cambianzo
     let t3 = t2 + 0.15;
     const mainDeck = document.getElementById('mainDeck');
-    const maxProg = 62.55;
+    const maxProg = 63.05;
     let prog = parseFloat(sessionStorage.getItem('dev_prog')) || 0;
     // Reducido maxProg para que el scroll termine justo al completar la nueva seccion
     // Desocultar la carta trasera JUSTO cuando va a empezar a dar vueltas (para que su texto y cara no causen sombra doble durante toda la fase de scatter anterior)
@@ -11157,28 +11157,46 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
       var tSlide = clamp01((p - 21.7) / 1.6); // Termina en 23.3, justo cuando empieza a abrirse
       // Empieza a bajar (38.6) con el carrusel y termina de desaparecer del todo (40.76)
       var tExitBox = clamp01((p - 38.6) / (40.76 - 38.6)); 
-      var slideY = (1 - ease(tSlide)) * 130; // La pantalla se queda anclada
+      var isMobileLayout = (window.innerWidth <= 768 || window._cIsMobile);
+        var travelDist = isMobileLayout ? 95 : 130;
+        var slideY = (1 - ease(tSlide)) * travelDist;
       oryzoSec.style.transform = 'translateY(' + slideY + 'vh)';
+        
+        // CROP THERMAL OVERLAY DYNAMICALLY TO AVOID OVERLAP IN MOBILE
+        var _thOvr = document.getElementById('thermal-overlay');
+        if (_thOvr) {
+            if (isMobileLayout) {
+                var cropVh = tSlide * 35; // gradually crop up to 35vh
+                _thOvr.style.clipPath = 'inset(0 0 ' + cropVh.toFixed(2) + 'vh 0)';
+            } else {
+                _thOvr.style.clipPath = 'none';
+            }
+        }
       // La baraja de cartas baja independientemente de la pantalla (80vh es suficiente para ocultarla)
       var isMob = window.innerWidth <= 768 || window._cIsMobile;
         var boxEnterY = 0;
         if (isMob) {
             var _tCam = clamp01((p - 21.7) / 3.0);
-              var _txtY = 130 - (ease(_tCam) * 230);
+              var _txtY = travelDist - (ease(_tCam) * (isMobileLayout ? 195 : 230));
               var _cntY = Math.min(0, _txtY - slideY);
               var totalYForBox = slideY + _cntY;
-            var boxDelayProg = clamp01(((-5) - totalYForBox) / 30); 
-            boxEnterY = (1 - boxDelayProg) * 110;
-        }
-        var boxTotalY = boxEnterY + (tExitBox * 80);
-        oryzoDeck.style.transform = 'translateY(' + boxTotalY + 'vh)';
+            var boxDelayProg = clamp01(((-5) - totalYForBox) / 30);
+              // boxEnterY = (1 - boxDelayProg) * 110;
+          }
+          var boxTotalY = (tExitBox * 80);
+          if (isMob) {
+              boxTotalY += Math.max(-69.5, _cntY);
+          } else {
+              boxTotalY += boxEnterY;
+          }
+          oryzoDeck.style.transform = 'translateY(' + boxTotalY + 'vh)';
       oryzoSec.style.pointerEvents = tSlide > 0.5 ? 'auto' : 'none';
       oryzoSec.style.visibility = tSlide > 0 ? 'visible' : 'hidden';
       // Sincronizamos el fondo morado 
-      window._scrollUpVh = 130 - slideY;
+      window._scrollUpVh = travelDist - slideY;
       // Fase de salida (la cámara baja continuamente)
       var tCamera = clamp01((p - 21.7) / 3.0);
-      var textY = 130 - (ease(tCamera) * 230);
+      var textY = travelDist - (ease(tCamera) * (isMobileLayout ? 195 : 230));
       var contentY = Math.min(0, textY - slideY);
       var conectaTxt = document.getElementById('conecta-transition-text');
       if (oryzoTxtL) oryzoTxtL.style.transform = 'translateY(' + contentY + 'vh)';
@@ -11204,11 +11222,14 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
              return outMin + t * (outMax - outMin);
          }
          // tOpen: animacion de apertura SEPARADA de la subida â€ â€  arranca cuando la caja ya es visible
-         var tOpen = clamp01((p - 23.3) / 0.3); // 23.3 a 23.6
+         var tOpen = clamp01((p - 23.6) / 0.3);
+           if (window.innerWidth <= 768 || window._cIsMobile) {
+               tOpen = clamp01((p - 23.89) / 0.25); // Exigencia milimetrica
+           }
          // tClose: cierra la caja a la misma velocidad en p = 30.79
          var tClose = clamp01((p - 30.79) / 0.3);
          let eOpen = ease(tOpen) * (1 - ease(tClose));
-         let cardsOpen = mapFlap(eOpen, 0.5, 1.0, 0, 1);
+         let cardsOpen = 0; // mapFlap(eOpen, 0.5, 1.0, 0, 1);
          if(deckClone) {
            let iCardsWrap = deckClone.querySelector('.interior-cards');
            if (iCardsWrap) {
@@ -11255,7 +11276,7 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
             tuckLip.style.transform = 'rotateX(' + lipRot + 'deg)';
          }
          // --- REPLICA EXACTA DE TESTIMONIOS CON localP = p - 21.5 ---
-         let localP_raw = p - 21.1;
+         let localP_raw = p - 21.60;
          let localP = localP_raw;
          if (localP_raw >= 28.49) {
              if (localP_raw <= 29.54) {
@@ -11293,9 +11314,9 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
      }
      var endCardTable = window._endCardTable;
          let ec1_peek = mapRange(localP, 2.5, 3.0, 0, 1);
-         let ec2_peek = mapRange(localP, 4.22, 4.72, 0, 1);
-         let ec3_peek = mapRange(localP, 6.02, 6.52, 0, 1);
-         let ec4_peek = mapRange(localP, 7.82, 8.32, 0, 1);
+           let ec2_peek = mapRange(localP, 4.22, 4.72, 0, 1);
+           let ec3_peek = mapRange(localP, 6.02, 6.52, 0, 1);
+           let ec4_peek = mapRange(localP, 7.82, 8.32, 0, 1);
          if (localP >= 2.2) {
            // CARTA 1
            if (ec1) {
