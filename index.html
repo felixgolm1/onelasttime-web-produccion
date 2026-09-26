@@ -2340,10 +2340,8 @@ window.addEventListener('DOMContentLoaded', () => {
     #brain-2d-wrap { width: 22.5vh !important; height: 22.5vh !important; top: 31.7vh !important; }
       #dummy-sens-ov { padding-bottom: 100px !important; }
   .carousel-item div[data-large-only="true"] { bottom: 20px !important; }
-                        #mag-ciencia h1 { font-size: 6.1rem !important; }
-  #oryzo-text-left { margin-top: 16vh !important; }
-  #oryzo-text-right { margin-top: 38vh !important; }
-  #global-brain-label, .nsl p:first-child { font-size: 0.78rem !important; }, .nsl p:first-child { font-size: 0.78rem !important; }
+                    #mag-ciencia h1 { font-size: 6.1rem !important; }
+  #global-brain-label, .nsl p:first-child { font-size: 0.78rem !important; }
   .nsl h3 { font-size: 1.3rem !important; }
   .nsl p:last-child { font-size: 0.84rem !important; }
   #neuro-card { 
@@ -12037,8 +12035,8 @@ if (sInd) {
       var textGrad = document.getElementById('oryzo-text-gradient');
       var textGradR = document.getElementById('oryzo-text-right-gradient');
       // Retrasado un pelín respecto al original, basado en textY para un fundido fluido
-      var txtP = clamp01((65 - slideY) / 40); 
-      var txtPR = clamp01((40 - slideY) / 40); 
+      var txtP = clamp01(((window.innerWidth <= 768 || window._cIsMobile ? 51 : 65) - slideY) / 40); 
+      var txtPR = clamp01(((window.innerWidth <= 768 || window._cIsMobile ? 18 : 40) - slideY) / 40); 
       var blurLen = 8; // Difuminado de 8 letras para que sea muy suave
       if (textGrad) {
         var chars = textGrad.querySelectorAll('.oryzo-char');
@@ -13880,9 +13878,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </html>
-
-
-
 
 
 
