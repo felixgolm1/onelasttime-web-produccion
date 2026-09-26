@@ -3189,10 +3189,14 @@ window._pristineMainDeckClone = mdSetup ? mdSetup.cloneNode(true) : null;
       .osr-body {
         flex-direction: column-reverse;
       }
-      .review-text-col, .review-img-col {
-        flex: 0 0 auto;
-        width: 100%;
-      }
+      .review-img-col {
+          flex: 0 0 auto;
+          width: 100% !important;
+        }
+        .review-text-col {
+          flex: 0 0 auto;
+          width: 60% !important;
+        }
       .review-img-col {
         justify-content: center;
         margin-bottom: 2rem;
@@ -11055,8 +11059,8 @@ document.querySelectorAll('#olt-final-text p, #p1-question p').forEach(el => { i
          });
          if (panel._ratingNum) panel._ratingNum.innerText = '[' + currentScore + '/5]';
       }
-      // 3. Texto Derecho (Reseña) - Ajustado en cascada
-      let readPRight = mapRange(pRev, 0.30, 0.46, 0, 1);
+      // 3. Texto Derecho (Resena) - Ajustado en cascada
+      let readPRight = mapRange(pRev, 0.20, 0.36, 0, 1);
       readPRight = Math.max(0, Math.min(1, readPRight));
       if (panel._charsRight && panel._charsRight.length > 0) {
          const totalR = panel._charsRight.length;
@@ -12081,7 +12085,8 @@ if (sInd) {
            var targetIdx = txtP * (chars.length + blurLen) - blurLen;
            // Transición de salida en la misma dirección que entra (de principio a fin)
            // Empieza un poco más tarde (restando 15 a contentY) y es un 50% más rápida (dividido por 40 en lugar de 80)
-           var exitProg = Math.max(0, Math.min(1, (Math.abs(contentY) - 15) / 40));
+           var exitStartL = (window.innerWidth <= 768 || window._cIsMobile) ? 0 : 15;
+             var exitProg = Math.max(0, Math.min(1, (Math.abs(contentY) - exitStartL) / 40));
            var targetExitIdx = exitProg * (chars.length + blurLen) - blurLen;
            for (var i = 0; i < chars.length; i++) {
               var op = 1 - (i - targetIdx) / blurLen;
