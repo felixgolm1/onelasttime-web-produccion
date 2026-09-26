@@ -12096,7 +12096,7 @@ if (sInd) {
   // Inicio: centrado (top:67%, left:50%, scale:1)
   // Final: derecha junto al cerebro (top:22%, left:72%, scale:0.28)
   var S_TOP = 48,  E_TOP = (window.innerWidth <= 768 || window._cIsMobile) ? 16 : 27;
-  var S_LEFT = 50, E_LEFT = 72;
+  var S_LEFT = 50, E_LEFT = (window.innerWidth <= 768 || window._cIsMobile) ? 67 : 72;
   var S_SCL = 1.0, E_SCL = 0.28;
   // Encadenar con la función ya existente
   var prevFn = window._updateNeuralText || function(){};
@@ -13878,6 +13878,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </html>
+
 
 
 
