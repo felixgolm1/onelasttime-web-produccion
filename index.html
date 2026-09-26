@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
@@ -2340,16 +2340,15 @@ window.addEventListener('DOMContentLoaded', () => {
     #brain-2d-wrap { width: 22.5vh !important; height: 22.5vh !important; top: 31.7vh !important; }
       #dummy-sens-ov { padding-bottom: 100px !important; }
   .carousel-item div[data-large-only="true"] { bottom: 20px !important; }
-                      #mag-ciencia h1 { font-size: 6.1rem !important; }
-  #oryzo-text-right { text-align: right !important; padding-right: 75px !important; }
-  #global-brain-label, .nsl p:first-child { font-size: 0.78rem !important; }
-  .nsl h3 { font-size: 1.3rem !important; }
-  .nsl p:last-child { font-size: 0.84rem !important; }
-  #neuro-card { 
-    top: 41.5vh !important;
-    padding-top: 18px !important;
+                #mag-ciencia h1 { font-size: 6.1rem !important; }
+  #oryzo-text-right { text-align: right !important; position: relative !important; left: -67px !important; }
+  #oryzo-text-right-gradient { text-align: right !important; width: 100% !important; transform-origin: right center !important; margin-right: 0 !important; }
+  #global-brain-label, .nsl p:first-child { font-size: 0.72rem !important; }
+  .nsl h3 { font-size: 1.2rem !important; }
+  #neuro-card {  
+    top: 42.3vh !important;
     width: 79vw !important;
-    padding-bottom: 83px !important;
+    padding-bottom: 73px !important;
     transform: translateX(-50%) scale(0.8) !important;
     transform-origin: center top !important;
   }
@@ -9542,7 +9541,7 @@ function makeCardBackTex(data = '4 PASOS') {
         <p id="oryzo-text-right-gradient" style="font-family:'Inter',sans-serif; font-size:clamp(1.2rem, 2vw, 1.6rem); color:#fff; line-height:1.5; font-weight:400; max-width:400px; margin-left: 1vw;">
         </p>
         <script>
-          var textR = "No nos creas a nosotros,<br>escúchales a ellxs";
+          var textR = "No nos creas a nosotros,<br>esc\u00FAchalxs a ellxs";
           var newHtmlR = "";
           for (var i = 0; i < textR.length; i++) {
             if (textR.substring(i, i+4) === "<br>") {
@@ -12036,8 +12035,11 @@ if (sInd) {
       var textGrad = document.getElementById('oryzo-text-gradient');
       var textGradR = document.getElementById('oryzo-text-right-gradient');
       // Retrasado un pelín respecto al original, basado en textY para un fundido fluido
-      var txtP = clamp01(((window.innerWidth <= 768 || window._cIsMobile ? 51 : 65) - slideY) / 40); 
-      var txtPR = clamp01(((window.innerWidth <= 768 || window._cIsMobile ? 18 : 40) - slideY) / 40); 
+      var startL = (window.innerWidth <= 768 || window._cIsMobile) ? 51 : 65;
+        var txtP = clamp01((startL - slideY) / 40); 
+      var startR = (window.innerWidth <= 768 || window._cIsMobile) ? 10 : 40;
+        var durR = (window.innerWidth <= 768 || window._cIsMobile) ? 15 : 40;
+        var txtPR = clamp01((startR - (slideY + contentY)) / durR); 
       var blurLen = 8; // Difuminado de 8 letras para que sea muy suave
       if (textGrad) {
         var chars = textGrad.querySelectorAll('.oryzo-char');
@@ -12061,7 +12063,8 @@ if (sInd) {
            var targetIdxR = txtPR * (charsR.length + blurLen) - blurLen;
            // Transición de salida en la misma dirección que entra (de principio a fin)
            // Empieza un poco más tarde (restando 15 a contentY) y es un 50% más rápida (dividido por 40 en lugar de 80)
-           var exitProgR = Math.max(0, Math.min(1, (Math.abs(contentY) - 15) / 40));
+           var exitStartR = (window.innerWidth <= 768 || window._cIsMobile) ? 33 : 15;
+             var exitProgR = Math.max(0, Math.min(1, (Math.abs(contentY) - exitStartR) / 40));
            var targetExitIdxR = exitProgR * (charsR.length + blurLen) - blurLen;
            for (var j = 0; j < charsR.length; j++) {
               var opR = 1 - (j - targetIdxR) / blurLen;
@@ -12077,7 +12080,7 @@ if (sInd) {
         var scaleVal = 0.5 + (0.5 * baseProg) - (contentY / 60);
         // Límite generoso
         scaleVal = Math.max(0, Math.min(scaleVal, 5.0)); 
-        textGradR.style.transformOrigin = (window.innerWidth <= 768 || window._cIsMobile) ? "right center" : "left center";
+        
         textGradR.style.transform = "scale(" + scaleVal + ")";
       }
       // Reviews manejadas arriba en el bloque localP
@@ -13879,12 +13882,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </html>
-
-
-
-
-
-
 
 
 
