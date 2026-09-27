@@ -14111,7 +14111,39 @@ window.addEventListener('DOMContentLoaded', () => {
     track.addEventListener('touchend', () => isScrubbing = false);
 });
 </script>
+
+<script>
+window.addEventListener('load', function() {
+    if (window.innerWidth <= 768) {
+        var isTrack = document.getElementById('img-strip-track');
+        if (isTrack) {
+            var slides = isTrack.children;
+            for (var i = 0; i < slides.length; i++) {
+                if (slides[i].tagName === 'STYLE') continue;
+                var inner = slides[i].children[0];
+                if (inner) {
+                    var w = inner.getBoundingClientRect().width;
+                    if (w > 0) {
+                        slides[i].style.setProperty('width', w + 'px', 'important');
+                        inner.style.setProperty('width', w + 'px', 'important');
+                    }
+                }
+            }
+            // Fix iris z-index and clip-path specific issues by explicitly matching sizes
+            var iris = document.getElementById('slide3-iris-img');
+            var s3inner = slides[3] && slides[3].tagName !== 'STYLE' ? slides[3].children[0] : (slides[4] ? slides[4].children[0] : null);
+            if (iris && s3inner) {
+                var w = s3inner.getBoundingClientRect().width;
+                if (w > 0) {
+                    iris.style.setProperty('width', w + 'px', 'important');
+                }
+            }
+        }
+    }
+});
+</script>
 </html>
+
 
 
 
