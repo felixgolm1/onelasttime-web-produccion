@@ -3195,7 +3195,7 @@ window._pristineMainDeckClone = mdSetup ? mdSetup.cloneNode(true) : null;
               "topline topline"
               "stars stars"
               "image quote"
-              "author quote" !important;
+                "empty author" !important;
             gap: 0 1rem !important;
             align-items: start !important;
             background: rgba(0, 0, 0, 0.9) !important;
@@ -3241,7 +3241,19 @@ window._pristineMainDeckClone = mdSetup ? mdSetup.cloneNode(true) : null;
         
     .mobile-author { display: none !important; }
     @media (max-width: 768px) {
-      .desktop-author { display: none !important; }
+            .desktop-author { 
+        display: block !important; 
+        grid-area: author;
+        margin-top: 19px !important;
+        font-size: 0.65rem !important;
+        line-height: 1.6 !important;
+        color: rgba(255,255,255,0.9) !important;
+      }
+      .desktop-author svg {
+        width: 12px !important;
+        height: 12px !important;
+        vertical-align: -2px !important;
+      }
       .mobile-author { 
         display: flex !important; 
         flex-direction: column !important;
@@ -10279,341 +10291,23 @@ setInterval(function() {
           <div class="osr-stars-small" style="font-family:'Inter', sans-serif; justify-content: flex-start; width: auto;"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span> <span class="rating-number" style="opacity: 0.5; margin-left: 8px; font-weight: 400;">[5/5]</span></div>
           <div class="review-quote" id="end-rev1-quote" style="text-align: left;">"Ya habíamos tenido 6 citas así que decidimos ponernos profundos con preguntas como esta. Creo que <span class="review-highlight">nos conocimos más con aquella cita que con todas las otras que hemos tenido juntas</span>"</div>
           <div class="review-author desktop-author" style="text-align: left;">
-            MATEO RUIZ &amp; CLARA ORTIZ<br>
-            <span style="display:inline-flex; align-items:center; gap: 6px; margin-top: 4px; text-transform: none; letter-spacing: 0; line-height: 1; flex-wrap: wrap;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              @ruiz.mateo_94 &amp;
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              @clara_ortiz_r
-            </span>
-          </div>
-<div class="review-author mobile-author">
-  <div class="ma-person">
-    <div class="ma-name">MATEO RUIZ</div>
-    <div class="ma-ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @ruiz.mateo_94</div>
-  </div>
-  <div class="ma-person">
-    <div class="ma-name">CLARA ORTIZ</div>
-    <div class="ma-ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @clara_ortiz_r</div>
-  </div>
-</div>
-        </div>
-        <!-- RIGHT COLUMN (Image) -->
-        <div class="review-img-col" style="width: 40%; display: flex; justify-content: flex-end;">
-          <img src="assets/img/testimonio 3.jpeg" alt="Review">
-        </div>
-      </div>
-    </div>
-    <div class="oryzo-review-panel" id="end-review-panel-2">
-      <div class="osr-body" style="align-items: center; flex-direction: row; justify-content: space-between; width: 100%; gap: 4rem;">
-        <!-- LEFT COLUMN (Text) -->
-        <div class="review-text-col" style="width: 30%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; color: #ffffff; font-family: 'Inter', sans-serif;">
-          <div class="osr-top-line" style="justify-content: flex-start;">
-          </div>
-          <div class="osr-stars-small" style="font-family:'Inter', sans-serif; justify-content: flex-start; width: auto;"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span> <span class="rating-number" style="opacity: 0.5; margin-left: 8px; font-weight: 400;">[5/5]</span></div>
+              MATEO RUIZ - <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @ruiz.mateo_94<br>
+              CLARA ORTIZ - <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @clara_ortiz_r
+            </div>
           <div class="review-quote" id="end-rev2-quote" style="text-align: left;">"¡<span class="review-highlight">Flipé</span> al ver cartas hechas para nuestro aniversario! Nos hicieron tener <span class="review-highlight">conversaciones que nunca antes habíamos tenido en 9 años de relación</span>. Y sin duda ahora estamos más preparadas para durar muchos años más. Ya <span class="review-highlight">he obligado a mis amigas a probarlo</span>."</div>
           <div class="review-author desktop-author" style="text-align: left;">
-            MARÍA SÁNCHEZ &amp; SARA VIDAL<br>
-            <span style="display:inline-flex; align-items:center; gap: 6px; margin-top: 4px; text-transform: none; letter-spacing: 0; line-height: 1; flex-wrap: wrap;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              @marysanchzz &amp;
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              @sara.vidal.88
-            </span>
-          </div>
-<div class="review-author mobile-author">
-  <div class="ma-person">
-    <div class="ma-name">MARÍA SÁNCHEZ</div>
-    <div class="ma-ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @marysanchzz</div>
-  </div>
-  <div class="ma-person">
-    <div class="ma-name">SARA VIDAL</div>
-    <div class="ma-ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @sara.vidal.88</div>
-  </div>
-</div>
-        </div>
-        <!-- RIGHT COLUMN (Image) -->
-        <div class="review-img-col" style="width: 40%; display: flex; justify-content: flex-end;">
-          <img src="assets/img/pareja20 review.png" alt="Review">
-        </div>
-      </div>
-    </div>
-    <div class="oryzo-review-panel" id="end-review-panel-3">
-      <div class="osr-body" style="align-items: center; flex-direction: row; justify-content: space-between; width: 100%; gap: 4rem;">
-        <!-- LEFT COLUMN (Text) -->
-        <div class="review-text-col" style="width: 30%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; color: #ffffff; font-family: 'Inter', sans-serif;">
-          <div class="osr-top-line" style="justify-content: flex-start;">
-          </div>
-          <div class="osr-stars-small" style="font-family:'Inter', sans-serif; justify-content: flex-start; width: auto;"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span> <span class="rating-number" style="opacity: 0.5; margin-left: 8px; font-weight: 400;">[5/5]</span></div>
+              MARÍA SÁNCHEZ - <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @marysanchzz<br>
+              SARA VIDAL - <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @sara.vidal.88
+            </div>
           <div class="review-quote" id="end-rev3-quote" style="text-align: left;">"Es brutal cómo una simple pregunta puede <span class="review-highlight">cambiar completamente el resultado de una cita</span>. Si tengo que tener más citas, nunca más iré sin tener preguntas profundas preparadas."</div>
           <div class="review-author desktop-author" style="text-align: left;">
-            LUCÍA LIN<br>
-            <span style="display:inline-flex; align-items:center; gap: 6px; margin-top: 4px; text-transform: none; letter-spacing: 0; line-height: 1;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              @luci.lin__
-            </span>
-          </div>
-<div class="review-author mobile-author">
-  <div class="ma-person">
-    <div class="ma-name">LUCÍA LIN</div>
-    <div class="ma-ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @luci.lin__</div>
-  </div>
-</div>
-        </div>
-        <!-- RIGHT COLUMN (Image) -->
-        <div class="review-img-col" style="width: 40%; display: flex; justify-content: flex-end;">
-          <img src="assets/img/portrait1 review.png" alt="Review">
-        </div>
-      </div>
-    </div>
-    <div class="oryzo-review-panel" id="end-review-panel-4">
-      <div class="osr-body" style="align-items: center; flex-direction: row; justify-content: space-between; width: 100%; gap: 4rem;">
-        <!-- LEFT COLUMN (Text) -->
-        <div class="review-text-col" style="width: 30%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; color: #ffffff; font-family: 'Inter', sans-serif;">
-          <div class="osr-top-line" style="justify-content: flex-start;">
-          </div>
-          <div class="osr-stars-small" style="font-family:'Inter', sans-serif; justify-content: flex-start; width: auto;"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span> <span class="rating-number" style="opacity: 0.5; margin-left: 8px; font-weight: 400;">[5/5]</span></div>
+              LUCÍA LIN - <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @luci.lin__
+            </div>
           <div class="review-quote" id="end-rev4-quote" style="text-align: left;">"Llevamos 12 años juntos, estamos casados, tenemos 1 hija y ahora mismo no nos podemos conocer más. Lo que sí que podemos hacer es seguir creciendo juntos y ser cada vez mejores como pareja, y One Last Time nos ayuda a esto cada vez que lo usamos. <span class="review-highlight">Si creéis que ya no podéis ir a mejor, probadlo y cambiaréis de opinión</span>"</div>
           <div class="review-author desktop-author" style="text-align: left;">
-            RENAN MACHADO &amp; ANDER ZABALA<br>
-            <span style="display:inline-flex; align-items:center; gap: 6px; margin-top: 4px; text-transform: none; letter-spacing: 0; line-height: 1; flex-wrap: wrap;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              @renan.mchdo &amp;
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              @ander_zb
-            </span>
-          </div>
-<div class="review-author mobile-author">
-  <div class="ma-person">
-    <div class="ma-name">RENAN MACHADO</div>
-    <div class="ma-ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @renan.mchdo</div>
-  </div>
-  <div class="ma-person">
-    <div class="ma-name">ANDER ZABALA</div>
-    <div class="ma-ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @ander_zb</div>
-  </div>
-</div>
-        </div>
-        <!-- RIGHT COLUMN (Image) -->
-        <div class="review-img-col" style="width: 40%; display: flex; justify-content: flex-end;">
-          <img src="assets/img/pareja12 - review.png" alt="Review">
-        </div>
-      </div>
-    </div>
-    </div>
-<!-- Ã¢â€€Ã¢â€€ IMG STRIP CAROUSEL (after testimonios) Ã¢â€€Ã¢â€€ -->
-<div id="img-strip-container" style="position:fixed;inset:0;z-index:10000003;overflow:hidden;opacity:0;pointer-events:none;">
-  <div id="img-strip-wrapper" style="position:absolute;top:0;left:0;width:100%;height:100%;will-change:transform;">
-    <div id="img-strip-track" style="display:flex;flex-direction:row;position:absolute;top:0;left:0;height:100%;gap:0.5cm;will-change:transform;">
-      <style>
-  .pill-track { display: flex; flex-direction: column; width: 100%; align-items: center; will-change: transform; }
-  .pill-copy { display: flex; flex-direction: column; gap: 20px; padding: 20px 0; align-items: center; width: 100%; }
-  .pill-track-up { }
-  .pill-track-down { }
-  .pill { background: rgba(20, 20, 20, 0.4); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: #ccff00; padding: 10px 18px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; white-space: nowrap; border: 1px solid rgba(204, 255, 0, 0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.2); letter-spacing: 0.5px; }
- 100% { transform: translateY(-50%); } }
- 100% { transform: translateY(0); } }
-  .spark-path { fill: none; stroke: #ccff00; stroke-width: 3; stroke-dasharray: 20 100; stroke-dashoffset: 120; animation: spark-shoot 2.5s infinite linear; filter: drop-shadow(0 0 6px #ccff00); }
-  .spark-path-left { animation-delay: 0s; }
-  .spark-path-right { animation-delay: 1.25s; }
-  @keyframes spark-shoot {
-    0% { stroke-dashoffset: 120; opacity: 0; }
-    5% { opacity: 1; }
-    40% { opacity: 1; }
-    50% { stroke-dashoffset: -20; opacity: 0; }
-    100% { stroke-dashoffset: -20; opacity: 0; }
-  }
-  @media (max-width: 768px) { #dynamic-pricing-row { font-size: 3.5vw !important; } }
-      .cta-arrow-pill {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        border-radius: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2;
-        background: #ccff00;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-        color: #111;
-        transition: transform 0.25s ease-out;
-      }
-      .cta-arrow-pill svg {
-        stroke: currentColor;
-      }
-      .btn-blue:hover .cta-arrow-pill { transform: translateY(-50%) scale(1.15); }
-</style><div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;">
-  <div style="position:relative; width:100%; height:79vh; margin-top:0.5cm; overflow:hidden;">
-    <img src="assets/img/mesa sola.jfif" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
-    <!-- Titulo superior: "Seáis como seáis" -->
-    <div id="parallax-text-top" style="
-      position: absolute;
-      top: calc(28px + 0.2cm);
-      left: 50%;
-      transform: translateX(calc(-50% + 0.55cm));
-      z-index: 20;
-      text-align: center;
-      pointer-events: none;
-    ">
-      <p style="
-        font-family: 'Inter', sans-serif;
-        font-weight: 800;
-        font-size: clamp(1.96rem, 3.85vw, 4.2rem);
-        line-height: 1.02;
-        color: #ffffff;
-        margin: 0;
-        text-shadow: 0 2px 24px rgba(0,0,0,0.45);
-        letter-spacing: -0.025em;
-        text-transform: uppercase;
-      ">Seáis<br>como<br>seáis</p>
-    </div>
-    <!-- Columna Izquierda (Sube) -->
-    <div style="position:absolute; left: 6%; top: 0; height: 100%; width: 180px; overflow: hidden; z-index: 10; display:flex; justify-content:center;">
-       <div class="pill-track pill-track-up" id="pill-col-up">
-          <div class="pill-copy">
-            <div class="pill">Introvertidxs</div>
-            <div class="pill">Extrovertidxs</div>
-            <div class="pill">Aventurerxs</div>
-            <div class="pill">Competitivxs</div>
-            <div class="pill">Tímidxs</div>
-            <div class="pill">Espontánexs</div>
-            <div class="pill">Exploradorxs</div>
-            <div class="pill">Románticxs</div>
-            <div class="pill">Curiosxs</div>
-            <div class="pill">Inseparables</div>
-            <div class="pill">Racionales</div>
-            <div class="pill">Soñadorxs</div>
-            <div class="pill">Apasionadxs</div>
-            <div class="pill">Intelectuales</div>
-            <div class="pill">Divertidxs</div>
-            <div class="pill">Intensxs</div>
-            <div class="pill">Relajadxs</div>
-            <div class="pill">Polos opuestos</div>
-            <div class="pill">Recién conocidxs</div>
-            <div class="pill">Incondicionales</div>
-          </div>
-       </div>
-    </div>
-    <!-- Columna Derecha (Baja) -->
-    <div style="position:absolute; right: 6%; top: 0; height: 100%; width: 180px; overflow: hidden; z-index: 10; display:flex; justify-content:center;">
-       <div class="pill-track pill-track-down" id="pill-col-down">
-          <div class="pill-copy">
-            <div class="pill">Independientes</div>
-            <div class="pill">Juguetonxs</div>
-            <div class="pill">Observadorxs</div>
-            <div class="pill">Alocadxs</div>
-            <div class="pill">Nostálgicxs</div>
-            <div class="pill">Impulsivxs</div>
-            <div class="pill">Dramáticxs</div>
-            <div class="pill">Despreocupadxs</div>
-            <div class="pill">Íntimxs</div>
-            <div class="pill">Diferentes</div>
-            <div class="pill">Creativxs</div>
-            <div class="pill">Transparentes</div>
-            <div class="pill">Viajerxs</div>
-            <div class="pill">Extravagantes</div>
-            <div class="pill">Tradicionales</div>
-            <div class="pill">Modernxs</div>
-            <div class="pill">Conectadxs</div>
-            <div class="pill">Rebeldes</div>
-            <div class="pill">Analíticxs</div>
-            <div class="pill">Casadxs</div>
-            <div class="pill">Prometidxs</div>
-            <div class="pill">Ilusionadxs</div>
-            <div class="pill">Madurxs</div>
-            <div class="pill">Intrépidxs</div>
-            <div class="pill">Inconformistas</div>
-            <div class="pill">Enigmáticxs</div>
-            <div class="pill">Profundxs</div>
-            <div class="pill">Supersticiosos</div>
-          </div>
-       </div>
-    </div>
-  </div>
-</div>
-      <div style="flex-shrink:0;width:25vw;height:100%;display:flex;align-items:center;justify-content:center;">
-        <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;">
-          <img id="slide2-pan-img" src="assets/img/pareja sofa recortado.jpg" style="position:absolute;top:0;left:0;width:200%;height:100%;object-fit:cover;object-position:left center;display:block;border-radius:0;will-change:transform;">
-          <div id="slide2-copy" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;writing-mode:vertical-rl;text-align:center;">
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:3.24rem;line-height:1.15;color:#ffffff;margin:0 0.6em 0 0;text-shadow:0 2px 24px rgba(0,0,0,0.45);letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">No es suerte</p>
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:3.24rem;line-height:1.15;color:#ffffff;margin:0;text-shadow:0 2px 24px rgba(0,0,0,0.45);letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">Es intención</p>
-          </div>
-        </div>
-      </div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;">
-        <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;background:#000;">
-          <!-- Imagen fantasma z:1 -->
-          <img src="assets/img/paseo.jfif" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1;">
-          <!-- Overlay negro 90% z:2 -->
-          <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2;"></div>
-          <!-- Imagen iris z:10 -->
-          <img id="slide3-iris-img" src="assets/img/paseo.jfif" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;z-index:10;will-change:clip-path;clip-path:circle(0px at 45% 64%);">
-          <!-- Texto estático z:20 (siempre visible sobre todo) -->
-          <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:20;pointer-events:none;display:flex;align-items:center;">
-            <div style="padding-left:calc(50% + 1cm);text-align:left;transform:translateY(-1cm);">
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-1">De elegir descubriros</p>
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-2">una y otra vez</p>
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;">aunque creáis que no</p>
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-3">queda nada por</p>
-              <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.5);white-space:nowrap;" id="slide3-copy-4">descubrir</p>
+              RENAN MACHADO - <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @renan.mchdo<br>
+              ANDER ZABALA - <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> @ander_zb
             </div>
-          </div>
-        </div>
-      </div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;">
-        <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;">
-          <img src="assets/img/durmiendo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
-          <!-- Texto upper-right, 50% más grande -->
-          <div style="position:absolute;top:10%;left:52%;z-index:10;pointer-events:none;text-align:left;">
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.35rem,2.7vw,2.85rem);line-height:1.3;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 20px rgba(0,0,0,0.7);">Para 5 minutos</p>
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.35rem,2.7vw,2.85rem);line-height:1.3;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 20px rgba(0,0,0,0.7);" id="slide4-noche">o toda la n<span id="slide4-o">o</span>che</p>
-          </div>
-        </div>
-      </div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;">
-        <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;">
-          <img src="assets/img/mesa parada.jfif" style="width:100%;height:100%;object-fit:cover;display:block;">
-          <div style="position:absolute;bottom:calc(18% - 1cm);left:6%;z-index:10;pointer-events:none;text-align:left;">
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.6);">Preparado en tu mesa</p>
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.9rem,1.8vw,1.9rem);line-height:1.4;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 18px rgba(0,0,0,0.6);">antes de que lleguéis</p>
-          </div>
-        </div>
-      </div>
-      <div style="flex-shrink:0;width:50vw;height:100%;display:flex;align-items:center;justify-content:center;">
-        <div style="position:relative;width:100%;height:79vh;margin-top:0.5cm;overflow:hidden;">
-          <img src="assets/img/cartas viejas.jfif" style="width:100%;height:100%;object-fit:cover;display:block;">
-          <!-- Texto diagonal upper-left -> lower-right -->
-          <div style="position:absolute;top:15%;left:calc(10% + 3cm);z-index:10;pointer-events:none;">
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.1rem,2.2vw,2.2rem);line-height:1.2;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;white-space:nowrap;">No es una cena, es una nueva</p>
-            <p style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.1rem,2.2vw,2.2rem);line-height:1.2;color:#ffffff;margin:0;text-transform:uppercase;letter-spacing:-0.02em;white-space:nowrap;">pieza de vuestra historia</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- OLT Logo Reveal: sube desde abajo cuando img-strip sale por arriba -->
-<div id="olt-logo-reveal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:10000005;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10vh 0;box-sizing:border-box;">
-  <div id="olt-logo-img-big" style="position:relative; z-index:10; width:70vw; max-width:900px; transform:translateY(100vh); will-change:transform; display:flex; flex-direction:column; align-items:flex-end; gap:0;">
-    <img src="assets/img/logo one last time.png" alt="One Last Time" style="width:100%; height:auto; filter: brightness(0) invert(1);">
-    <img src="assets/img/by_sensibles.png" alt="by Sensibles" style="height:clamp(22px, 3.75vw, 37px); width:auto; filter: brightness(0) invert(1); margin-right: 2vw; margin-top: -1.2vw;">
-  </div>
-  <div id="pricing-clip-container" style="flex:1; width:100vw; position:relative; display:flex; flex-direction:column; justify-content:center; align-items:center; margin: 0;">
-  <!-- DYNAMIC PHASE 1 & 2 -->
-  <div id="olt-phase-dynamic" style="width:80vw; max-width:1000px; color:#ffffff; font-family:'Inter', sans-serif; font-size:clamp(1.1rem, 2vw, 1.6rem); font-weight:700; line-height:1.35; letter-spacing:-0.02em; text-align:center; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 99999;">
-    <!-- P1 Question -->
-    <div id="p1-question" style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); width: 100%; opacity: 0; will-change: opacity;">
-        <p style="margin:0;">¿Qué precio le pondrías a la mejor conversación que habéis tenido nunca?</p>
-    </div>
-    <!-- P1/P2 Dynamic Price Row -->
-    <div id="dynamic-pricing-row" style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -15px); display:flex; align-items:center; justify-content:center; white-space:nowrap; opacity: 0; will-change: transform, opacity;">
-        <span id="dp-left" style="display:inline-block; margin-right: 5px; opacity:0; overflow:hidden; max-width:0px; vertical-align:middle;">Ahora puedes provocar esta magia desde solo </span>
-        <div style="position:relative; display:inline-block; color: #ffffff;" id="p1-counter-container">
-            <span id="p1-counter" style="transition: color 0.2s ease-out; font-weight:700;">8,99€</span>
-            <div id="p1-strikethrough" style="position:absolute; top:50%; left:0; width:0%; height:3px; background-color:#ccff00; transform:translateY(-50%); transition: width 0.1s linear;"></div>
-        </div>
-        <span id="dp-right" style="display:inline-block; margin-left: 6px; opacity:0; overflow:hidden; max-width:0px; vertical-align:middle;"> y recibir&aacute;s:</span>
-    </div>
     <!-- P2 Pack List (Bullets) -->
     <style>
       .olt-benefit-pill {
