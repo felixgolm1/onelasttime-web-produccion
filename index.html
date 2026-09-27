@@ -3189,14 +3189,13 @@ window._pristineMainDeckClone = mdSetup ? mdSetup.cloneNode(true) : null;
       }
       .oryzo-review-panel .osr-body {
             display: grid !important;
-            grid-template-columns: 75px 1fr !important;
-            grid-template-rows: auto auto 75px auto auto !important;
-              grid-template-areas:
-                "topline topline"
-                "stars stars"
-                "image quote"
-                "empty quote"
-                "author author" !important;
+            grid-template-columns: 1fr !important;
+              grid-template-rows: auto auto auto auto !important;
+                grid-template-areas:
+                  "topline"
+                  "stars"
+                  "quote"
+                  "author" !important;
             gap: 0 1rem !important;
             align-items: start !important;
             background: rgba(0, 0, 0, 0.9) !important;
@@ -3213,11 +3212,12 @@ window._pristineMainDeckClone = mdSetup ? mdSetup.cloneNode(true) : null;
           display: contents !important;
         }
         .review-img-col {
-                grid-area: image;
-                width: 100% !important;
-                display: flex !important;
-                justify-content: center !important;
-                margin-top: 27px !important;
+                float: left !important;
+                width: 75px !important;
+                height: 75px !important;
+                margin-right: 16px !important;
+                margin-top: 4px !important;
+                margin-bottom: 4px !important;
               }
         .review-img-col img {
           max-width: 75px !important;
@@ -14119,3 +14119,34 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+<script>
+  // Move image inside quote for mobile text wrapping
+  function applyMobileTextWrap() {
+    if (window.innerWidth <= 768) {
+      document.querySelectorAll('.osr-body').forEach(body => {
+        const quote = body.querySelector('.review-quote');
+        const imgCol = body.querySelector('.review-img-col');
+        // If image is still in the root body, move it inside quote
+        if (imgCol && quote && imgCol.parentNode === body) {
+          quote.insertBefore(imgCol, quote.firstChild);
+        }
+      });
+    } else {
+      // Revert for desktop
+      document.querySelectorAll('.osr-body').forEach(body => {
+        const quote = body.querySelector('.review-quote');
+        const imgCol = body.querySelector('.review-img-col');
+        if (imgCol && quote && imgCol.parentNode === quote) {
+          body.appendChild(imgCol); // Move back to body
+        }
+      });
+    }
+  }
+  
+  // Run on load and resize
+  window.addEventListener('DOMContentLoaded', applyMobileTextWrap);
+  window.addEventListener('resize', applyMobileTextWrap);
+  // Also run immediately in case DOMContentLoaded already fired
+  applyMobileTextWrap();
+</script>
